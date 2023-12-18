@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.shujuku.mapper.TeacherMapper">
+
+    <sql id="Base_Column_List">
+        t.teacher_id,
+        t.teacher_name,
+        t.phone,
+        t.work_place,
+        t.work_day,
+        t.dept_id
+    </sql>
+
+    <resultMap id="teacherList" type="com.example.shujuku.teacher.bean.Teacher">
+        <id column="teacher_id" property="teacherId"/>
+        <result column="teacher_name" property="teacherName"/>
+        <result column="phone" property="phone"/>
+        <result column="work_place" property="workPlace"/>
+        <result column="work_day" property="workDay"/>
+        <result column="dept_id" property="deptId"/>
+    </resultMap>
+
+    <select id="getTeacherList" resultMap="teacherList">
+        SELECT SQL_CALC_FOUND_ROWS
+        <include refid="Base_Column_List" />
+        FROM teacher t
+        WHERE t.teacher_id = t.teacher_id
+        <if test="teacherId != null">
+            and t.teacher_id = #{teacherId}
+        </if>
+        <if test="teacherName != null">
+            and t.teacher_name = #{teacherName}
+        </if>
+        <if test="phone != null">
+            and t.phone = #{phone}
+        </if>
+        <if test="workPlace != null">
+            and t.work_place = #{workPlace}
+        </if>
+        <if test="workDay != null">
+            and t.work_day = #{workDay}
+        </if>
+        <if test="deptId != null">
+            and t.dept_id = #{deptId}
+        </if>
+        LIMIT #{pageNo},#{pageSize};
+        --         SELECT FOUND_ROWS() as total1;
+    </select>
+
+</mapper>
