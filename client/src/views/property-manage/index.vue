@@ -1,5 +1,5 @@
 <script>
-import RecordTable from '@/components/RecordTable'
+import RecordTable from './components/RecordTable'
 import addProperty from './components/addProperty.vue'
 import editProperty from './components/editProperty.vue'
 export default {
@@ -38,31 +38,28 @@ export default {
     <div class="wrapper"></div>
     <!-- 管理概览 -->
     <!-- 公共财产管理 -->
-    <h1 class="main-title">小区公共财产</h1>
+    <h1 class="main-title">
+      <span>
+        公共财产管理
+      </span>
+      <el-button type="primary" icon="el-icon-plus" @click="handleAdd">
+        新增公共财产
+      </el-button>
+    </h1>
 
     <!-- 新增按钮 -->
     <div class="operation-container">
-      <el-button
-        type="primary"
-        icon="el-icon-plus"
-        size="small"
-        @click="handleAdd"
-      >
-        新增公共财产
-      </el-button>
+      <div class="wrapper">
+        <RecordTable
+          type="public"
+          title="公共财产"
+          icon="el-icon-suitcase"
+          :table-data="[]"
+          :show-pagination="false"
+        >
+        </RecordTable>
+      </div>
     </div>
-
-    <div class="wrapper">
-      <RecordTable
-        type="public"
-        title="公共财产"
-        icon="el-icon-suitcase"
-        :table-data="[]"
-        :show-pagination="false"
-      >
-      </RecordTable>
-    </div>
-
     <addProperty ref="addProperty"></addProperty>
     <editProperty ref="editProperty"> </editProperty>
   </div>
@@ -74,6 +71,7 @@ export default {
   .main-title {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
 
   .operation-container {

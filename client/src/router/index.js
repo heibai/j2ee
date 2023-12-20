@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
+import { title } from '@/settings'
 
 // 同步路由
 export const constantRoutes = [
@@ -146,6 +147,44 @@ const adminRoutes = [
       }
     ]
   },
+  // 物业管理
+  {
+    path: '/propertyManage',
+    component: Layout,
+    meta: {
+      roles: ['superAdmin', 'admin'],
+      title: '物业管理',
+      icon: 'international'
+    },
+    children: [
+      // TODO 处理业主投诉或报修意见
+      {
+        path: 'index',
+        component: () => import('@/views/building-manage/index'),
+        name: 'cleanRecord',
+        meta: {
+          title: '物业人员管理'
+        }
+      },
+
+      {
+        path: 'complaintIndex',
+        component: () => import('@/views/complaint/index'),
+        name: 'complaint-manage',
+        meta: {
+          title: '投诉管理'
+        }
+      },
+      {
+        path: 'repairIndex',
+        component: () => import('@/views/repair-report/index'),
+        name: 'repair',
+        meta: {
+          title: '报修管理'
+        }
+      }
+    ]
+  },
   // 住户管理
   {
     path: '/residentManage',
@@ -164,17 +203,6 @@ const adminRoutes = [
           icon: 'people'
         }
       }
-    ]
-  },
-  // 物业管理
-  {
-    path: '/propertyManage',
-    component: Layout,
-    meta: {
-      roles: ['superAdmin', 'admin']
-    },
-    children: [
-      // TODO 处理业主投诉或报修意见
     ]
   },
 
@@ -251,17 +279,7 @@ const adminRoutes = [
   //     }
   //   ]
   // },
-  // 报修|投诉管理
-  {
-    // TODO报修|投诉管理
-    path: '/repairManage',
-    component: Layout,
-    meta: {
-      roles: ['superAdmin', 'admin']
-    },
 
-    children: []
-  },
   {
     path: '/visitorManage',
     component: Layout,
@@ -274,7 +292,7 @@ const adminRoutes = [
         component: () => import('@/views/visitor-manage/index'),
         name: 'visitorManage',
         meta: {
-          title: '来访人员登记',
+          title: '住户登记',
           icon: 'user'
         }
       }

@@ -11,22 +11,40 @@
             {{ scope.row.room.building.name }} {{ scope.row.room.name }}
           </template>
         </el-table-column>
-        <el-table-column label="姓名" prop="name"></el-table-column>
-        <el-table-column label="电话" prop="phone"></el-table-column>
+        <el-table-column label="投诉原因" prop="name"></el-table-column>
+        <!-- <el-table-column label="电话" prop="phone"></el-table-column>
         <el-table-column label="身份证" prop="idNumber"></el-table-column>
         <el-table-column label="性别">
           <template slot-scope="scope">
             {{ scope.row.sex === '0' ? '男' : '女' }}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <!-- <el-table-column label="到访宿舍楼">
           <template slot-scope="scope">
             {{ scope.row.building.name }}
           </template>
         </el-table-column> -->
-        <el-table-column label="入住时间" prop="createdAt">
+        <el-table-column label="投诉时间" prop="createdAt">
           <template slot-scope="scope">
             {{ $moment(scope.row.createdAt).format('YYYY-MM-DD HH:mm') }}
+          </template>
+        </el-table-column>
+
+        <!-- 操作区 -->
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              size="mini"
+              @click="handleEdit(scope.$index, scope.row)"
+              >编辑</el-button
+            >
+            <el-button
+              type="danger"
+              size="mini"
+              @click="handleDelete(scope.$index, scope.row)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
