@@ -36,8 +36,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
-    public CommonResult getUsersByUsersId(String usersId){
-        Users users = usersMapper.selectById(usersId);
+    public CommonResult getUsersByUserId(String userId){
+        Users users = usersMapper.GetUsersByUserId(userId);
         if(users != null){
             return CommonResult.success(users);
         }else return CommonResult.fail("查询users表失败");

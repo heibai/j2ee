@@ -9,7 +9,7 @@ public interface UsersService extends IService<Users> {
 
     public CommonResult createUsers(Users users);
 
-    public CommonResult getUsersByUsersId(String usersId);
+    public CommonResult getUsersByUserId(String userId);
 
     public CommonResult getUsersPage(UsersPageReq usersPageReq);
 
