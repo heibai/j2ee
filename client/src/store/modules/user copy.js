@@ -1,14 +1,15 @@
 import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import { getManageBuildings } from '@/api/building'
 
 const state = {
-  userInfo: JSON.parse(getToken()) || {},
+  allUserInfo: {},
   token: getToken(), // 由 cookie 获取 token
   name: '',
   avatar: '',
   introduction: '',
-  role: '',
+  roles: [],
   room: undefined,
   floor: undefined,
   building: undefined,
@@ -17,8 +18,8 @@ const state = {
 }
 
 const mutations = {
-  SET_USERINFO: (state, info) => {
-    state.userInfo = info
+  SET_ALLUSERINFO: (state, info) => {
+    state.allUserInfo = info
   },
   SET_TOKEN: (state, token) => {
     state.token = token
@@ -51,23 +52,66 @@ const mutations = {
 
 const actions = {
   // user login 在登录时调用，获取用户 Token 并写入 Store 和 Localstroge
-  login({ commit, dispatch }, userInfo) {
+  login({ commit }, userInfo) {
     const { account, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ userId: account.trim(), password: password })
         .then(response => {
           const { data } = response
-          // data为用户信息
-          commit('SET_TOKEN', data)
-          commit('SET_USERINFO', data)
-          setToken(JSON.stringify(data))
-
-          dispatch('permission/generateRoutes', data.role, { root: true })
+          // commit('SET_TOKEN', data.token)
+          // setToken(data.token)
           resolve()
         })
         .catch(error => {
           reject(error)
         })
+    })
+  },
+
+  // get user info 在获取用户信息时调用，向 store 中写入信息
+  getInfo({ commit }) {
+    return new Promise((resolve, reject) => {
+      getInfo()
+        .then(response => {
+          const { data } = response
+          if (!data) {
+            reject('Token 验证失败，轻重新登录。')
+          }
+
+          data.roles = [data.role]
+          const { roles, name, avatar, room, floor, building } = data
+
+          // 服务器端返回的角色必须是一个数组
+          if (!roles || roles.length <= 0) {
+            reject('getInfo: roles must be a non-null array!')
+          }
+
+          // 设置用户信息
+          commit('SET_ROLES', roles)
+          commit('SET_NAME', name || '欢迎您，新用户')
+          commit('SET_AVATAR', avatar || require('@/assets/avatar.jpg'))
+          commit('SET_ROOM', room)
+          commit('SET_FLOOR', floor)
+          commit('SET_BUILDING', building)
+          if (data.role === 'student' && !room) {
+            commit('SET_NEWUSER', true)
+          } else {
+            commit('SET_NEWUSER', false)
+          }
+          // 将信息存储到 allinfo 中
+          delete data.room
+          delete data.floor
+          delete data.building
+          commit('SET_ALLUSERINFO', data)
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+      getManageBuildings().then(res => {
+        const { buildings } = res.data
+        commit('SET_MANAGEBUILDINGS', buildings)
+      })
     })
   },
 
