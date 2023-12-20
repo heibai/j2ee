@@ -1,11 +1,3 @@
-node_modules/
-dist/
-client/node_modules
-client/dist
-.vscode
-.idea
-```
-
 # Default ignored files
 /shelf/
 /workspace.xml
