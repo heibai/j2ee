@@ -31,7 +31,7 @@ public class UsersController {
     @ApiModelProperty("查询用户")
     @GetMapping("/getUser")
     public CommonResult getUser(@Param("userId") String userId){
-        return usersService.getUsersByUsersId(userId);
+        return usersService.getUsersByUserId(userId);
     }
 
     @ApiModelProperty("分页查询用户")

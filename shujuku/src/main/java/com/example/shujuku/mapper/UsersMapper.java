@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper
 public interface UsersMapper extends BaseMapper<Users>{
 
-    @Select("SELECT * FROM users WHERE usersId = #{usersId}")
-    Users GetUsersByUsersId(String usersId);
+    @Select("SELECT * FROM users WHERE user_id = #{userId}")
+    Users GetUsersByUserId(String userId);
 
     List<Users> getUsersList(UsersPageReq req);
 
