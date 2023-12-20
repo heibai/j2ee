@@ -8,11 +8,11 @@ export function register(data) {
   })
 }
 
-export function login(data) {
+export function login(params) {
   return request({
-    url: '/user/login',
-    method: 'post',
-    data
+    url: '/users/getUser',
+    method: 'get',
+    params
   })
 }
 

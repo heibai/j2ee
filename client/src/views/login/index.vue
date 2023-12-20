@@ -168,9 +168,7 @@ export default {
         name: ''
       },
       loginRules: {
-        account: [
-          { required: true, trigger: 'blur', validator: validateAccount }
-        ],
+        account: [{ required: true, trigger: 'blur' }],
         name: [{ required: true, trigger: 'blur' }],
         password: [
           { required: true, trigger: 'blur', validator: validatePassword }
@@ -249,7 +247,8 @@ export default {
         if (valid) {
           this.loading = true
           register({
-            account: this.loginForm.account,
+            userId: this.loginForm.account,
+            name: this.loginForm.name,
             password: this.loginForm.password,
             role: 'resident'
           }).then(() => {
