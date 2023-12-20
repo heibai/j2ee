@@ -4,8 +4,6 @@ import com.example.shujuku.common.CommonResult;
 import com.example.shujuku.req.ComplaintPageReq;
 import com.example.shujuku.complaint.bean.Complaint;
 import com.example.shujuku.complaint.server.ComplaintService;
-import com.example.shujuku.complaint.bean.Complaint;
-import com.example.shujuku.complaint.server.ComplaintService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 import lombok.extern.slf4j.Slf4j;

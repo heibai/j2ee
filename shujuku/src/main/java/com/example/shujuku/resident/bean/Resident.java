@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -33,10 +33,10 @@ public class Resident implements Serializable {
     private String buildingId;
 
     @TableField("resident_begin_time")
-    private DateTime residentBeginTime;
+    private LocalDateTime residentBeginTime;
 
     @TableField("resident_end_time")
-    private DateTime residentEndTime;
+    private LocalDateTime residentEndTime;
 
     @TableField("status")
     private String status;

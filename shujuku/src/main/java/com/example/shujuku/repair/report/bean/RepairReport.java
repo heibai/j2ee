@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -36,10 +37,10 @@ public class RepairReport implements Serializable {
     private String status;
 
     @TableField("report_time")
-    private DateTime reportTime;
+    private LocalDateTime reportTime;
 
     @TableField("repair_time")
-    private DateTime repairTime;
+    private LocalDateTime repairTime;
 
     @TableField("repairer_id")
     private String repairerId;

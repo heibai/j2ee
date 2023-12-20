@@ -14,7 +14,7 @@
         t.repairer_message
     </sql>
 
-    <resultMap id="repairReportList" type="com.example.shujuku.repairReport.bean.RepairReport">
+    <resultMap id="repairReportList" type="com.example.shujuku.repair.report.bean.RepairReport">
         <id column="id" property="id"/>
         <result column="report_id" property="reportId"/>
         <result column="reporter_id" property="reporterId"/>
@@ -29,7 +29,7 @@
     <select id="getRepairReportList" resultMap="repairReportList">
         SELECT SQL_CALC_FOUND_ROWS
         <include refid="Base_Column_List" />
-        FROM repairReport t
+        FROM repair_report t
         WHERE t.id = t.id
         <if test="id != null">
             and t.id = #{id}
