@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.shujuku.mapper.UsersMapper">
+
+    <sql id="Base_Column_List">
+        t.id,
+        t.user_id,
+        t.name,
+        t.password,
+        t.role
+    </sql>
+
+    <resultMap id="usersList" type="com.example.shujuku.users.bean.Users">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="name" property="name"/>
+        <result column="password" property="password"/>
+        <result column="role" property="role"/>
+    </resultMap>
+
+    <select id="getUsersList" resultMap="usersList">
+        SELECT SQL_CALC_FOUND_ROWS
+        <include refid="Base_Column_List" />
+        FROM users t
+        WHERE t.id = t.id
+        <if test="id != null">
+            and t.id = #{id}
+        </if>
+        <if test="userId != null">
+            and t.user_id = #{userId}
+        </if>
+        <if test="name != null">
+            and t.name = #{name}
+        </if>
+        <if test="role != null">
+            and t.role = #{role}
+        </if>
+        LIMIT #{pageNo},#{pageSize};
+        --         SELECT FOUND_ROWS() as total1;
+    </select>
+
+</mapper>

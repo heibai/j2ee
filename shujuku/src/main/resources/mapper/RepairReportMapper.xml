@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.shujuku.mapper.RepairReportMapper">
+
+    <sql id="Base_Column_List">
+        t.id,
+        t.report_id,
+        t.reporter_id,
+        t.message,
+        t.status,
+        t.report_time,
+        t.repair_time,
+        t.repairer_id,
+        t.repairer_message
+    </sql>
+
+    <resultMap id="repairReportList" type="com.example.shujuku.repairReport.bean.RepairReport">
+        <id column="id" property="id"/>
+        <result column="report_id" property="reportId"/>
+        <result column="reporter_id" property="reporterId"/>
+        <result column="message" property="message"/>
+        <result column="status" property="status"/>
+        <result column="report_time" property="reportTime"/>
+        <result column="repair_time" property="repairTime"/>
+        <result column="repairer_id" property="repairerId"/>
+        <result column="repairer_message" property="repairerMessage"/>
+    </resultMap>
+
+    <select id="getRepairReportList" resultMap="repairReportList">
+        SELECT SQL_CALC_FOUND_ROWS
+        <include refid="Base_Column_List" />
+        FROM repairReport t
+        WHERE t.id = t.id
+        <if test="id != null">
+            and t.id = #{id}
+        </if>
+        <if test="reportId != null">
+            and t.report_id = #{reportId}
+        </if>
+        <if test="reporterId != null">
+            and t.reporter_id = #{reporterId}
+        </if>
+        <if test="repairerId != null">
+            and t.repairer_id = #{repairerId}
+        </if>
+        <if test="status != null">
+            and t.status = #{status}
+        </if>
+        LIMIT #{pageNo},#{pageSize};
+        --         SELECT FOUND_ROWS() as total1;
+    </select>
+
+</mapper>
