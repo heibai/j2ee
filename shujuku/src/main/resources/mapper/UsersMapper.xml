@@ -18,6 +18,15 @@
         <result column="role" property="role"/>
     </resultMap>
 
+    <select id="UserLogin" resultMap="usersList">
+        SELECT SQL_CALC_FOUND_ROWS
+        <include refid="Base_Column_List" />
+        FROM users t
+        WHERE t.user_id = #{userId}
+        and t.password = #{password}
+        and t.role = #{role}
+    </select>
+
     <select id="getUsersList" resultMap="usersList">
         SELECT SQL_CALC_FOUND_ROWS
         <include refid="Base_Column_List" />

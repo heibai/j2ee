@@ -1,6 +1,7 @@
 package com.example.shujuku.users.controller;
 
 import com.example.shujuku.common.CommonResult;
+import com.example.shujuku.req.UsersLoginReq;
 import com.example.shujuku.req.UsersPageReq;
 import com.example.shujuku.users.bean.Users;
 import com.example.shujuku.users.server.UsersService;
@@ -27,6 +28,13 @@ public class UsersController {
     public CommonResult createUser(@RequestBody Users users){
         return usersService.createUsers(users);
     }
+
+    @ApiModelProperty("更新用户")
+    @PostMapping("/login")
+    public CommonResult login(@RequestBody UsersLoginReq usersLoginReq){
+        return usersService.login(usersLoginReq);
+    }
+
 
     @ApiModelProperty("查询用户")
     @GetMapping("/getUser")
