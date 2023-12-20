@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.shujuku.common.CommonResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.shujuku.common.Tool;
+import com.example.shujuku.req.UsersLoginReq;
 import com.example.shujuku.req.UsersPageReq;
 import com.example.shujuku.users.bean.Users;
 import com.example.shujuku.mapper.UsersMapper;
@@ -33,6 +34,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
             return CommonResult.fail("插入users表失败");
         }
         return CommonResult.success(users);
+    }
+
+    @Override
+    public CommonResult login(UsersLoginReq usersLoginReq){
+        Users users = usersMapper.UserLogin(usersLoginReq);
+        if(users != null){
+            return CommonResult.success(users);
+        }else return CommonResult.fail("查询users表失败");
     }
 
     @Override

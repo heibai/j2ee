@@ -17,19 +17,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Accessors(chain = true)
 @TableName("users")
-public class UsersPageReq extends Page implements Serializable {
+public class UsersLoginReq extends Page implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    //   教师工号
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    private String id;
-
     @TableField("user_id")
     private String userId;
-
-    @TableField("name")
-    private String name;
 
     @TableField("password")
     private String password;
