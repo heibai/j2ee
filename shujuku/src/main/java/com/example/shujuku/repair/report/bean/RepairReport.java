@@ -20,8 +20,7 @@ public class RepairReport implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    //   教师工号
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.ID_WORKER_STR)
     private String id;
 
     @TableField("report_id")
