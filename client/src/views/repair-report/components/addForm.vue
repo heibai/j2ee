@@ -1,10 +1,10 @@
 <script>
-import propertyForm from './propertyForm.vue'
-import { addProperty } from '@/api/property'
+import dialogForm from './dialogForm.vue'
+import { createComplaint } from '@/api/complaint'
 export default {
   name: 'addProperty',
   components: {
-    propertyForm
+    dialogForm
   },
   data() {
     return {
@@ -14,7 +14,7 @@ export default {
   methods: {
     handleSubmit(data) {
       //  处理新增逻辑
-      addProperty(data)
+      createComplaint(data)
         .then(() => {
           this.$message.success('新增成功')
           this.visible = false
@@ -31,11 +31,7 @@ export default {
 }
 </script>
 <template>
-  <propertyForm
-    @finish="handleSubmit"
-    submitText="新增"
-    :visible.sync="visible"
-  >
-  </propertyForm>
+  <dialogForm @finish="handleSubmit" submitText="新增" :visible.sync="visible">
+  </dialogForm>
 </template>
 <style scoped lang="scss"></style>

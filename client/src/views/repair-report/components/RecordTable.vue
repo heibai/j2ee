@@ -1,9 +1,9 @@
 <script>
-import editProperty from './editProperty.vue'
+import editForm from './editForm.vue'
 export default {
   name: 'RecordTable',
   components: {
-    editProperty
+    editForm
   },
   data() {
     return {}
@@ -32,7 +32,7 @@ export default {
   methods: {
     handleEdit(index, row) {
       let formData = JSON.parse(JSON.stringify(row))
-      this.$refs.editProperty.show(formData)
+      this.$refs.editForm.show(formData)
     }
   }
 }
@@ -46,16 +46,16 @@ export default {
     <div class="table-wrapper">
       <el-table :data="tableData" style="width: 100%" v-loading="tableLoading">
         <!-- 财产物品名 -->
-        <el-table-column prop="name" label="物品名"> </el-table-column>
+        <el-table-column prop="name" label="投诉人"> </el-table-column>
 
         <!-- 信息 -->
-        <el-table-column prop="message" label="信息"> </el-table-column>
+        <el-table-column prop="message" label="投诉信息"> </el-table-column>
 
-        <!-- 财产等级 -->
-        <el-table-column prop="level" label="财产等级"> </el-table-column>
+        <!-- 投诉时间 -->
+        <el-table-column prop="time" label="投诉时间"> </el-table-column>
 
-        <!-- 拥有人 -->
-        <el-table-column prop="owner" label="拥有人"> </el-table-column>
+        <!-- 回应时间 -->
+        <el-table-column prop="replyTime" label="回应时间"> </el-table-column>
 
         <!-- 操作区 -->
         <el-table-column label="操作">
@@ -64,8 +64,8 @@ export default {
               type="primary"
               size="mini"
               @click="handleEdit(scope.$index, scope.row)"
-              >编辑</el-button
-            >
+              >回复
+            </el-button>
             <el-button
               type="danger"
               size="mini"
@@ -76,8 +76,8 @@ export default {
         </el-table-column>
       </el-table>
     </div>
-    <editProperty ref="editProperty" @operateFinish="$emit('operateFinish')">
-    </editProperty>
+    <editForm ref="editForm" @operateFinish="$emit('operateFinish')">
+    </editForm>
   </div>
 </template>
 

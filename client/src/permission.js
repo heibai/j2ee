@@ -18,7 +18,6 @@ router.beforeEach(async (to, from, next) => {
   // set page title
   document.title = getPageTitle(to.meta.title)
   const userInfo = store.state.user.userInfo
-  console.log(userInfo)
   const accessRoutes = await store.dispatch(
     'permission/generateRoutes',
     userInfo.role

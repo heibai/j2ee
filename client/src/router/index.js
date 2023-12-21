@@ -102,7 +102,7 @@ const adminRoutes = [
       {
         path: 'index',
         component: () => import('@/views/property-manage/index'),
-        name: 'adminManage',
+        name: 'propertyManage',
         meta: {
           title: '公共财产管理',
           icon: 'star'
@@ -111,42 +111,42 @@ const adminRoutes = [
     ]
   },
 
-  {
-    path: '/buildingManage',
-    component: Layout,
-    meta: {
-      roles: ['superAdmin']
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/building-manage/index'),
-        name: 'cleanRecord',
-        meta: {
-          title: '楼栋管理',
-          icon: 'international'
-        }
-      }
-    ]
-  },
-  {
-    path: '/floorManage',
-    component: Layout,
-    meta: {
-      roles: ['superAdmin', 'admin']
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/floor-manage/index'),
-        name: 'floorManage',
-        meta: {
-          title: '楼层管理',
-          icon: 'list'
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/buildingManage',
+  //   component: Layout,
+  //   meta: {
+  //     roles: ['superAdmin']
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/building-manage/index'),
+  //       name: 'cleanRecord',
+  //       meta: {
+  //         title: '楼栋管理',
+  //         icon: 'international'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/floorManage',
+  //   component: Layout,
+  //   meta: {
+  //     roles: ['superAdmin', 'admin']
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/floor-manage/index'),
+  //       name: 'floorManage',
+  //       meta: {
+  //         title: '楼层管理',
+  //         icon: 'list'
+  //       }
+  //     }
+  //   ]
+  // },
   // 物业管理
   {
     path: '/propertyManage',

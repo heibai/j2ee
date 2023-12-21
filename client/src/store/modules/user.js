@@ -54,7 +54,7 @@ const actions = {
   login({ commit, dispatch }, userInfo) {
     const { account, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ userId: account.trim(), password: password })
+      login({ userId: account.trim(), password: password, role: 'superAdmin' })
         .then(response => {
           const { data } = response
           // data为用户信息
@@ -78,10 +78,8 @@ const actions = {
       commit('SET_ROLES', [])
       removeToken()
       resetRouter()
-
       // 复位视图，让用户处于未登录状态
       dispatch('tagsView/delAllViews', null, { root: true })
-
       resolve()
     })
   },

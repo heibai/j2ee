@@ -24,7 +24,6 @@
         FROM users t
         WHERE t.user_id = #{userId}
         and t.password = #{password}
-        and t.role = #{role}
     </select>
 
     <select id="getUsersList" resultMap="usersList">

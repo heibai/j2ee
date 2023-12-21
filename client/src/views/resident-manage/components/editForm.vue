@@ -1,10 +1,10 @@
 <script>
-import propertyForm from './propertyForm.vue'
+import dialogForm from './dialogForm.vue'
 import { updateProperty } from '@/api/property'
 export default {
   name: 'editProperty',
   components: {
-    propertyForm
+    dialogForm
   },
   data() {
     return {
@@ -34,13 +34,13 @@ export default {
 }
 </script>
 <template>
-  <propertyForm
+  <dialogForm
     @finish="handleSubmit"
     :visible.sync="visible"
     ref="form"
     submitText="编辑"
     :editMode="true"
   >
-  </propertyForm>
+  </dialogForm>
 </template>
 <style scoped lang="scss"></style>

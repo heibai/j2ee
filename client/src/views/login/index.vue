@@ -77,6 +77,16 @@
       </el-tooltip>
       <!-- 密码 -->
 
+      <!-- 管理员登录还是非管理员登录 checkbox -->
+      <!-- <el-form-item v-if="!registerMode"> -->
+      <el-checkbox
+        v-if="!registerMode"
+        v-model="loginForm.adminMode"
+        style="margin: 0 0 10px;"
+        >管理员登录
+      </el-checkbox>
+      <!-- </el-form-item> -->
+
       <!-- 确认密码 -->
       <el-form-item v-if="registerMode" prop="repassword">
         <span class="svg-container">

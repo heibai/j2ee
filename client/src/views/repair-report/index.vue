@@ -1,93 +1,107 @@
-<template>
-  <div id="visitor-manage" class="page-wrapper">
-    <h1 class="main-title">
-      <span>报修管理</span>
-      <el-button type="primary" @click="onAddBtnClick">报修</el-button>
-    </h1>
-    <div class="main-card wrapper">
-      <VisitorTable
-        :tableData="tableData"
-        type="back"
-        :table-loading="tableLoading"
-      />
-      <Pagination
-        :total="count"
-        :page="current"
-        @pagination="handlePagination"
-        :hidden="tableData.length === 0"
-      />
-    </div>
-    <VisitorCreateModal
-      :visible.sync="createModalVisible"
-      @create-success="onCreateSuccess"
-    />
-  </div>
-</template>
-
 <script>
-import VisitorTable from './components/VisitorTable.vue'
+import RecordTable from './components/RecordTable'
+import addForm from './components/addForm.vue'
 import Pagination from '@/components/Pagination'
-import VisitorCreateModal from './components/VisitorCreateModal.vue'
-import { getVisitorList } from '@/api/visitor'
-
+import paginationMixins from '@/mixins/paginationMixins'
+import { getComplaintList } from '@/api/complaint'
 export default {
+  name: 'PublicPropertyManage',
   components: {
-    VisitorTable,
+    RecordTable,
     Pagination,
-    VisitorCreateModal
+    addForm
   },
+  mixins: [paginationMixins],
   data() {
     return {
-      current: 1,
-      count: 0,
-      step: 10,
-      tableData: [],
-      tableLoading: false,
-      createModalVisible: false
+      tableData: []
     }
+  },
+  created() {
+    this.getTableData()
   },
   methods: {
-    fetchTableData() {
+    handleAdd() {
+      this.$refs.addForm.show()
+    },
+
+    operateFinish() {
+      this.getPropertyTableData()
+    },
+    async handlePagination({ page, limit }) {
+      this.PageNo = page
+      this.PageSize = limit
+      this.getTableData()
+    },
+    async getTableData() {
       const params = {
-        current: this.current,
-        step: this.step
+        PageNo: this.PageNo,
+        PageSize: this.PageSize
       }
-      this.tableLoading = true
-      getVisitorList(params)
-        .then(res => {
-          this.tableData = res.data.rows
-          this.count = res.data.count
-        })
-        .finally(() => {
-          this.tableLoading = false
-        })
-    },
-    handlePagination({ page, limit }) {
-      this.current = page
-      this.step = limit
-      this.fetchTableData()
-    },
-    onAddBtnClick() {
-      this.createModalVisible = true
-    },
-    onCreateSuccess() {
-      this.current = 1
-      this.fetchTableData()
+
+      const { data } = await getComplaintList(params)
+      this.tableData = data.records
+      this.count = data.total
+
+      console.log(this.tableData)
     }
-  },
-  mounted() {
-    this.fetchTableData()
   }
 }
 </script>
 
+<template>
+  <div class="container">
+    <div class="wrapper"></div>
+    <!-- 管理概览 -->
+    <!-- 公共财产管理 -->
+    <h1 class="main-title">
+      <span>
+        报修管理
+      </span>
+      <el-button type="primary" icon="el-icon-plus" @click="handleAdd">
+        新增报修
+      </el-button>
+    </h1>
+
+    <!-- 新增按钮 -->
+    <div class="operation-container">
+      <div class="wrapper">
+        <RecordTable
+          type="public"
+          :table-data="tableData"
+          :show-pagination="false"
+          @operateFinish="operateFinish"
+        >
+        </RecordTable>
+        <Pagination
+          :total="count"
+          :page="PageNo"
+          @pagination="handlePagination"
+          :hidden="tableData.length === 0"
+        />
+      </div>
+    </div>
+    <addForm @operateFinish="operateFinish" ref="addForm"></addForm>
+  </div>
+</template>
+
 <style lang="scss" scoped>
-.main-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.wrapper {
-  margin: 40px 0;
+.container {
+  padding: 0px 60px 0px;
+  .main-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .operation-container {
+    margin: 20px 0;
+  }
+
+  .wrapper {
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 40px 0;
+  }
 }
 </style>
