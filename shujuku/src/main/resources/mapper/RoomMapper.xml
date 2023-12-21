@@ -4,21 +4,19 @@
 
     <sql id="Base_Column_List">
         t.id,
-        t.user_id,
         t.room_id,
         t.building_id,
-        t.room_begin_time,
-        t.room_end_time,
+        t.limit_num,
+        t.had_num,
         t.status
     </sql>
 
     <resultMap id="roomList" type="com.example.shujuku.room.bean.Room">
         <id column="id" property="id"/>
-        <result column="user_id" property="userId"/>
         <result column="room_id" property="roomId"/>
         <result column="building_id" property="buildingId"/>
-        <result column="room_begin_time" property="roomBeginTime"/>
-        <result column="room_end_time" property="roomEndTime"/>
+        <result column="limit_num" property="limitNum"/>
+        <result column="had_num" property="r=hadNum"/>
         <result column="status" property="status"/>
     </resultMap>
 
@@ -28,6 +26,14 @@
         FROM room t
         WHERE t.status = 1
         and t.had_num > 0
+    </select>
+
+    <select id="getResidentedRooms" resultMap="roomList">
+        SELECT SQL_CALC_FOUND_ROWS
+        <include refid="Base_Column_List" />
+        FROM room r
+        WHERE r.status != 0
+        and r.had_num > 0
     </select>
 
     <select id="getRoomList" resultMap="roomList">
