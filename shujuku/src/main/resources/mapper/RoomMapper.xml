@@ -23,16 +23,16 @@
     <select id="getResidentableRooms" resultMap="roomList">
         SELECT SQL_CALC_FOUND_ROWS
         <include refid="Base_Column_List" />
-        FROM room r
-        WHERE r.status = 1
+        FROM room t
+        WHERE t.status = 1
     </select>
 
     <select id="getResidentedRooms" resultMap="roomList">
         SELECT SQL_CALC_FOUND_ROWS
         <include refid="Base_Column_List" />
-        FROM room r
-        WHERE r.status != 0
-        and r.had_num > 0
+        FROM room t
+        WHERE t.status != 0
+        and t.had_num > 0
     </select>
 
     <select id="getRoomList" resultMap="roomList">
