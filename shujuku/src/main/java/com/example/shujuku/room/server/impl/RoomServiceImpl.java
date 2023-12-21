@@ -27,12 +27,18 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Override
     public CommonResult createRoom(Room room){
-        boolean insertSuccess = SqlHelper.retBool(roomMapper.insert(room));
-        if(!insertSuccess){
-            log.info("插入room表失败",room);
-            return CommonResult.fail("插入room表失败");
+        if(room.getLimitNum()!=null){
+            if(room.getHadNum()==null){
+                room.setHadNum("0");
+            }
+            boolean insertSuccess = SqlHelper.retBool(roomMapper.insert(room));
+            if(!insertSuccess){
+                log.info("插入room表失败",room);
+                return CommonResult.fail("插入room表失败");
+            }
+            return CommonResult.success(room);
         }
-        return CommonResult.success(room);
+        return CommonResult.fail("请输入可住人数");
     }
 
     public CommonResult getResidentableRoom(){
