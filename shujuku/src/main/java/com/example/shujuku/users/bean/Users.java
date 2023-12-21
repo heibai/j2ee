@@ -18,7 +18,6 @@ public class Users implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    //   教师工号
     @TableId(value = "id", type = IdType.ID_WORKER_STR)
     private String id;
 
@@ -31,6 +30,7 @@ public class Users implements Serializable {
     @TableField("password")
     private String password;
 
+    //角色，为0为物业人员，为1为住户
     @TableField("role")
     private String role;
 

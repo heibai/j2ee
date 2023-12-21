@@ -37,6 +37,7 @@ public class Fees implements Serializable {
     @TableField("message")
     private String message;
 
+    //为0表示已删除，为1表示代缴费，为2表示已缴费，为3表示已过期
     @TableField("status")
     private String status;
 
