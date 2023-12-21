@@ -1,13 +1,18 @@
 <script>
 import paginationMixins from '@/mixins/paginationMixins'
 import Pagination from '@/components/Pagination'
+import { createResident } from '@/api/resident'
+import { getRoomPageAvailable } from '@/api/room'
 export default {
   components: {
     Pagination
   },
   mixins: [paginationMixins],
   inject: ['operateFinish'],
-  props: { visible: { type: Boolean, default: false } },
+  props: {
+    visible: { type: Boolean, default: false },
+    checkInUser: { type: Object, default: () => {} }
+  },
   data() {
     return {
       selectorData: {
@@ -20,6 +25,9 @@ export default {
       currRow: {} // 当前行
     }
   },
+  created() {
+    this.getTableData()
+  },
   methods: {
     handleCurrentChange(val) {
       this.currRow = val
@@ -29,9 +37,45 @@ export default {
       this.PageSize = limit
       this.getTableData()
     },
-    getTableData() {},
+    getTableData() {
+      this.tableLoading = true
+      let reqData = {
+        ...this.selectorData,
+        pageNo: this.PageNo,
+        pageSize: this.PageSize
+      }
+      getRoomPageAvailable(reqData).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          this.roomTable = res.data.records
+          this.count = res.data.total
+        }
+        this.tableLoading = false
+      })
+    },
     checkIn() {
+      console.log()
+      let reqData = {
+        userId: this.checkInUser.id,
+        ...this.selectorData
+      }
+      console.log(reqData)
       // TODO入住逻辑
+      createResident(reqData).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '入住成功'
+          })
+          this.operateFinish()
+        } else {
+          this.$message({
+            type: 'error',
+            message: '入住失败'
+          })
+        }
+      })
     }
   }
 }

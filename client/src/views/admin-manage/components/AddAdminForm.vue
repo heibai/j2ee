@@ -4,14 +4,12 @@
       <el-form-item label="管理员名" required prop="name">
         <el-input v-model.trim="formData.name" placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item label="学工号" required prop="account">
+
+      <el-form-item label="手机号" required prop="phone">
         <el-input
           v-model.trim="formData.account"
           placeholder="请输入"
         ></el-input>
-      </el-form-item>
-      <el-form-item label="手机号" required prop="phone">
-        <el-input v-model.trim="formData.phone" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="密码" required prop="password">
         <el-input
@@ -20,10 +18,8 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="选择身份" required>
-        <el-radio v-model="formData.role" label="admin">普通管理员</el-radio>
-        <el-radio v-model="formData.role" label="superAdmin"
-          >超级管理员</el-radio
-        >
+        <el-radio v-model="formData.role" label="superAdmin">管理员</el-radio>
+        <el-radio v-model="formData.role" label="worker">物业人员</el-radio>
       </el-form-item>
     </el-form>
     <div class="btn-wrapper">

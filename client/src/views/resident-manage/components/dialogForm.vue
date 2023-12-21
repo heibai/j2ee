@@ -35,6 +35,8 @@
 
 <script>
 import selectRoomDialog from './selectRoomDialog.vue'
+import { getUser } from '@/api/user'
+
 export default {
   props: {
     visible: {
@@ -45,8 +47,8 @@ export default {
       type: Object,
       default: () => {
         return {
-          name: '',
-          userId: ''
+          name: 'admin',
+          userId: 'admin'
         }
       }
     },
@@ -78,10 +80,23 @@ export default {
     initFormData(row) {
       this.formData = row
     },
-    handleSubmit() {
-      this.$refs.form.validate(valid => {
+    async searchUser(data) {
+      // 搜寻有没有对应的用户
+      const res = await getUser(data)
+      if (res.code !== 200) {
+        this.$message({
+          type: 'error',
+          message: '没有找到对应的用户'
+        })
+      } else {
+        console.log(res)
+        return res.data
+      }
+    },
+    async handleSubmit() {
+      this.$refs.form.validate(async valid => {
         if (valid) {
-          let checkInUser = this.$emit('finish', this.formData)
+          let checkInUser = await this.searchUser(this.formData)
           if (checkInUser) {
             this.checkInUser = checkInUser
             this.selectRoomVisible = true

@@ -205,7 +205,26 @@ const adminRoutes = [
       }
     ]
   },
-
+  // 房间管理
+  {
+    path: '/roomManage',
+    component: Layout,
+    meta: {
+      roles: ['superAdmin']
+    },
+    children: [
+      // TODO对业主的费用进行管理
+      {
+        path: 'index',
+        component: () => import('@/views/room-manage/index'),
+        name: 'rooms',
+        meta: {
+          title: '房间管理',
+          icon: 'people'
+        }
+      }
+    ]
+  },
   {
     path: '/roomInfo',
     component: Layout,

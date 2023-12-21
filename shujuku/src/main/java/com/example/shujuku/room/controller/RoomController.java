@@ -45,7 +45,7 @@ public class RoomController {
     @ApiModelProperty("分页查询房间信息")
     @GetMapping("/getRoomPage")
     public CommonResult getRoomPage(RoomPageReq roomPageReq){
-        return roomService.getRoomList(roomPageReq);
+        return roomService.getRoomPage(roomPageReq);
     }
 
     @ApiModelProperty("更新房间信息")
@@ -56,7 +56,7 @@ public class RoomController {
 
     @ApiModelProperty("删除房间信息")
     @GetMapping("/deleteRoom")
-    public CommonResult deleteRoom(@Param("roomId") String roomId){
-        return roomService.deleteRoom(roomId);
+    public CommonResult deleteRoom(@Param("id") String id){
+        return roomService.deleteRoom(id);
     }
 }

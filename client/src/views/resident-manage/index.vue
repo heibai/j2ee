@@ -60,6 +60,7 @@ import Pagination from '@/components/Pagination'
 import paginationMixins from '@/mixins/paginationMixins'
 import RecordTable from './components/RecordTable'
 import addForm from './components/addForm'
+import { getResidentPage } from '@/api/resident'
 export default {
   name: 'UserInfo',
   components: {
@@ -103,7 +104,17 @@ export default {
       this.PageSize = limit
       this.getTableData()
     },
-    getTableData() {}
+
+    async getTableData() {
+      const params = {
+        PageNo: this.PageNo,
+        PageSize: this.PageSize
+      }
+      const { data } = await getResidentPage(params)
+      this.tableData = data.records
+      this.count = data.total
+      console.log(this.tableData)
+    }
   },
   mounted() {
     this.getTableData()

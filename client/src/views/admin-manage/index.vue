@@ -1,9 +1,9 @@
 <template>
   <div id="admin-manage" class="page-wrapper">
     <!-- 添加管理员 -->
-    <h1 class="main-title">添加管理员</h1>
+    <h1 class="main-title">添加工作人员</h1>
     <div class="wrapper top-wrapper">
-      <div class="main-card left">
+      <!-- <div class="main-card left">
         <div class="title-wrapper">总数：{{ this.total }}</div>
         <div class="content-wrapper">
           <div class="admin admin-card">
@@ -15,7 +15,7 @@
             超级管理员: {{ superAdminCount }}
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="main-card right">
         <AddAdminForm />
       </div>

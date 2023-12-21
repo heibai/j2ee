@@ -50,7 +50,7 @@ public class ResidentController {
 
     @ApiModelProperty("删除入住信息")
     @GetMapping("/deleteResident")
-    public CommonResult deleteResident(@Param("residentId") String residentId){
-        return residentService.deleteResident(residentId);
+    public CommonResult deleteResident(@Param("id") String id){
+        return residentService.deleteResident(id);
     }
 }
