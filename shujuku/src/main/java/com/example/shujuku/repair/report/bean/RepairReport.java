@@ -32,6 +32,7 @@ public class RepairReport implements Serializable {
     @TableField("message")
     private String message;
 
+    //0表示已删除，1表示待受理，2表示已受理，3表示已处理，4表示已拒绝受理
     @TableField("status")
     private String status;
 

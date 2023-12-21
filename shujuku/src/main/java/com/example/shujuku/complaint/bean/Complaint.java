@@ -28,6 +28,7 @@ public class Complaint implements Serializable {
     @TableField("message")
     private String message;
 
+    //为0表示已删除，为1表示待处理，为2表示已处理
     @TableField("status")
     private String status;
 

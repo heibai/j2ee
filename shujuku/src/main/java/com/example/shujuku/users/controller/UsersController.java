@@ -29,12 +29,11 @@ public class UsersController {
         return usersService.createUsers(users);
     }
 
-    @ApiModelProperty("更新用户")
+    @ApiModelProperty("登录")
     @PostMapping("/login")
     public CommonResult login(@RequestBody UsersLoginReq usersLoginReq){
         return usersService.login(usersLoginReq);
     }
-
 
     @ApiModelProperty("查询用户")
     @GetMapping("/getUser")
