@@ -6,17 +6,22 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.shujuku.common.CommonResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.shujuku.common.SnowflakeIdGenerator;
 import com.example.shujuku.common.Tool;
+import com.example.shujuku.mapper.RoomMapper;
 import com.example.shujuku.req.FeesPageReq;
 import com.example.shujuku.fees.bean.Fees;
 import com.example.shujuku.mapper.FeesMapper;
 import com.example.shujuku.fees.server.FeesService;
+import com.example.shujuku.room.bean.Room;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.ListIterator;
 
 @Slf4j
 @Service
@@ -24,6 +29,30 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
 
     @Autowired
     protected FeesMapper feesMapper;
+    @Autowired
+    protected RoomMapper roomMapper;
+    @Autowired
+    protected SnowflakeIdGenerator snowflakeIdGenerator;
+
+    @Override
+    public CommonResult createResidentFees(String price, String deadline){
+        List<Room> roomList = roomMapper.getAllRooms();
+        ListIterator<Room> roomListIterator = roomList.listIterator();
+        while(roomListIterator.hasNext()){
+            Room room = roomListIterator.next();
+            Fees fees = new Fees();
+            Long id = snowflakeIdGenerator.nextId();
+            fees.setFeesId(id.toString());
+            fees.setMessage("住宿费");
+            fees.setPrice(Double.valueOf(price));
+            fees.setStatus(String.valueOf(1));
+            fees.setType(String.valueOf(0));
+            fees.setDeadline(DateTime.parse(deadline));
+            fees.setRoomId(room.getRoomId());
+            feesMapper.insert(fees);
+        }
+        return CommonResult.success("新建住宿费成功");
+    }
 
     @Override
     public CommonResult createFees(Fees fees){

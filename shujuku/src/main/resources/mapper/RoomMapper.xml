@@ -29,6 +29,13 @@
         WHERE r.status = 1
     </select>
 
+    <select id="getAllRooms" resultMap="roomList">
+        SELECT SQL_CALC_FOUND_ROWS
+        <include refid="Base_Column_List" />
+        FROM room r
+        WHERE r.status != 0
+    </select>
+
     <select id="getRoomList" resultMap="roomList">
         SELECT SQL_CALC_FOUND_ROWS
         <include refid="Base_Column_List" />

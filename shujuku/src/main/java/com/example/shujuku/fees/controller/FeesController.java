@@ -25,6 +25,12 @@ public class FeesController {
     private FeesService feesService;
 
     @ApiModelProperty("创建费用信息")
+    @GetMapping("/createResidentFees")
+    public CommonResult createResidentFees(@Param("price") String price,@Param("deadline") String deadline){
+        return feesService.createResidentFees(price,deadline);
+    }
+
+    @ApiModelProperty("创建费用信息")
     @PostMapping("/createFees")
     public CommonResult createFees(@RequestBody Fees fees){
         return feesService.createFees(fees);
