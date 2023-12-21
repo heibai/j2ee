@@ -36,7 +36,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
 
     @Override
     public CommonResult createResidentFees(String price, String deadline){
-        List<Room> roomList = roomMapper.getAllRooms();
+        List<Room> roomList = roomMapper.getResidentedRooms();
         ListIterator<Room> roomListIterator = roomList.listIterator();
         while(roomListIterator.hasNext()){
             Room room = roomListIterator.next();

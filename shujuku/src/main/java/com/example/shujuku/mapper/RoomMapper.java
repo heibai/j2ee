@@ -19,7 +19,7 @@ public interface RoomMapper extends BaseMapper<Room>{
 
     List<Room> getResidentableRooms();
 
-    List<Room> getAllRooms();
+    List<Room> getResidentedRooms();
 
     List<Room> getRoomList(RoomPageReq req);
 
