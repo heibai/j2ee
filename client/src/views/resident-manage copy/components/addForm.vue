@@ -1,24 +1,22 @@
 <script>
 import dialogForm from './dialogForm.vue'
-import { updateComplaint } from '@/api/complaint'
+import { createComplaint } from '@/api/complaint'
 export default {
-  name: 'editProperty',
+  name: 'addProperty',
   components: {
     dialogForm
   },
   data() {
     return {
-      visible: false,
-      formData: {}
+      visible: false
     }
   },
   methods: {
     handleSubmit(data) {
-      //  处理修改逻辑
-      data.propertyId = data.id
-      updateComplaint(data)
+      //  处理新增逻辑
+      createComplaint(data)
         .then(() => {
-          this.$message.success('修改成功')
+          this.$message.success('新增成功')
           this.visible = false
           this.$emit('operateFinish')
         })
@@ -26,21 +24,14 @@ export default {
           this.updateLoading = false
         })
     },
-    show(row) {
-      this.$refs.form.initFormData(row)
+    show() {
       this.visible = true
     }
   }
 }
 </script>
 <template>
-  <dialogForm
-    @finish="handleSubmit"
-    :visible.sync="visible"
-    ref="form"
-    submitText="编辑"
-    :editMode="true"
-  >
+  <dialogForm @finish="handleSubmit" submitText="新增" :visible.sync="visible">
   </dialogForm>
 </template>
 <style scoped lang="scss"></style>

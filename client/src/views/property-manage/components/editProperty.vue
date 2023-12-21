@@ -38,7 +38,7 @@ export default {
     @finish="handleSubmit"
     :visible.sync="visible"
     ref="form"
-    submitText="编辑"
+    submitText="修改"
     :editMode="true"
   >
   </propertyForm>

@@ -16,10 +16,11 @@ export function login(data) {
   })
 }
 
-export function getInfo() {
+export function getUser(params) {
   return request({
-    url: '/user/info',
-    method: 'get'
+    url: '/users/getUser',
+    method: 'get',
+    params
   })
 }
 

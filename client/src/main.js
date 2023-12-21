@@ -21,6 +21,10 @@ import * as filters from './filters' // global filters
 import moment from 'moment'
 import { initEcharts } from '@/utils/init-echarts'
 
+// 自定义指令
+import hasPermission from '@/directive/permission'
+Vue.use(hasPermission)
+
 initEcharts()
 
 Vue.use(Element, {

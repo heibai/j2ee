@@ -48,7 +48,7 @@ public class ComplaintController {
 
     @ApiModelProperty("删除入住信息")
     @GetMapping("/deleteComplaint")
-    public CommonResult deleteComplaint(@Param("complaintId") String complaintId){
-        return complaintService.deleteComplaint(complaintId);
+    public CommonResult deleteComplaint(@Param("id") String id){
+        return complaintService.deleteComplaint(id);
     }
 }

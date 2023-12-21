@@ -1,10 +1,7 @@
 <script>
-import editForm from './editForm.vue'
 export default {
   name: 'RecordTable',
-  components: {
-    editForm
-  },
+  components: {},
   data() {
     return {}
   },
@@ -46,16 +43,16 @@ export default {
     <div class="table-wrapper">
       <el-table :data="tableData" style="width: 100%" v-loading="tableLoading">
         <!-- 财产物品名 -->
-        <el-table-column prop="name" label="投诉人"> </el-table-column>
+        <el-table-column prop="name" label="入住人"> </el-table-column>
 
         <!-- 信息 -->
-        <el-table-column prop="message" label="投诉信息"> </el-table-column>
+        <el-table-column prop="message" label="入住人电话"> </el-table-column>
 
         <!-- 投诉时间 -->
-        <el-table-column prop="time" label="投诉时间"> </el-table-column>
+        <el-table-column prop="time" label="楼栋"> </el-table-column>
 
         <!-- 回应时间 -->
-        <el-table-column prop="replyTime" label="回应时间"> </el-table-column>
+        <el-table-column prop="replyTime" label="房间号"> </el-table-column>
 
         <!-- 操作区 -->
         <el-table-column label="操作">
@@ -76,8 +73,6 @@ export default {
         </el-table-column>
       </el-table>
     </div>
-    <editForm ref="editForm" @operateFinish="$emit('operateFinish')">
-    </editForm>
   </div>
 </template>
 

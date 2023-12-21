@@ -8,7 +8,7 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  role: '',
+  role: JSON.parse(getToken()).role,
   room: undefined,
   floor: undefined,
   building: undefined,
@@ -29,8 +29,8 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
+  SET_ROLES: (state, role) => {
+    state.role = role
   },
   SET_ROOM: (state, room) => {
     state.room = room
@@ -60,6 +60,7 @@ const actions = {
           // data为用户信息
           commit('SET_TOKEN', data)
           commit('SET_USERINFO', data)
+          commit('SET_ROLES', data.role)
           setToken(JSON.stringify(data))
 
           dispatch('permission/generateRoutes', data.role, { root: true })
@@ -75,7 +76,7 @@ const actions = {
   logout({ commit, dispatch }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
-      commit('SET_ROLES', [])
+      commit('SET_ROLES', '')
       removeToken()
       resetRouter()
       // 复位视图，让用户处于未登录状态

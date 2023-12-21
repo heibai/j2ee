@@ -1,6 +1,6 @@
 <script>
 import dialogForm from './dialogForm.vue'
-import { createComplaint } from '@/api/complaint'
+import { addComplaint } from '@/api/complaint'
 export default {
   name: 'addProperty',
   components: {
@@ -14,7 +14,8 @@ export default {
   methods: {
     handleSubmit(data) {
       //  处理新增逻辑
-      createComplaint(data)
+      data.complaintId = this.$store.getters.userInfo.id
+      addComplaint(data)
         .then(() => {
           this.$message.success('新增成功')
           this.visible = false

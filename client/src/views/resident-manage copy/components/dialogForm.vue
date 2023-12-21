@@ -28,17 +28,6 @@
         <!-- 使用textarea标签 -->
         <el-input type="textarea" v-model="formData.message"></el-input>
       </el-form-item>
-
-      <!-- 拥有人 -->
-      <el-form-item prop="ownerId" label="拥有人" required>
-        <el-input v-model="formData.ownerId"></el-input>
-      </el-form-item>
-
-      <!-- 财产等级 -->
-      <el-form-item prop="ownerLevel" label="财产等级" required>
-        <el-input v-model="formData.ownerLevel"></el-input>
-      </el-form-item>
-
       <!-- <el-form-item prop="idNumber" label="身份证号" required>
         <el-input v-model="formData.idNumber"></el-input>
       </el-form-item>
@@ -72,9 +61,7 @@ export default {
       default: () => {
         return {
           name: '',
-          message: '',
-          ownerId: '',
-          ownerLevel: ''
+          message: ''
         }
       }
     },

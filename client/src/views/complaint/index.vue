@@ -26,7 +26,7 @@ export default {
     },
 
     operateFinish() {
-      this.getPropertyTableData()
+      this.getTableData()
     },
     async handlePagination({ page, limit }) {
       this.PageNo = page
@@ -56,10 +56,12 @@ export default {
     <!-- 公共财产管理 -->
     <h1 class="main-title">
       <span>
-        投诉管理
+        意见中心
       </span>
+
+      <!--  v-has="'resident'" -->
       <el-button type="primary" icon="el-icon-plus" @click="handleAdd">
-        新增投诉
+        发布
       </el-button>
     </h1>
 

@@ -12,7 +12,7 @@ export function getComplaintList(params) {
 // 删除投诉
 export function deleteComplaint(params) {
   return request({
-    url: '/complaint/delete',
+    url: '/complaint/deleteComplaint',
     method: 'get',
     params
   })
@@ -22,6 +22,15 @@ export function deleteComplaint(params) {
 export function addComplaint(data) {
   return request({
     url: '/complaint/createComplaint',
+    method: 'post',
+    data
+  })
+}
+
+// 修改投诉
+export function updateComplaint(data) {
+  return request({
+    url: '/complaint/updateComplaint',
     method: 'post',
     data
   })

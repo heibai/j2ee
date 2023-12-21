@@ -10,33 +10,13 @@
     destroy-on-close
   >
     <el-form :model="formData" label-position="top" ref="form" :rules="rules">
-      <!-- <el-form-item label="访问宿舍楼" prop="buildingId" required>
-        <el-select v-model="formData.buildingId" placeholder="请选择" clearable>
-          <el-option
-            v-for="item in buildingsData"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item> -->
-      <el-form-item prop="name" label="物品名" required>
+      <el-form-item prop="name" label="入住人" required>
         <el-input v-model="formData.name"></el-input>
       </el-form-item>
-      <el-form-item prop="message" label="描述" required>
+      <el-form-item prop="userId" label="手机号" required>
         <!-- 使用textarea标签 -->
-        <el-input type="textarea" v-model="formData.message"></el-input>
+        <el-input v-model="formData.userId"></el-input>
       </el-form-item>
-      <!-- <el-form-item prop="idNumber" label="身份证号" required>
-        <el-input v-model="formData.idNumber"></el-input>
-      </el-form-item>
-      <el-form-item label="性别" prop="sex" required>
-        <el-radio-group v-model="formData.sex">
-          <el-radio :label="0">男</el-radio>
-          <el-radio :label="1">女</el-radio>
-        </el-radio-group>
-      </el-form-item> -->
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="$emit('update:visible', false)">
@@ -46,10 +26,15 @@
         {{ submitText }}
       </el-button>
     </span>
+    <selectRoomDialog
+      :visible.sync="selectRoomVisible"
+      :checkInUser="checkInUser"
+    ></selectRoomDialog>
   </el-dialog>
 </template>
 
 <script>
+import selectRoomDialog from './selectRoomDialog.vue'
 export default {
   props: {
     visible: {
@@ -61,7 +46,7 @@ export default {
       default: () => {
         return {
           name: '',
-          message: ''
+          userId: ''
         }
       }
     },
@@ -74,6 +59,9 @@ export default {
       default: false
     }
   },
+  components: {
+    selectRoomDialog
+  },
   data() {
     return {
       formData: this.existFormData,
@@ -81,6 +69,8 @@ export default {
         name: [{ required: true, message: '请输入物品名', trigger: 'blur' }],
         message: [{ required: true, message: '请输入描述', trigger: 'blur' }]
       },
+      checkInUser: {},
+      selectRoomVisible: false,
       updateLoading: false
     }
   },
@@ -91,8 +81,11 @@ export default {
     handleSubmit() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.updateLoading = true
-          this.$emit('finish', this.formData)
+          let checkInUser = this.$emit('finish', this.formData)
+          if (checkInUser) {
+            this.checkInUser = checkInUser
+            this.selectRoomVisible = true
+          }
         }
       })
     }

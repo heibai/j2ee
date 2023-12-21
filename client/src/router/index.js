@@ -196,7 +196,7 @@ const adminRoutes = [
       // TODO对业主的费用进行管理
       {
         path: 'index',
-        component: () => import('@/views/user-info/index'),
+        component: () => import('@/views/resident-manage/index'),
         name: 'residents',
         meta: {
           title: '住户管理',

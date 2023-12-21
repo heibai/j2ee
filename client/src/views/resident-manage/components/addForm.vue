@@ -1,6 +1,6 @@
 <script>
 import dialogForm from './dialogForm.vue'
-import { createComplaint } from '@/api/complaint'
+import { getUser } from '@/api/user'
 export default {
   name: 'addProperty',
   components: {
@@ -8,30 +8,41 @@ export default {
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      selectRoomVisible: false
     }
   },
   methods: {
     handleSubmit(data) {
-      //  处理新增逻辑
-      createComplaint(data)
-        .then(() => {
-          this.$message.success('新增成功')
-          this.visible = false
-          this.$emit('operateFinish')
-        })
-        .finally(() => {
-          this.updateLoading = false
-        })
+      // 搜寻有没有对应的用户
+      // 如果有，就去到选择房间的dialog
+      getUser(data).then(res => {
+        if (res.data.length === 0) {
+          this.$message({
+            type: 'error',
+            message: '没有找到对应的用户'
+          })
+        } else {
+          console.log(res)
+          return res
+        }
+      })
     },
     show() {
       this.visible = true
+    },
+    hidden() {
+      this.visible = false
     }
   }
 }
 </script>
 <template>
-  <dialogForm @finish="handleSubmit" submitText="新增" :visible.sync="visible">
+  <dialogForm
+    @finish="handleSubmit"
+    submitText="选择房间"
+    :visible.sync="visible"
+  >
   </dialogForm>
 </template>
 <style scoped lang="scss"></style>

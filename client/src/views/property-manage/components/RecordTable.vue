@@ -52,10 +52,10 @@ export default {
         <el-table-column prop="message" label="信息"> </el-table-column>
 
         <!-- 财产等级 -->
-        <el-table-column prop="level" label="财产等级"> </el-table-column>
+        <el-table-column prop="ownerLevel" label="财产等级"> </el-table-column>
 
         <!-- 拥有人 -->
-        <el-table-column prop="owner" label="拥有人"> </el-table-column>
+        <el-table-column prop="ownerId" label="拥有人"> </el-table-column>
 
         <!-- 操作区 -->
         <el-table-column label="操作">

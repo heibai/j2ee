@@ -75,7 +75,7 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
 
     @Override
     public CommonResult updateComplaint(Complaint complaint){
-        Complaint oldComplaint = complaintMapper.selectById(complaint.getComplaintId());
+        Complaint oldComplaint = complaintMapper.selectById(complaint.getId());
         Assert.notNull(oldComplaint, "修改complaint表失败，表中查询不到对应complaintId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(complaint))){
             return CommonResult.success(complaint);
