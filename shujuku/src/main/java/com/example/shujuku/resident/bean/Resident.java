@@ -37,7 +37,7 @@ public class Resident implements Serializable {
     @TableField("resident_end_time")
     private LocalDateTime residentEndTime;
 
-    //为0表示欠费中，1表示入住中，2表示未入住
+    //为0表示不可用，1表示入住中，2表示未入住
     @TableField("status")
     private String status;
 
