@@ -7,10 +7,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.shujuku.common.CommonResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.shujuku.common.Tool;
+import com.example.shujuku.mapper.RoomMapper;
 import com.example.shujuku.req.ResidentPageReq;
 import com.example.shujuku.resident.bean.Resident;
 import com.example.shujuku.mapper.ResidentMapper;
 import com.example.shujuku.resident.server.ResidentService;
+import com.example.shujuku.room.bean.Room;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,15 +26,30 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
 
     @Autowired
     protected ResidentMapper residentMapper;
+    @Autowired
+    protected RoomMapper roomMapper;
 
     @Override
     public CommonResult createResident(Resident resident){
-        boolean insertSuccess = SqlHelper.retBool(residentMapper.insert(resident));
-        if(!insertSuccess){
-            log.info("插入resident表失败",resident);
-            return CommonResult.fail("插入resident表失败");
+        Room room = roomMapper.CheckRoom(resident.getRoomId());
+        if(room != null){
+            int hadNum = Integer.parseInt(room.getHadNum())+1;
+            int limitNum = Integer.parseInt(room.getLimitNum());
+            if(hadNum == limitNum){
+                room.setStatus(String.valueOf(2));
+                room.setHadNum(room.getLimitNum());
+            }else if(hadNum > limitNum){
+                return CommonResult.fail("该房间已住满");
+            }
+            boolean insertSuccess = SqlHelper.retBool(residentMapper.insert(resident));
+            boolean insertSuccess2 = SqlHelper.retBool(roomMapper.updateById(room));
+            if(!insertSuccess || !insertSuccess2){
+                log.info("创建入住信息失败",resident);
+                return CommonResult.fail("创建入住信息失败");
+            }
+            return CommonResult.success(resident);
         }
-        return CommonResult.success(resident);
+        return CommonResult.fail("找不到该房间");
     }
 
     @Override
