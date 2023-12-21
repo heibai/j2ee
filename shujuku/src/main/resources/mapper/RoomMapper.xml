@@ -43,9 +43,6 @@
         <if test="id != null">
             and t.id = #{id}
         </if>
-        <if test="userId != null">
-            and t.user_id = #{userId}
-        </if>
         <if test="roomId != null">
             and t.room_id = #{roomId}
         </if>
