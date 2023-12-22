@@ -25,6 +25,14 @@
         <result column="deadline" property="deadline"/>
     </resultMap>
 
+    <select id="GetFeesByRoomId" resultMap="feesList">
+        SELECT SQL_CALC_FOUND_ROWS
+        <include refid="Base_Column_List" />
+        FROM fees t
+        WHERE t.room_id = #{roomId}
+            and t.status = 1;
+    </select>
+
     <select id="getFeesList" resultMap="feesList">
         SELECT SQL_CALC_FOUND_ROWS
         <include refid="Base_Column_List" />

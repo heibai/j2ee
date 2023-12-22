@@ -8,17 +8,21 @@ import com.example.shujuku.common.CommonResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.shujuku.common.Tool;
 import com.example.shujuku.mapper.RoomMapper;
+import com.example.shujuku.mapper.UsersMapper;
 import com.example.shujuku.req.ResidentPageReq;
 import com.example.shujuku.resident.bean.Resident;
 import com.example.shujuku.mapper.ResidentMapper;
 import com.example.shujuku.resident.server.ResidentService;
 import com.example.shujuku.room.bean.Room;
+import com.example.shujuku.users.bean.Users;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 @Slf4j
 @Service
@@ -28,6 +32,8 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
     protected ResidentMapper residentMapper;
     @Autowired
     protected RoomMapper roomMapper;
+    @Autowired
+    protected UsersMapper usersMapper;
 
     @Override
     public CommonResult createResident(Resident resident){
@@ -54,41 +60,17 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
 
     @Override
     public CommonResult getResidentByResidentId(String residentId){
-        Resident resident = residentMapper.GetResidentByUserIdtId(residentId);
+        Resident resident = residentMapper.GetResidentByResidentId(residentId);
         if(resident != null){
             return CommonResult.success(resident);
         }else return CommonResult.fail("查询resident表失败");
     }
 
     @Override
-    public CommonResult getResidentByUserId(String userId){
-        Resident resident = residentMapper.GetResidentByUserIdtId(userId);
-        if(resident != null){
-            return CommonResult.success(resident);
-        }else return CommonResult.fail("查询resident表失败");
-    }
-
-    @Override
-    public CommonResult getResidentPage(ResidentPageReq resident) {
-        Page<Resident> page = new Page<>(resident.getPageNo(), resident.getPageSize());
-        LambdaQueryWrapper<Resident> queryWrapper = new LambdaQueryWrapper<Resident>();
-        //多条件匹配查询
-        queryWrapper.eq(Tool.isPresent(resident.getUserId()), Resident::getUserId, resident.getUserId());
-//        queryWrapper.like(Tool.isPresent(resident.getName()), Resident::getName, resident.getName());
-        queryWrapper.eq(Tool.isPresent(resident.getRoomId()), Resident::getRoomId, resident.getRoomId());
-        queryWrapper.eq(Tool.isPresent(resident.getBuildingId()), Resident::getBuildingId, resident.getBuildingId());
-        queryWrapper.eq(Tool.isPresent(resident.getStatus()), Resident::getStatus, resident.getStatus());
-//
-        //        //查询
-        IPage<Resident> ipage = this.baseMapper.selectPage(page, queryWrapper);
-        return CommonResult.success(ipage);
-    }
-
     public CommonResult getResidentList(ResidentPageReq req){
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
-        System.out.println(req);
         List<Resident> residentList = residentMapper.getResidentList(req);
 //        List<Student> list = studentMapper.getStudentList(req);
 //        List<Student> studentList = (List<Student>) list.get(0);
@@ -101,8 +83,34 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
     }
 
     @Override
+    public CommonResult getResidentDetailList(ResidentPageReq req){
+        Integer pageNo = req.getPageNo();
+        Integer pageSize = req.getPageSize();
+        req.setPageNo((pageNo - 1)*pageSize);
+        List<List<Object>> resultList = new ArrayList<List<Object>>();
+        List<Resident> residentList = residentMapper.getResidentList(req);
+        ListIterator<Resident> residentListIterator = residentList.listIterator();
+        while(residentListIterator.hasNext()){
+            List<Object> result = new ArrayList<Object>();
+            Resident resident = residentListIterator.next();
+            Users users = usersMapper.GetUsersByUserId(resident.getUserId());
+            result.add(resident);
+            result.add(users);
+            resultList.add(result);
+        }
+//        List<Student> list = studentMapper.getStudentList(req);
+//        List<Student> studentList = (List<Student>) list.get(0);
+//        Integer total = ((List<Integer>) list.get(1)).get(0);
+//        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
+        Page<List<Object>> page = new Page<>(pageNo, pageSize);
+        page.setRecords(resultList);
+        page.setTotal(residentList.size());
+        return CommonResult.success(page);
+    }
+
+    @Override
     public CommonResult updateResident(Resident resident){
-        Resident oldResident = residentMapper.selectById(resident.getUserId());
+        Resident oldResident = residentMapper.GetResidentByResidentId(resident.getUserId());
         Assert.notNull(oldResident, "修改resident表失败，表中查询不到对应residentId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(resident))){
             return CommonResult.success(resident);
@@ -111,7 +119,7 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
 
     @Override
     public CommonResult deleteResident(String residentId){
-        Resident resident = residentMapper.selectById(residentId);
+        Resident resident = residentMapper.GetResidentByResidentId(residentId);
         Assert.notNull(resident, "删除resident表数据失败，表中查询不到对应residentId的申请");
         if(SqlHelper.retBool(baseMapper.deleteById(residentId))){
             return CommonResult.success(resident);

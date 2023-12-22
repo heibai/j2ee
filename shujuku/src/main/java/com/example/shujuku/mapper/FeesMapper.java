@@ -14,6 +14,8 @@ public interface FeesMapper extends BaseMapper<Fees>{
     @Select("SELECT * FROM fees WHERE feesId = #{feesId}")
     Fees GetFeesByFeesId(String feesId);
 
+    List<Fees> GetFeesByRoomId(String roomId);
+
     List<Fees> getFeesList(FeesPageReq req);
 
 }

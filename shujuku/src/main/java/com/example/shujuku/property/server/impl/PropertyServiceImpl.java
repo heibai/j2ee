@@ -37,28 +37,13 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
 
     @Override
     public CommonResult getPropertyByPropertyId(String propertyId){
-        Property property = propertyMapper.selectById(propertyId);
+        Property property = propertyMapper.GetPropertyByPropertyId(propertyId);
         if(property != null){
             return CommonResult.success(property);
         }else return CommonResult.fail("查询property表失败");
     }
 
     @Override
-    public CommonResult getPropertyPage(PropertyPageReq property) {
-        Page<Property> page = new Page<>(property.getPageNo(), property.getPageSize());
-        LambdaQueryWrapper<Property> queryWrapper = new LambdaQueryWrapper<Property>();
-        //多条件匹配查询
-        queryWrapper.eq(Tool.isPresent(property.getPropertyId()), Property::getPropertyId, property.getPropertyId());
-        queryWrapper.eq(Tool.isPresent(property.getOwnerLevel()), Property::getOwnerLevel, property.getOwnerLevel());
-        queryWrapper.eq(Tool.isPresent(property.getOwnerId()), Property::getOwnerId, property.getOwnerId());
-//        queryWrapper.like(Tool.isPresent(property.getName()), Property::getName, property.getName());
-        queryWrapper.eq(Tool.isPresent(property.getStatus()), Property::getStatus, property.getStatus());
-//
-        //        //查询
-        IPage<Property> ipage = this.baseMapper.selectPage(page, queryWrapper);
-        return CommonResult.success(ipage);
-    }
-
     public CommonResult getPropertyList(PropertyPageReq req){
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
@@ -77,7 +62,7 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
 
     @Override
     public CommonResult updateProperty(Property property){
-        Property oldProperty = propertyMapper.selectById(property.getPropertyId());
+        Property oldProperty = propertyMapper.GetPropertyByPropertyId(property.getPropertyId());
         Assert.notNull(oldProperty, "修改property表失败，表中查询不到对应propertyId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(property))){
             return CommonResult.success(property);
@@ -86,7 +71,7 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
 
     @Override
     public CommonResult deleteProperty(String propertyId){
-        Property property = propertyMapper.selectById(propertyId);
+        Property property = propertyMapper.GetPropertyByPropertyId(propertyId);
         Assert.notNull(property, "删除property表数据失败，表中查询不到对应propertyId的申请");
         if(SqlHelper.retBool(baseMapper.deleteById(propertyId))){
             return CommonResult.success(property);

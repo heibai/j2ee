@@ -21,6 +21,7 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -67,41 +68,48 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
 
     @Override
     public CommonResult getFeesByFeesId(String feesId){
-        Fees fees = feesMapper.selectById(feesId);
+        Fees fees = feesMapper.GetFeesByFeesId(feesId);
         if(fees != null){
             return CommonResult.success(fees);
         }else return CommonResult.fail("查询fees表失败");
     }
 
     @Override
-    public CommonResult getFeesPage(FeesPageReq fees) {
-        Page<Fees> page = new Page<>(fees.getPageNo(), fees.getPageSize());
-        LambdaQueryWrapper<Fees> queryWrapper = new LambdaQueryWrapper<Fees>();
-        //多条件匹配查询
-        queryWrapper.eq(Tool.isPresent(fees.getFeesId()), Fees::getFeesId, fees.getFeesId());
-//        queryWrapper.like(Tool.isPresent(fees.getName()), Fees::getName, fees.getName());
-        queryWrapper.eq(Tool.isPresent(fees.getRoomId()), Fees::getRoomId, fees.getRoomId());
-        queryWrapper.eq(Tool.isPresent(fees.getType()), Fees::getType, fees.getType());
-        queryWrapper.eq(Tool.isPresent(fees.getStatus()), Fees::getStatus, fees.getStatus());
-//
-        //        //查询
-        IPage<Fees> ipage = this.baseMapper.selectPage(page, queryWrapper);
-        return CommonResult.success(ipage);
+    public CommonResult getFeesByRoomId(String roomId){
+        List<Fees> feesList = feesMapper.GetFeesByRoomId(roomId);
+        ListIterator<Fees> feesListIterator = feesList.listIterator();
+        Double totalFees = 0.0;
+        while(feesListIterator.hasNext()){
+            Fees fees = feesListIterator.next();
+            totalFees = totalFees + fees.getPrice();
+        }
+        return CommonResult.success(totalFees);
     }
 
+    @Override
     public CommonResult getFeesList(FeesPageReq req){
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
-        System.out.println(req);
-        List<Fees> feesList = feesMapper.getFeesList(req);
+        List<List<Object>> resultList = new ArrayList<List<Object>>();
+        List<Room> roomList = roomMapper.getResidentedRooms();
+        ListIterator<Room> roomListIterator = roomList.listIterator();
+        while(roomListIterator.hasNext()){
+            List<Object> result = new ArrayList<Object>();
+            Room room = roomListIterator.next();
+            req.setRoomId(room.getRoomId());
+            List<Fees> feesList = feesMapper.getFeesList(req);
+            result.add(room);
+            result.add(feesList);
+            resultList.add(result);
+        }
 //        List<Student> list = studentMapper.getStudentList(req);
 //        List<Student> studentList = (List<Student>) list.get(0);
 //        Integer total = ((List<Integer>) list.get(1)).get(0);
 //        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
-        Page<Fees> page = new Page<>(pageNo, pageSize);
-        page.setRecords(feesList);
-        page.setTotal(feesList.size());
+        Page<List<Object>> page = new Page<>(pageNo, pageSize);
+        page.setRecords(resultList);
+        page.setTotal(resultList.size());
         return CommonResult.success(page);
     }
 
@@ -116,7 +124,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
 
     @Override
     public CommonResult deleteFees(String feesId){
-        Fees fees = feesMapper.selectById(feesId);
+        Fees fees = feesMapper.GetFeesByFeesId(feesId);
         Assert.notNull(fees, "删除fees表数据失败，表中查询不到对应feesId的申请");
         if(SqlHelper.retBool(baseMapper.deleteById(feesId))){
             return CommonResult.success(fees);

@@ -14,8 +14,7 @@ public interface ResidentMapper extends BaseMapper<Resident>{
     @Select("SELECT * FROM resident WHERE residentId = #{residentId}")
     Resident GetResidentByResidentId(String residentId);
 
-    @Select("SELECT * FROM resident WHERE user_Id = #{userId}")
-    Resident GetResidentByUserIdtId(String userId);
+    List<Resident> getResidentListByRoomId(String roomId);
 
     List<Resident> getResidentList(ResidentPageReq req);
 

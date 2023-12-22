@@ -37,7 +37,7 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
 
     @Override
     public CommonResult getComplaintByComplaintId(String complaintId){
-        Complaint complaint = complaintMapper.selectById(complaintId);
+        Complaint complaint = complaintMapper.GetComplaintByComplaintId(complaintId);
         if(complaint != null){
             return CommonResult.success(complaint);
         }else return CommonResult.fail("查询complaint表失败");
@@ -84,7 +84,7 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
 
     @Override
     public CommonResult deleteComplaint(String complaintId){
-        Complaint complaint = complaintMapper.selectById(complaintId);
+        Complaint complaint = complaintMapper.GetComplaintByComplaintId(complaintId);
         Assert.notNull(complaint, "删除complaint表数据失败，表中查询不到对应complaintId的申请");
         if(SqlHelper.retBool(baseMapper.deleteById(complaintId))){
             return CommonResult.success(complaint);

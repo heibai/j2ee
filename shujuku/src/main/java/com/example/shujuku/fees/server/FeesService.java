@@ -13,7 +13,7 @@ public interface FeesService extends IService<Fees> {
 
     public CommonResult getFeesByFeesId(String feesId);
 
-    public CommonResult getFeesPage(FeesPageReq feesPageReq);
+    public CommonResult getFeesByRoomId(String roomId);
 
     public CommonResult getFeesList(FeesPageReq req);
 

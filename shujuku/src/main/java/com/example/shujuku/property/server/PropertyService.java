@@ -11,8 +11,6 @@ public interface PropertyService extends IService<Property> {
 
     public CommonResult getPropertyByPropertyId(String propertyId);
 
-    public CommonResult getPropertyPage(PropertyPageReq propertyPageReq);
-
     public CommonResult getPropertyList(PropertyPageReq req);
 
     public CommonResult updateProperty(Property property);
