@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@Api("入住信息相关接口")
+@Api("报修信息相关接口")
 @Slf4j
 @RestController
 @RequestMapping("repairReport")
@@ -22,31 +22,37 @@ public class RepairReportController {
     @Autowired
     private RepairReportService repairReportService;
 
-    @ApiModelProperty("创建入住信息")
+    @ApiModelProperty("创建报修信息")
     @PostMapping("/createRepairReport")
     public CommonResult createRepairReport(@RequestBody RepairReport repairReport){
         return repairReportService.createRepairReport(repairReport);
     }
 
-    @ApiModelProperty("查询入住信息")
+    @ApiModelProperty("查询报修信息")
     @GetMapping("/getRepairReport")
     public CommonResult getRepairReport(@Param("repairReportId") String reportId){
         return repairReportService.getRepairReportByReportId(reportId);
     }
 
-    @ApiModelProperty("分页查询入住信息")
+    @ApiModelProperty("分页查询报修信息")
     @GetMapping("/getRepairReportPage")
     public CommonResult getRepairReportPage(RepairReportPageReq repairReportPageReq){
         return repairReportService.getRepairReportList(repairReportPageReq);
     }
 
-    @ApiModelProperty("更新入住信息")
+    @ApiModelProperty("分页查询完整报修信息")
+    @GetMapping("/getRepairReportDetailPage")
+    public CommonResult getRepairReportDetailPage(RepairReportPageReq repairReportPageReq){
+        return repairReportService.getRepairReportDetailList(repairReportPageReq);
+    }
+
+    @ApiModelProperty("更新报修信息")
     @PostMapping("/updateRepairReport")
     public CommonResult updateRepairReport(@RequestBody RepairReport repairReport){
         return repairReportService.updateRepairReport(repairReport);
     }
 
-    @ApiModelProperty("删除入住信息")
+    @ApiModelProperty("删除报修信息")
     @GetMapping("/deleteRepairReport")
     public CommonResult deleteRepairReport(@Param("reportId") String reportId){
         return repairReportService.deleteRepairReport(reportId);

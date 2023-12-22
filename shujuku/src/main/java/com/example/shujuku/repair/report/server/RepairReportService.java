@@ -11,7 +11,7 @@ public interface RepairReportService extends IService<RepairReport> {
 
     public CommonResult getRepairReportByReportId(String reportId);
 
-    public CommonResult getRepairReportPage(RepairReportPageReq repairReportPageReq);
+    public CommonResult getRepairReportDetailList(RepairReportPageReq req);
 
     public CommonResult getRepairReportList(RepairReportPageReq req);
 
