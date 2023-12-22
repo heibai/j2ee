@@ -1,12 +1,9 @@
 package com.example.shujuku.repair.report.server.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.shujuku.common.CommonResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.shujuku.common.Tool;
 import com.example.shujuku.mapper.UsersMapper;
 import com.example.shujuku.req.RepairReportPageReq;
 import com.example.shujuku.repair.report.bean.RepairReport;

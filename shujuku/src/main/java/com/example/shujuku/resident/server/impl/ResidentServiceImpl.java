@@ -60,7 +60,7 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
 
     @Override
     public CommonResult getResidentByResidentId(String residentId){
-        Resident resident = residentMapper.selectById(residentId);
+        Resident resident = residentMapper.GetResidentByResidentId(residentId);
         if(resident != null){
             return CommonResult.success(resident);
         }else return CommonResult.fail("查询resident表失败");
@@ -110,7 +110,7 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
 
     @Override
     public CommonResult updateResident(Resident resident){
-        Resident oldResident = residentMapper.selectById(resident.getUserId());
+        Resident oldResident = residentMapper.GetResidentByResidentId(resident.getUserId());
         Assert.notNull(oldResident, "修改resident表失败，表中查询不到对应residentId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(resident))){
             return CommonResult.success(resident);
@@ -119,7 +119,7 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
 
     @Override
     public CommonResult deleteResident(String residentId){
-        Resident resident = residentMapper.selectById(residentId);
+        Resident resident = residentMapper.GetResidentByResidentId(residentId);
         Assert.notNull(resident, "删除resident表数据失败，表中查询不到对应residentId的申请");
         if(SqlHelper.retBool(baseMapper.deleteById(residentId))){
             return CommonResult.success(resident);
