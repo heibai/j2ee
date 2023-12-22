@@ -48,7 +48,7 @@ public class RepairReportController {
 
     @ApiModelProperty("删除入住信息")
     @GetMapping("/deleteRepairReport")
-    public CommonResult deleteRepairReport(@Param("reportId") String reportId){
-        return repairReportService.deleteRepairReport(reportId);
+    public CommonResult deleteRepairReport(@Param("id") String id){
+        return repairReportService.deleteRepairReport(id);
     }
 }

@@ -23,7 +23,7 @@
     <!-- 添加管理员 -->
 
     <!-- 表格 -->
-    <h1 class="main-title">已有管理员列表</h1>
+    <h1 class="main-title">工作人员列表</h1>
     <div class="wrapper main-card">
       <AdminTable :table-data="adminsTableData" />
     </div>
@@ -51,7 +51,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchAdminTableData()
+    // this.fetchAdminTableData()
   },
   methods: {
     async fetchAdminTableData() {

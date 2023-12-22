@@ -237,7 +237,7 @@ const adminRoutes = [
         component: () => import('@/views/room-info/index'),
         name: 'roomInfo',
         meta: {
-          title: '宿舍信息',
+          title: '住房信息',
           icon: 'peoples'
         }
       }
@@ -261,81 +261,62 @@ const adminRoutes = [
       }
     ]
   },
-
-  // {
-  //   path: '/recordManage',
-  //   component: Layout,
-  //   meta: {
-  //     roles: ['superAdmin', 'admin'],
-  //     title: '记录查看',
-  //     icon: 'tree'
-  //   },
-  //   children: [
-  //     {
-  //       path: '/recordManage/getup',
-  //       component: () => import('@/views/record-manage/getup-record-manage'),
-  //       name: 'getupRecordManage',
-  //       meta: {
-  //         title: '起床记录'
-  //       }
-  //     },
-  //     {
-  //       path: '/recordManage/back',
-  //       component: () => import('@/views/record-manage/back-record-manage'),
-  //       name: 'backRecordManage',
-  //       meta: {
-  //         title: '归宿记录'
-  //       }
-  //     },
-  //     {
-  //       path: '/recordManage/clean',
-  //       component: () => import('@/views/record-manage/clean-record-manage'),
-  //       name: 'cleanRecordManage',
-  //       meta: {
-  //         title: '清扫记录',
-  //         noCache: true
-  //       }
-  //     }
-  //   ]
-  // },
-
+  // 费用管理
   {
-    path: '/visitorManage',
-    component: Layout,
-    meta: {
-      roles: ['superAdmin']
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/visitor-manage/index'),
-        name: 'visitorManage',
-        meta: {
-          title: '住户登记',
-          icon: 'user'
-        }
-      }
-    ]
-  },
-  // 统计模块
-  {
-    path: '/statistics',
+    path: '/feeManage',
     component: Layout,
     meta: {
       roles: ['superAdmin', 'admin']
     },
     children: [
-      // {
-      //   path: 'index',
-      //   component: () => import('@/views/statistics/index'),
-      //   name: 'statistics',
-      //   meta: {
-      //     title: '统计模块',
-      //     icon: 'chart'
-      //   }
-      // }
+      {
+        path: 'index',
+        component: () => import('@/views/fee-manage/index'),
+        name: 'feeManage',
+        meta: {
+          title: '费用管理',
+          icon: 'money'
+        }
+      }
     ]
   }
+  // {
+  //   path: '/visitorManage',
+  //   component: Layout,
+  //   meta: {
+  //     roles: ['superAdmin']
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/visitor-manage/index'),
+  //       name: 'visitorManage',
+  //       meta: {
+  //         title: '住户登记',
+  //         icon: 'user'
+  //       }
+  //     }
+  //   ]
+  // },
+  // 统计模块
+  // {
+  //   path: '/statistics',
+  //   component: Layout,
+  //   meta: {
+  //     roles: ['superAdmin', 'admin']
+  //   },
+  //   children: [
+  //     // {
+  //     //   path: 'index',
+  //     //   component: () => import('@/views/statistics/index'),
+  //     //   name: 'statistics',
+  //     //   meta: {
+  //     //     title: '统计模块',
+  //     //     icon: 'chart'
+  //     //   }
+  //     // }
+  //   ]
+  // }
 ]
 
 // 业主专属模块

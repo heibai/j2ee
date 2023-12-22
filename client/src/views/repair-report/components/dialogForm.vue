@@ -21,10 +21,8 @@
           </el-option>
         </el-select>
       </el-form-item> -->
-      <el-form-item prop="name" label="物品名" required>
-        <el-input v-model="formData.name"></el-input>
-      </el-form-item>
-      <el-form-item prop="message" label="描述" required>
+
+      <el-form-item prop="message" label="故障描述" required>
         <!-- 使用textarea标签 -->
         <el-input type="textarea" v-model="formData.message"></el-input>
       </el-form-item>

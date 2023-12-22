@@ -42,6 +42,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Override
     public CommonResult getRoomByRoomId(String roomId){
+        System.out.println(roomId);
         Room room = roomMapper.selectById(roomId);
         if(room != null){
             return CommonResult.success(room);

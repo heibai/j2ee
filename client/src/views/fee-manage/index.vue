@@ -3,7 +3,7 @@ import RecordTable from './components/RecordTable'
 import addForm from './components/addForm.vue'
 import Pagination from '@/components/Pagination'
 import paginationMixins from '@/mixins/paginationMixins'
-import { getRepairReportPage } from '@/api/repair-report'
+import { getFeesList } from '@/api/fees'
 export default {
   name: 'PublicPropertyManage',
   components: {
@@ -17,6 +17,11 @@ export default {
       tableData: []
     }
   },
+  provide() {
+    return {
+      operateFinish: this.operateFinish
+    }
+  },
   created() {
     this.getTableData()
   },
@@ -24,6 +29,7 @@ export default {
     handleAdd() {
       this.$refs.addForm.show()
     },
+
     operateFinish() {
       this.getTableData()
     },
@@ -38,7 +44,7 @@ export default {
         PageSize: this.PageSize
       }
 
-      const { data } = await getRepairReportPage(params)
+      const { data } = await getFeesList(params)
       this.tableData = data.records
       this.count = data.total
 
@@ -55,10 +61,12 @@ export default {
     <!-- 公共财产管理 -->
     <h1 class="main-title">
       <span>
-        报修管理
+        费用中心
       </span>
+
+      <!--  v-has="'resident'" -->
       <el-button type="primary" icon="el-icon-plus" @click="handleAdd">
-        新增报修
+        发布收费
       </el-button>
     </h1>
 

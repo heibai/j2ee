@@ -76,7 +76,7 @@ public class RepairReportServiceImpl extends ServiceImpl<RepairReportMapper, Rep
 
     @Override
     public CommonResult updateRepairReport(RepairReport repairReport){
-        RepairReport oldRepairReport = repairReportMapper.selectById(repairReport.getReportId());
+        RepairReport oldRepairReport = repairReportMapper.selectById(repairReport.getId());
         Assert.notNull(oldRepairReport, "修改repairReport表失败，表中查询不到对应repairReportId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(repairReport))){
             return CommonResult.success(repairReport);

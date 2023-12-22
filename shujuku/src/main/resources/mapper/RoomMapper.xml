@@ -3,7 +3,10 @@
 <mapper namespace="com.example.shujuku.mapper.RoomMapper">
 
     <sql id="Base_Column_List">
-        t.id,
+        t
+        .
+        id
+        ,
         t.room_id,
         t.building_id,
         t.limit_num,
@@ -16,29 +19,29 @@
         <result column="room_id" property="roomId"/>
         <result column="building_id" property="buildingId"/>
         <result column="limit_num" property="limitNum"/>
-        <result column="had_num" property="r=hadNum"/>
+        <result column="had_num" property="hadNum"/>
         <result column="status" property="status"/>
     </resultMap>
 
     <select id="getResidentableRooms" resultMap="roomList">
         SELECT SQL_CALC_FOUND_ROWS
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM room t
         WHERE t.status = 1
-        and t.had_num > 0
+        and t.limit_num > t.had_num
     </select>
 
     <select id="getResidentedRooms" resultMap="roomList">
         SELECT SQL_CALC_FOUND_ROWS
-        <include refid="Base_Column_List" />
-        FROM room r
-        WHERE r.status != 0
-        and r.had_num > 0
+        <include refid="Base_Column_List"/>
+        FROM room t
+        WHERE t.status != 0
+        and t.had_num > 0
     </select>
 
     <select id="getRoomList" resultMap="roomList">
         SELECT SQL_CALC_FOUND_ROWS
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM room t
         WHERE t.id = t.id
         <if test="id != null">
@@ -57,7 +60,7 @@
             and t.status = #{status}
         </if>
         LIMIT #{pageNo},#{pageSize};
-        --         SELECT FOUND_ROWS() as total1;
+        -- SELECT FOUND_ROWS() as total1;
     </select>
 
 </mapper>

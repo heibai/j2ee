@@ -8,6 +8,15 @@ export function getRoomPage(params) {
   })
 }
 
+// 查询房间
+export function getRoomInfo(params) {
+  return request({
+    url: '/room/getRoom',
+    method: 'get',
+    params
+  })
+}
+
 // 可入住房间
 export function getRoomPageAvailable(params) {
   return request({

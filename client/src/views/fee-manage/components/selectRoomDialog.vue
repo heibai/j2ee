@@ -10,8 +10,7 @@ export default {
   mixins: [paginationMixins],
   inject: ['operateFinish'],
   props: {
-    visible: { type: Boolean, default: false },
-    checkInUser: { type: Object, default: () => {} }
+    visible: { type: Boolean, default: false }
   },
   data() {
     return {
@@ -22,17 +21,24 @@ export default {
 
       roomTable: [],
       tableLoading: false,
-      currRow: {} // 当前行
+      selectRows: [] // 当前行
     }
   },
   created() {
     this.getTableData()
   },
   methods: {
-    handleCurrentChange(val) {
-      this.currRow = val
-      this.selectorData.buildingId = val.buildingId
-      this.selectorData.roomId = val.roomId
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
+    handleSelectionChange(rows) {
+      this.selectRows = rows
     },
     handlePagination({ page, limit }) {
       this.PageNo = page
@@ -70,7 +76,7 @@ export default {
         if (res.code === 200) {
           this.$message({
             type: 'success',
-            message: '入住成功'
+            message: '发布成功'
           })
           this.$emit('update:visible', false)
           this.operateFinish()
@@ -112,21 +118,24 @@ export default {
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="checkIn">入住</el-button>
+            <el-button type="primary" @click="checkIn">发布</el-button>
           </el-form-item>
         </el-form>
       </div>
 
       <div class="table-wrapper">
         <el-table
+          ref="multipleTable"
           :data="roomTable"
           style="width: 100%"
           highlight-current-row
-          @current-change="handleCurrentChange"
+          @selection-change="handleSelectionChange"
           v-loading="tableLoading"
         >
           <!-- 财产物品名 -->
           <!-- <el-table-column prop="name" label="入住人"> </el-table-column> -->
+          <!-- 可多选 -->
+          <el-table-column type="selection"> </el-table-column>
 
           <!-- 信息 -->
           <!-- <el-table-column prop="message" label="入住人电话"> </el-table-column> -->
