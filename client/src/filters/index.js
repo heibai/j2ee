@@ -80,3 +80,13 @@ export function toTimeStamp(time) {
     return ''
   }
 }
+
+export function transRoleString(role) {
+  const roleMap = {
+    superAdmin: '管理员',
+    worker: '物业人员',
+    resident: '业主',
+    visitor: '访客'
+  }
+  return roleMap[role]
+}

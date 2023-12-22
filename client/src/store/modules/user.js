@@ -1,14 +1,15 @@
-import { login, getInfo } from '@/api/user'
+import { login, getUser } from '@/api/user'
+import { getResident } from '@/api/resident'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
-
+import { Message } from 'element-ui'
 const state = {
   userInfo: JSON.parse(getToken()) || {},
   token: getToken(), // 由 cookie 获取 token
   name: '',
   avatar: '',
   introduction: '',
-  role: JSON.parse(getToken()).role,
+  role: '',
   room: undefined,
   floor: undefined,
   building: undefined,
@@ -54,13 +55,24 @@ const actions = {
   login({ commit, dispatch }, userInfo) {
     const { account, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ userId: account.trim(), password: password, role: 'superAdmin' })
+      login({ userId: account.trim(), password: password })
         .then(response => {
-          const { data } = response
+          // 检测是否登录成功
+
+          const { data, code } = response
+          if (code !== 200) {
+            reject('登录失败，请检查账号密码')
+            Message({
+              message: '登录失败，请检查账号密码',
+              type: 'error',
+              duration: 5 * 1000
+            })
+          }
           // data为用户信息
           commit('SET_TOKEN', data)
           commit('SET_USERINFO', data)
           commit('SET_ROLES', data.role)
+          commit('SET_NAME', data.name)
           setToken(JSON.stringify(data))
 
           dispatch('permission/generateRoutes', data.role, { root: true })
@@ -89,12 +101,43 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
-      commit('SET_ROLES', [])
+      commit('SET_ROLES', '')
       removeToken()
       resolve()
     })
   },
 
+  getUserInfo({ commit, state, dispatch }) {
+    return new Promise((resolve, reject) => {
+      getUser({ userId: state.userInfo.userId })
+        .then(response => {
+          const { data } = response
+          if (!data) {
+            reject('验证失败，请重新登录')
+          }
+          commit('SET_USERINFO', data)
+          commit('SET_ROLES', data.role)
+          if (data.role === 'resident') {
+            dispatch('getResidentInfo')
+          }
+          commit('SET_NAME', data.name)
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  getResidentInfo({ commit, state }) {
+    getResident({ userId: state.userInfo.id }).then(response => {
+      const { data } = response
+      console.log(data)
+      if (!data) {
+        reject('验证失败，请重新登录')
+      }
+      commit('SET_ROOM', data.roomId)
+    })
+  },
   // dynamically modify permissions
   changeRoles({ commit, dispatch }, role) {
     return new Promise(async resolve => {

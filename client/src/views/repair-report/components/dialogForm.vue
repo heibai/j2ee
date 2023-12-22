@@ -24,7 +24,11 @@
 
       <el-form-item prop="message" label="故障描述" required>
         <!-- 使用textarea标签 -->
-        <el-input type="textarea" v-model="formData.message"></el-input>
+        <el-input
+          type="textarea"
+          v-model="formData.message"
+          :disabled="$store.getters.role !== 'resident' && editMode"
+        ></el-input>
       </el-form-item>
       <!-- <el-form-item prop="idNumber" label="身份证号" required>
         <el-input v-model="formData.idNumber"></el-input>
@@ -58,7 +62,6 @@ export default {
       type: Object,
       default: () => {
         return {
-          name: '',
           message: ''
         }
       }

@@ -40,6 +40,19 @@ import { register } from '@/api/user'
 export default {
   name: 'AddAdminForm',
   data() {
+    const validateAccount = (rule, value, callback) => {
+      // 只有为物业人员时才需要验证手机号
+      if (this.formData.role !== 'worker') {
+        callback()
+        return
+      }
+
+      if (!/^1[3456789]\d{9}$/.test(value)) {
+        callback(new Error('请输入正确的手机号'))
+      } else {
+        callback()
+      }
+    }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('密码需要6位以上'))
@@ -56,10 +69,14 @@ export default {
         role: 'superAdmin'
       },
       rules: {
+        account: [
+          {
+            trigger: 'blur',
+            validator: validateAccount
+          }
+        ],
         password: [
           {
-            required: true,
-            message: '请输入密码',
             trigger: 'blur',
             validator: validatePassword
           }

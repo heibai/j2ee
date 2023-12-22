@@ -2,34 +2,37 @@
   <div calss="AdminTable">
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="name" label="姓名"> </el-table-column>
-      <el-table-column prop="phone" label="手机号"> </el-table-column>
+      <el-table-column prop="userId" label="手机号"> </el-table-column>
       <el-table-column label="身份">
         <template slot-scope="scope">
-          <span class="admin" v-if="scope.row.role === 'admin'">{{
-            scope.row.role.toUpperCase()
-          }}</span>
           <span class="superAdmin" v-if="scope.row.role === 'superAdmin'">{{
-            scope.row.role.toUpperCase()
+            transRoleString(scope.row.role)
+          }}</span
+          ><span class="admin" v-else-if="scope.row.role === 'worker'">{{
+            transRoleString(scope.row.role)
           }}</span>
+          <span v-else>{{ transRoleString(scope.row.role) }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="管理宿舍楼">
+      <!-- 操作区 -->
+      <el-table-column label="操作">
         <template slot-scope="scope">
-          <div class="room-wrap" v-if="scope.row.role === 'admin'">
-            <span v-for="building in scope.row.buildings" :key="building.id">
-              {{ building.name }}
-            </span>
-          </div>
-          <div class="all-room" v-else>
-            所有宿舍
-          </div>
+          <el-button
+            :disabled="$store.getters.role !== 'superAdmin'"
+            type="danger"
+            size="mini"
+            @click="handleDelete(scope.$index, scope.row)"
+            >删除
+          </el-button>
         </template>
-      </el-table-column> -->
+      </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
+import { deleteUser } from '@/api/user'
+import { transRoleString } from '@/filters'
 export default {
   name: 'AdminTable',
   data() {
@@ -39,6 +42,43 @@ export default {
     tableData: {
       type: Array,
       default: () => []
+    }
+  },
+  methods: {
+    transRoleString,
+    handleDelete(index, row) {
+      this.$confirm('此操作将永久删除该工作人员, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          // 只有管理员能删除角色且不能删除自己
+          if (
+            row.role === 'superAdmin' &&
+            row.userId === this.$store.state.userId
+          ) {
+            this.$message({
+              type: 'error',
+              message: '您不能删除自己!'
+            })
+            return
+          }
+          const res = await deleteUser(row)
+          if (res.code === 200) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.tableData.splice(index, 1)
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     }
   }
 }

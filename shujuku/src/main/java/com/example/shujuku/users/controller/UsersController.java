@@ -37,14 +37,14 @@ public class UsersController {
 
     @ApiModelProperty("查询用户")
     @GetMapping("/getUser")
-    public CommonResult getUser(@Param("userId") String userId){
+    public CommonResult getUser(@Param("id") String userId){
         return usersService.getUsersByUserId(userId);
     }
 
     @ApiModelProperty("分页查询用户")
     @GetMapping("/getUsersPage")
     public CommonResult getUsersPage(UsersPageReq usersPageReq){
-        return usersService.getUsersList(usersPageReq);
+        return usersService.getUsersPage(usersPageReq);
     }
 
     @ApiModelProperty("更新用户")
@@ -55,7 +55,7 @@ public class UsersController {
 
     @ApiModelProperty("删除用户")
     @GetMapping("/deleteUser")
-    public CommonResult deleteUser(@Param("usersId") String usersId){
-        return usersService.deleteUsers(usersId);
+    public CommonResult deleteUser(@Param("id") String id){
+        return usersService.deleteUsers(id);
     }
 }

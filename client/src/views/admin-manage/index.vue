@@ -3,19 +3,6 @@
     <!-- 添加管理员 -->
     <h1 class="main-title">添加工作人员</h1>
     <div class="wrapper top-wrapper">
-      <!-- <div class="main-card left">
-        <div class="title-wrapper">总数：{{ this.total }}</div>
-        <div class="content-wrapper">
-          <div class="admin admin-card">
-            <i class="el-icon-user"></i>
-            普通管理员: {{ adminCount }}
-          </div>
-          <div class="superAdmin admin-card">
-            <i class="el-icon-user"></i>
-            超级管理员: {{ superAdminCount }}
-          </div>
-        </div>
-      </div> -->
       <div class="main-card right">
         <AddAdminForm />
       </div>
@@ -23,9 +10,16 @@
     <!-- 添加管理员 -->
 
     <!-- 表格 -->
-    <h1 class="main-title">工作人员列表</h1>
+    <h1 class="main-title">人员列表</h1>
     <div class="wrapper main-card">
-      <AdminTable :table-data="adminsTableData" />
+      <AdminTable :tableData="adminsTableData" />
+
+      <Pagination
+        :total="count"
+        :page="PageNo"
+        @pagination="handlePagination"
+        :hidden="adminsTableData.length === 0"
+      />
     </div>
     <!-- 表格 -->
   </div>
@@ -34,14 +28,17 @@
 <script>
 import AddAdminForm from './components/AddAdminForm'
 import AdminTable from './components/AdminTable'
-
-import { getAdminTableData } from '@/api/user'
+import Pagination from '@/components/Pagination'
+import { getUserList } from '@/api/user'
+import paginationMixins from '@/mixins/paginationMixins'
 export default {
   name: 'adminManage',
   components: {
     AddAdminForm,
-    AdminTable
+    AdminTable,
+    Pagination
   },
+  mixins: [paginationMixins],
   data() {
     return {
       adminsTableData: [],
@@ -51,18 +48,24 @@ export default {
     }
   },
   mounted() {
-    // this.fetchAdminTableData()
+    this.fetchTableData()
   },
   methods: {
-    async fetchAdminTableData() {
-      await getAdminTableData().then(res => {
-        this.adminsTableData = res.data.admins
-        this.total = res.data.total
-        this.superAdminCount = res.data.admins.filter(
-          item => item.role === 'superAdmin'
-        ).length
-        this.adminCount = this.total - this.superAdminCount
-      })
+    async handlePagination({ page, limit }) {
+      this.PageNo = page
+      this.PageSize = limit
+      this.fetchTableData()
+    },
+    async fetchTableData() {
+      //先查询管理员 再查询物业人员
+      const params = {
+        PageNo: this.PageNo,
+        PageSize: this.PageSize
+      }
+
+      const { data } = await getUserList(params)
+      this.adminsTableData = data.records
+      this.count = data.total
     }
   }
 }

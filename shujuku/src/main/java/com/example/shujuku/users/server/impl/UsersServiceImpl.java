@@ -83,7 +83,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
     @Override
     public CommonResult updateUsers(Users users){
-        Users oldUsers = usersMapper.selectById(users.getUserId());
+        Users oldUsers = usersMapper.selectById(users.getId());
         Assert.notNull(oldUsers, "修改users表失败，表中查询不到对应usersId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(users))){
             return CommonResult.success(users);

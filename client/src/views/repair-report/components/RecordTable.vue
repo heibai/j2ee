@@ -32,7 +32,7 @@ export default {
   computed: {},
   methods: {
     handleDetail(index, row) {
-      this.$refs.editForm.show(row)
+      this.$refs.detailForm.show(row)
     },
     handleTakeUp(index, row) {
       this.updateRepair(index, row, 2)
@@ -42,9 +42,14 @@ export default {
     },
     updateRepair(index, row, status) {
       let formData = JSON.parse(JSON.stringify(row))
-      formData.reporterId = this.$store.getters.userInfo.id
+      formData.repairerId = this.$store.getters.userInfo.id
       formData.status = status
       let tip = formData.status == 2 ? '受理' : '解决'
+      console.log(status)
+      if (formData.status == 3) {
+        // 需要 YYYY-MM-DD HH:mm:ss
+        formData.repairTime = this.$moment().format('YYYY-MM-DD HH:mm:ss')
+      }
       // 确认受理
       this.$confirm(`确认${tip}该报修？`, '提示', {
         confirmButtonText: '确定',
@@ -52,7 +57,8 @@ export default {
         type: 'warning'
       })
         .then(async () => {
-          console.log(123)
+          console.log(formData)
+
           await updateRepairReport(formData)
           this.$message({
             type: 'success',
@@ -66,6 +72,7 @@ export default {
     handleDelete(index, row) {
       let formData = JSON.parse(JSON.stringify(row))
       formData.status = 4
+
       // 确认删除
       this.$confirm('确认删除该报修？', '提示', {
         confirmButtonText: '确定',
@@ -94,9 +101,9 @@ export default {
     <div class="table-wrapper">
       <el-table :data="tableData" style="width: 100%" v-loading="tableLoading">
         <!-- 财产物品名 -->
-        <el-table-column prop="name" label="报修人"></el-table-column>
+        <el-table-column prop="reportId" label="报修人"></el-table-column>
 
-        <el-table-column prop="name" label="受理人"></el-table-column>
+        <el-table-column prop="repairerId" label="受理人"></el-table-column>
         <!-- 信息 -->
         <el-table-column prop="message" label="报修信息"> </el-table-column>
 

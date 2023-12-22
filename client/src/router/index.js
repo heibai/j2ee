@@ -98,7 +98,6 @@ const adminRoutes = [
     path: '/propertyManage',
     component: Layout,
     meta: {
-      roles: ['superAdmin', 'admin'],
       title: '物业管理',
       icon: 'international'
     },
@@ -109,7 +108,8 @@ const adminRoutes = [
         component: () => import('@/views/admin-manage/index'),
         name: 'admin-manage',
         meta: {
-          title: '物业人员管理'
+          title: '物业人员管理',
+          roles: ['superAdmin']
         }
       },
 
@@ -118,7 +118,8 @@ const adminRoutes = [
         component: () => import('@/views/complaint/index'),
         name: 'complaint-manage',
         meta: {
-          title: '投诉管理'
+          title: '投诉管理',
+          roles: ['superAdmin']
         }
       },
       {
@@ -126,7 +127,8 @@ const adminRoutes = [
         component: () => import('@/views/repair-report/index'),
         name: 'repair',
         meta: {
-          title: '报修管理'
+          title: '报修管理',
+          roles: ['superAdmin', 'worker']
         }
       }
     ]
@@ -189,24 +191,7 @@ const adminRoutes = [
       }
     ]
   },
-  {
-    path: '/userInfo',
-    component: Layout,
-    meta: {
-      roles: ['superAdmin', 'admin']
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/user-info/index'),
-        name: 'userInfo',
-        meta: {
-          title: '住户信息',
-          icon: 'people'
-        }
-      }
-    ]
-  },
+
   // 费用管理
   {
     path: '/feeManage',
@@ -273,55 +258,37 @@ const residentRoutes = [
   // TODO报修
   // TODO投诉
   {
-    path: '/getupRecord',
+    path: '/roomInfo',
     component: Layout,
     meta: {
-      roles: ['student']
+      roles: ['resident']
     },
     children: [
       {
         path: 'index',
-        component: () => import('@/views/getup-record/index'),
-        name: 'getupRecord',
+        component: () => import('@/views/room-info/index'),
+        name: 'roomInfo',
         meta: {
-          title: '起床记录',
-          icon: 'eye-open'
+          title: '住房信息',
+          icon: 'peoples'
         }
       }
     ]
   },
   {
-    path: '/backRecord',
+    path: '/fees',
     component: Layout,
     meta: {
-      roles: ['student']
+      roles: ['resident']
     },
     children: [
       {
         path: 'index',
-        component: () => import('@/views/back-record/index'),
-        name: 'backRecord',
+        component: () => import('@/views/fee-resident/index'),
+        name: 'fees',
         meta: {
-          title: '归宿记录',
-          icon: 'eye'
-        }
-      }
-    ]
-  },
-  {
-    path: '/cleanRecord',
-    component: Layout,
-    meta: {
-      roles: ['student']
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/clean-record/index'),
-        name: 'cleanRecord',
-        meta: {
-          title: '打扫记录',
-          icon: 'theme'
+          title: '费用中心',
+          icon: 'money'
         }
       }
     ]

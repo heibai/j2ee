@@ -10,17 +10,17 @@
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
-      <template v-if="device !== 'mobile'">
+      <!-- <template v-if="device !== 'mobile'">
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-      </template>
+      </template> -->
 
       <el-dropdown
         class="avatar-container right-menu-item hover-effect"
         trigger="click"
       >
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
+          {{ $store.getters.userInfo.name }}
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/profile/index">

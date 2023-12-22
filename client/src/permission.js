@@ -17,15 +17,10 @@ router.beforeEach(async (to, from, next) => {
 
   // set page title
   document.title = getPageTitle(to.meta.title)
-  const userInfo = store.state.user.userInfo
-  const accessRoutes = await store.dispatch(
-    'permission/generateRoutes',
-    userInfo.role
-  )
-  next()
+  // const userInfo = store.state.user.userInfo
+  // next()
   // 判断是否存在 Token
-
-  // await checkToken(to, next)
+  await checkToken(to, next)
 })
 
 router.afterEach(() => {
@@ -35,26 +30,26 @@ router.afterEach(() => {
 
 async function checkToken(to, next) {
   const hasToken = getToken()
-
   if (hasToken) {
     // 如果存在 Token
+    // 初始化用户信息
     if (to.path === '/login') {
       // 如果已登录，就跳转到系统主页
       next({ path: '/' })
       NProgress.done()
     } else {
       // 判断是否已经获取了用户角色，如果获取了就使用，否则向服务器请求用户数据
-      const hasRoles = store.getters.roles && store.getters.roles.length > 0
+      const hasRoles = store.getters.role
       if (hasRoles) {
         next()
       } else {
         try {
           // 向 store 中存放用户信息，并获取用户角色
-          const { roles } = await store.dispatch('user/getInfo')
+          const data = await store.dispatch('user/getUserInfo')
           // 由用户角色生成路由表，并存放再 store 中
           const accessRoutes = await store.dispatch(
             'permission/generateRoutes',
-            roles
+            data.role
           )
 
           // 动态添加路由

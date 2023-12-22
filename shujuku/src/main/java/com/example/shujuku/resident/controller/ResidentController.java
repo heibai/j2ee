@@ -32,8 +32,8 @@ public class ResidentController {
 
     @ApiModelProperty("查询入住信息")
     @GetMapping("/getResident")
-    public CommonResult getResident(@Param("residentId") String residentId){
-        return residentService.getResidentByResidentId(residentId);
+    public CommonResult getResident(@Param("userId") String userId){
+        return residentService.getResidentByUserId(userId);
     }
 
     @ApiModelProperty("分页查询入住信息")

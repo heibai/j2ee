@@ -3,7 +3,7 @@ import RecordTable from './components/RecordTable'
 import addForm from './components/addForm.vue'
 import Pagination from '@/components/Pagination'
 import paginationMixins from '@/mixins/paginationMixins'
-import { getComplaintList } from '@/api/complaint'
+import { getFeesList } from '@/api/fees'
 export default {
   name: 'PublicPropertyManage',
   components: {
@@ -15,6 +15,11 @@ export default {
   data() {
     return {
       tableData: []
+    }
+  },
+  provide() {
+    return {
+      operateFinish: this.operateFinish
     }
   },
   created() {
@@ -36,10 +41,11 @@ export default {
     async getTableData() {
       const params = {
         PageNo: this.PageNo,
-        PageSize: this.PageSize
+        PageSize: this.PageSize,
+        roomId: this.$store.getters.room
       }
 
-      const { data } = await getComplaintList(params)
+      const { data } = await getFeesList(params)
       this.tableData = data.records
       this.count = data.total
 
@@ -56,18 +62,8 @@ export default {
     <!-- 公共财产管理 -->
     <h1 class="main-title">
       <span>
-        意见中心
+        费用中心
       </span>
-
-      <!--  v-has="'resident'" -->
-      <el-button
-        v-has="'resident,visitor'"
-        type="primary"
-        icon="el-icon-plus"
-        @click="handleAdd"
-      >
-        发布
-      </el-button>
     </h1>
 
     <!-- 新增按钮 -->

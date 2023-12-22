@@ -26,3 +26,12 @@ export function deleteResident(params) {
     params
   })
 }
+
+// 获取住户信息
+export function getResident(params) {
+  return request({
+    url: '/resident/getResident',
+    method: 'get',
+    params
+  })
+}

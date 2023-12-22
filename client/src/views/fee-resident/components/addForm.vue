@@ -1,6 +1,6 @@
 <script>
 import dialogForm from './dialogForm.vue'
-import { createRepairReport } from '@/api/repair-report'
+import { createResidentFees } from '@/api/fees'
 export default {
   name: 'addProperty',
   components: {
@@ -13,13 +13,11 @@ export default {
   },
   methods: {
     handleSubmit(data) {
+      console.log('req', data)
       //  处理新增逻辑
-      data.status = 1
-      data.reportId = this.$store.getters.userInfo.id
-      data.reportTime = this.$moment().format('YYYY-MM-DD HH:mm:ss')
-      createRepairReport(data)
+      createResidentFees(data)
         .then(() => {
-          this.$message.success('新增成功')
+          this.$message.success('发布成功')
           this.visible = false
           this.$emit('operateFinish')
         })

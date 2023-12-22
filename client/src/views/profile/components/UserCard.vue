@@ -23,34 +23,11 @@
         </div>
       </div>
     </div>
-
-    <div class="user-bio" v-if="user.role === 'student'">
-      <div class="user-skills user-bio-section">
-        <div class="user-bio-section-header">
-          <svg-icon icon-class="skill" /><span>个人效绩</span>
-        </div>
-        <div class="user-bio-section-body">
-          <div class="progress-item">
-            <span>早起率</span>
-            <el-progress :percentage="getup" />
-          </div>
-          <div class="progress-item">
-            <span>早归率</span>
-            <el-progress :percentage="back" />
-          </div>
-          <div class="progress-item">
-            <span>打扫频率</span>
-            <el-progress :percentage="clean" />
-          </div>
-        </div>
-      </div>
-    </div>
   </el-card>
 </template>
 
 <script>
 import PanThumb from '@/components/PanThumb'
-import { getUserProbability } from '@/api/record'
 export default {
   components: { PanThumb },
   props: {
@@ -73,14 +50,7 @@ export default {
       clean: 0
     }
   },
-  mounted() {
-    getUserProbability().then(res => {
-      const { getup, back, clean } = res.data
-      this.getup = Number((getup * 100).toFixed(2))
-      this.back = Number((back * 100).toFixed(2))
-      this.clean = Number((clean * 100).toFixed(2))
-    })
-  }
+  mounted() {}
 }
 </script>
 

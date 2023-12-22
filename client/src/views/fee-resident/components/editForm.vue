@@ -1,25 +1,24 @@
 <script>
 import dialogForm from './dialogForm.vue'
-import { createRepairReport } from '@/api/repair-report'
+import { updateComplaint } from '@/api/complaint'
 export default {
-  name: 'addProperty',
+  name: 'editProperty',
   components: {
     dialogForm
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      formData: {}
     }
   },
   methods: {
     handleSubmit(data) {
-      //  处理新增逻辑
-      data.status = 1
-      data.reportId = this.$store.getters.userInfo.id
-      data.reportTime = this.$moment().format('YYYY-MM-DD HH:mm:ss')
-      createRepairReport(data)
+      //  处理修改逻辑
+      data.propertyId = data.id
+      updateComplaint(data)
         .then(() => {
-          this.$message.success('新增成功')
+          this.$message.success('修改成功')
           this.visible = false
           this.$emit('operateFinish')
         })
@@ -27,14 +26,21 @@ export default {
           this.updateLoading = false
         })
     },
-    show() {
+    show(row) {
+      this.$refs.form.initFormData(row)
       this.visible = true
     }
   }
 }
 </script>
 <template>
-  <dialogForm @finish="handleSubmit" submitText="新增" :visible.sync="visible">
+  <dialogForm
+    @finish="handleSubmit"
+    :visible.sync="visible"
+    ref="form"
+    submitText="编辑"
+    :editMode="true"
+  >
   </dialogForm>
 </template>
 <style scoped lang="scss"></style>
