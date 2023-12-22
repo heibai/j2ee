@@ -15,6 +15,9 @@ public interface UsersMapper extends BaseMapper<Users>{
     @Select("SELECT * FROM users WHERE user_id = #{userId}")
     Users GetUsersByUserId(String userId);
 
+    @Select("SELECT * FROM users WHERE id = #{id}")
+    Users GetUsersById(String id);
+
     Users UserLogin(UsersLoginReq usersLoginReq);
 
     List<Users> getUsersList(UsersPageReq req);

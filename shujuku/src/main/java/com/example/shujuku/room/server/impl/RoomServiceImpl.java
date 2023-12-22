@@ -108,7 +108,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
         ListIterator<Resident> residentListIterator = residentList.listIterator();
         while (residentListIterator.hasNext()) {
             Resident resident = residentListIterator.next();
-            Users users = usersMapper.GetUsersByUserId(resident.getUserId());
+            Users users = usersMapper.GetUsersById(resident.getUserId());
             usersList.add(users);
         }
         return CommonResult.success(usersList);
