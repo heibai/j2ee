@@ -99,7 +99,8 @@ const adminRoutes = [
     component: Layout,
     meta: {
       title: '物业管理',
-      icon: 'international'
+      icon: 'international',
+      roles: ['superAdmin', 'resident', 'worker']
     },
     children: [
       // TODO 处理业主投诉或报修意见
@@ -211,25 +212,6 @@ const adminRoutes = [
       }
     ]
   }
-  // 统计模块
-  // {
-  //   path: '/statistics',
-  //   component: Layout,
-  //   meta: {
-  //     roles: ['superAdmin', 'admin']
-  //   },
-  //   children: [
-  //     // {
-  //     //   path: 'index',
-  //     //   component: () => import('@/views/statistics/index'),
-  //     //   name: 'statistics',
-  //     //   meta: {
-  //     //     title: '统计模块',
-  //     //     icon: 'chart'
-  //     //   }
-  //     // }
-  //   ]
-  // }
 ]
 
 // 业主专属模块
@@ -279,19 +261,20 @@ const residentRoutes = [
 
 // 异步路由
 export const asyncRoutes = [
-  // 404 页面要在最后引入
-  { path: '*', redirect: '/404', hidden: true },
   //  管理员路由 =========================
   ...adminRoutes,
   //  业主专属模块 =========================
-  ...residentRoutes
+  ...residentRoutes,
+
+  // 404 页面要在最后引入
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () =>
   new Router({
     // mode: 'history', // require service support
     scrollBehavior: () => ({ y: 0 }),
-    routes: [...constantRoutes, ...asyncRoutes]
+    routes: [...constantRoutes]
   })
 
 const router = createRouter()

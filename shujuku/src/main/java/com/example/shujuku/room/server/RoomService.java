@@ -25,4 +25,7 @@ public interface RoomService extends IService<Room> {
 
     public CommonResult deleteRoom(String id);
 
+
+
+
 }

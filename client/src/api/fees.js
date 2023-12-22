@@ -51,3 +51,11 @@ export function getRoomFees(params) {
     params
   })
 }
+
+export function payRoomFees(params) {
+  return request({
+    url: '/fees/payRoomFees',
+    method: 'get',
+    params
+  })
+}

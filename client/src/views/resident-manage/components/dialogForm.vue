@@ -13,7 +13,7 @@
       <el-form-item prop="name" label="入住人" required>
         <el-input v-model="formData.name"></el-input>
       </el-form-item>
-      <el-form-item prop="userId" label="手机号" required>
+      <el-form-item prop="userId" label="手机号(与账户号相同)" required>
         <!-- 使用textarea标签 -->
         <el-input v-model="formData.userId"></el-input>
       </el-form-item>
@@ -47,8 +47,8 @@ export default {
       type: Object,
       default: () => {
         return {
-          name: 'resident1',
-          userId: 'resident1'
+          name: '',
+          userId: ''
         }
       }
     },

@@ -48,7 +48,7 @@ export default {
     <h1 class="main-title">暨云小区</h1>
 
     <div class="wrapper">
-      <PanelGroup :building-id="1"></PanelGroup>
+      <PanelGroup></PanelGroup>
     </div>
     <!-- 管理概览 -->
     <!-- 公共财产管理 -->

@@ -13,8 +13,14 @@
       <el-input v-model="roomData.roomId"></el-input>
     </div>
 
+    <!-- 限制住房人数 -->
     <div class="selector-item">
-      <el-button type="primary" round @click="addRoom">添加</el-button>
+      <span class="label">限制住房人数</span>
+      <el-input v-model="roomData.limitNum"></el-input>
+    </div>
+
+    <div class="selector-item">
+      <el-button type="primary" round @click="checkAndAddRoom">添加</el-button>
     </div>
 
     <el-button
@@ -27,7 +33,7 @@
   </div>
 </template>
 <script>
-import { addRoom } from '@/api/room'
+import { addRoom, getRoomByRoomIdAndBuildingId } from '@/api/room'
 export default {
   name: 'GroupSelector',
   model: {
@@ -40,7 +46,7 @@ export default {
         buildingId: null,
         roomId: null,
         hadNum: 0,
-        limitNum: 10
+        limitNum: null
       },
       buildingsData: [],
       floorsData: [],
@@ -67,20 +73,75 @@ export default {
       })
       return false
     },
+    handleSearchRoom() {
+      if (this.validForm()) {
+        let params = {
+          buildingId: this.roomData.buildingId,
+          roomId: this.roomData.roomId
+        }
+        getRoomByRoomIdAndBuildingId(params)
+          .then(res => {
+            this.$emit('searched', [res.data])
+          })
+          .catch(e => {
+            console.log(e)
+            this.$message({
+              type: 'info',
+              message: '检索失败'
+            })
+          })
+      }
+    },
+    // 检查没有重复的房间
+    checkAndAddRoom() {
+      let params = {
+        buildingId: this.roomData.buildingId,
+        roomId: this.roomData.roomId
+      }
+      getRoomByRoomIdAndBuildingId(params)
+        .then(res => {
+          if (res.data === null) {
+            this.addRoom()
+          } else {
+            this.$message({
+              type: 'info',
+              message: '该房间已存在'
+            })
+          }
+        })
+        .catch(e => {
+          console.log(e)
+          this.$message({
+            type: 'info',
+            message: '检索失败'
+          })
+        })
+    },
     addRoom() {
       if (this.validForm()) {
-        addRoom(this.roomData)
+        if (!this.roomData.limitNum || this.roomData.limitNum <= 0)
+          return this.$message({
+            type: 'error',
+            message: '请填写正确信息'
+          })
+        let params = {
+          buildingId: this.roomData.buildingId,
+          roomId: this.roomData.roomId,
+          limitNum: this.roomData.limitNum,
+          status: 1
+        }
+        addRoom(params)
           .then(res => {
             this.$message({
               type: 'success',
-              message: '添加成功!'
+              message: '添加成功'
             })
             this.$emit('operateFinish')
           })
           .catch(e => {
             console.log(e)
             this.$message({
-              type: 'info',
+              type: 'error',
               message: '添加失败'
             })
           })

@@ -63,4 +63,11 @@ public class FeesController {
     public CommonResult deleteFees(@Param("id") String id){
         return feesService.deleteFees(id);
     }
+
+
+    @ApiModelProperty("一键缴费")
+    @GetMapping("/payRoomFees")
+    public CommonResult payRoomFees(@Param("roomId") String roomId){
+        return feesService.payRoomFees(roomId);
+    }
 }

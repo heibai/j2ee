@@ -51,7 +51,6 @@ async function checkToken(to, next) {
             'permission/generateRoutes',
             data.role
           )
-
           // 动态添加路由
           router.addRoutes(accessRoutes)
 

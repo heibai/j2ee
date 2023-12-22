@@ -130,4 +130,17 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
             return CommonResult.success(fees);
         }else return CommonResult.fail("删除fees表数据失败");
     }
+
+    @Override
+    public CommonResult payRoomFees(String roomId) {
+        List<Fees> feesList = feesMapper.GetFeesByRoomId(roomId);
+        ListIterator<Fees> feesListIterator = feesList.listIterator();
+        while(feesListIterator.hasNext()){
+            Fees fees = feesListIterator.next();
+            fees.setStatus(String.valueOf(2));
+            fees.setTime(LocalDateTime.now());
+            feesMapper.updateById(fees);
+        }
+        return CommonResult.success("缴费成功");
+    }
 }

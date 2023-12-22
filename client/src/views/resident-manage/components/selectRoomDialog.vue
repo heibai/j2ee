@@ -62,7 +62,8 @@ export default {
       console.log()
       let reqData = {
         userId: this.checkInUser.id,
-        roomId: this.currRow.id
+        roomId: this.currRow.id,
+        status: 1
       }
       console.log(reqData)
       // TODO入住逻辑

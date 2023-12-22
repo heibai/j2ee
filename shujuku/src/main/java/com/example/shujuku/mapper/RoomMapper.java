@@ -14,11 +14,13 @@ public interface RoomMapper extends BaseMapper<Room>{
 //    @Select("SELECT * FROM room WHERE room_Id = #{roomId}")
 //    Room GetRoomByRoomId(String roomId);
 
+    @Select("SELECT * FROM room WHERE id = #{id} ")
+    Room GetRoomById(String id);
+
     @Select("SELECT * FROM room WHERE id = #{id} and status = 1")
     Room CheckRoom(String id);
 
-    @Select("select * building_id from room where status != 0 order by building_id")
-    List<Room> getRoomsGroupByBuildingId();
+
 
 
     @Select("SELECT * FROM room WHERE room_Id = #{roomId} and building_id = #{buildingId}")
@@ -31,4 +33,6 @@ public interface RoomMapper extends BaseMapper<Room>{
     List<Room> getRoomList(RoomPageReq req);
 
     List<Room> getAllRooms();
+
+
 }

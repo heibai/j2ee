@@ -1,11 +1,7 @@
 <template>
   <div class="StudentTable">
     <el-table :data="tableData" style="width: 100%" :stripe="true">
-      <el-table-column label="姓名">
-        <template slot-scope="scope">
-          <a @click="gotoUserDetail(scope.row.id)">{{ scope.row.name }}</a>
-        </template>
-      </el-table-column>
+      <el-table-column label="姓名" prop="name"> </el-table-column>
       <el-table-column prop="userId" label="电话号"></el-table-column>
       <!-- <el-table-column label="入住时间">
         <template slot-scope="scope">

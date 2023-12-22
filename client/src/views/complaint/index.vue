@@ -38,7 +38,9 @@ export default {
         PageNo: this.PageNo,
         PageSize: this.PageSize
       }
-
+      if (this.$store.getters.role === 'resident') {
+        params.complaintId = this.$store.getters.userInfo.id
+      }
       const { data } = await getComplaintList(params)
       this.tableData = data.records
       this.count = data.total

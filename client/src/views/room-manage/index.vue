@@ -44,6 +44,9 @@ export default {
       this.tableData = data.records
       this.count = data.total
       console.log(this.tableData)
+    },
+    getSearchData(data) {
+      this.tableData = data
     }
   }
 }
@@ -57,6 +60,7 @@ export default {
       <roomSelector
         :selectorData="selectorData"
         @operateFinish="operateFinish"
+        @searched="getSearchData"
       />
     </div>
     <h1 class="main-title">

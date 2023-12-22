@@ -77,6 +77,9 @@ export default {
         <!-- 信息 -->
         <el-table-column prop="roomId" label="房间号"> </el-table-column>
 
+        <!-- 限制人数 -->
+        <el-table-column prop="limitNum" label="限制人数"> </el-table-column>
+
         <el-table-column prop="hadNum" label="已入住人数"> </el-table-column>
 
         <!-- 操作区 -->
@@ -85,15 +88,15 @@ export default {
             <el-button
               type="primary"
               size="mini"
-              :disabled="scope.row.hadNum == 0"
               @click="handleEdit(scope.$index, scope.row)"
               >详情
             </el-button>
             <el-button
               type="danger"
               size="mini"
+              :disabled="scope.row.hadNum != 0"
               @click="handleDelete(scope.$index, scope.row)"
-              >退户</el-button
+              >删除</el-button
             >
           </template>
         </el-table-column>

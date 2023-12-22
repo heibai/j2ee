@@ -96,9 +96,7 @@ export default {
           this.formData.userId = this.formData.account
           register(this.formData).then(() => {
             this.$message.success('注册成功')
-            this.$parent.fetchAdminTableData().then(() => {
-              this.$message.success('数据已更新')
-            })
+            this.$emit('operateFinish')
           })
         } else {
           this.$message.error('请填充完整信息')

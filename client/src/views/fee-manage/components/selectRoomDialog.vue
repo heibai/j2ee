@@ -58,9 +58,14 @@ export default {
     getTableData() {
       this.tableLoading = true
       let reqData = {
-        ...this.selectorData,
         pageNo: this.PageNo,
         pageSize: this.PageSize
+      }
+      if (this.selectorData.buildingId) {
+        reqData.buildingId = this.selectorData.buildingId
+      }
+      if (this.selectorData.roomId) {
+        reqData.roomId = this.selectorData.roomId
       }
       getRoomPage(reqData).then(res => {
         console.log(res)
@@ -84,7 +89,8 @@ export default {
               ...this.formData,
               deadline: this.formData.time.replace(' ', 'T'),
               time: null,
-              roomId: row.roomId
+              roomId: row.id,
+              status: 1
             }
             console.log(reqData)
             publishSingleFee(reqData).then(res => {

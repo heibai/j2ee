@@ -94,6 +94,7 @@ export default {
         if (valid) {
           this.updateLoading = true
           this.$emit('finish', this.formData)
+          this.updateLoading = false
         }
       })
     }

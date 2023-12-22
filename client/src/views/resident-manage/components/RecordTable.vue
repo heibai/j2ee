@@ -84,16 +84,32 @@ export default {
     <div class="table-wrapper">
       <el-table :data="tableData" style="width: 100%" v-loading="tableLoading">
         <!-- 财产物品名 -->
-        <el-table-column prop="userId" label="入住人"> </el-table-column>
+        <el-table-column prop="userId" label="入住人">
+          <template slot-scope="scope">
+            {{ scope.row.name }}
+          </template>
+        </el-table-column>
 
         <!-- 信息 -->
-        <el-table-column prop="message" label="入住人电话"> </el-table-column>
+        <el-table-column prop="message" label="入住人电话">
+          <template slot-scope="scope">
+            {{ scope.row.userId }}
+          </template>
+        </el-table-column>
 
         <!-- 投诉时间 -->
-        <el-table-column prop="buildingId" label="楼栋"> </el-table-column>
+        <el-table-column prop="buildingId" label="楼栋">
+          <template slot-scope="scope">
+            {{ scope.row.buildingId }}
+          </template></el-table-column
+        >
 
         <!-- 回应时间 -->
-        <el-table-column prop="roomId" label="房间号"> </el-table-column>
+        <el-table-column prop="roomId" label="房间号">
+          <template slot-scope="scope">
+            {{ scope.row.roomId }}
+          </template>
+        </el-table-column>
 
         <!-- 操作区 -->
         <el-table-column label="操作">

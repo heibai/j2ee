@@ -75,7 +75,7 @@ const actions = {
           commit('SET_NAME', data.name)
           setToken(JSON.stringify(data))
 
-          dispatch('permission/generateRoutes', data.role, { root: true })
+          Promise.resolve(dispatch('changeRoles', data.role))
           resolve()
         })
         .catch(error => {
@@ -128,6 +128,7 @@ const actions = {
         })
     })
   },
+
   getResidentInfo({ commit, state }) {
     getResident({ userId: state.userInfo.id }).then(response => {
       const { data } = response
@@ -141,27 +142,15 @@ const actions = {
   // dynamically modify permissions
   changeRoles({ commit, dispatch }, role) {
     return new Promise(async resolve => {
-      const token = role + '-token'
-
-      commit('SET_TOKEN', token)
-      setToken(token)
-
-      const { roles } = await dispatch('getInfo')
-
       resetRouter()
 
       // generate accessible routes map based on roles
-      const accessRoutes = await dispatch('permission/generateRoutes', roles, {
+      const accessRoutes = await dispatch('permission/generateRoutes', role, {
         root: true
       })
 
       // dynamically add accessible routes
       router.addRoutes(accessRoutes)
-
-      // reset visited views and cached views
-      dispatch('tagsView/delAllViews', null, { root: true })
-
-      resolve()
     })
   }
 }

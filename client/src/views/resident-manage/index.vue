@@ -1,29 +1,5 @@
 <template>
   <div id="UserInfo" class="page-wrapper">
-    <!-- 选择器 -->
-    <!-- <h1 class="main-title">选择学生</h1> -->
-    <!-- <div class="wrapper">
-      <el-tabs type="border-card">
-        <el-tab-pane label="级联选择">
-          <GroupSelector :selectorData="selectorData" />
-          <el-button
-            type="primary"
-            @click="fetchUserInfo('id', selectorData.userId)"
-            >搜索</el-button
-          >
-        </el-tab-pane>
-        <el-tab-pane label="按学号搜索">
-          <StudentSearcher v-model="searchContent" />
-          <el-button
-            type="primary"
-            @click="fetchUserInfo('account', searchContent)"
-            >搜索</el-button
-          >
-        </el-tab-pane>
-      </el-tabs>
-    </div> -->
-    <!-- 选择器 -->
-
     <h1 class="main-title">
       <span>
         住户管理
@@ -32,6 +8,14 @@
         新增住户
       </el-button>
     </h1>
+
+    <div v-has="'superAdmin'" class="wrapper main-card selector-wrapper">
+      <GroupSelector
+        :selectorData="selectorData"
+        @searchRoom="searchRoomResident"
+      />
+    </div>
+
     <div class="operation-container">
       <div class="wrapper">
         <RecordTable
@@ -54,13 +38,14 @@
 </template>
 
 <script>
-import GroupSelector from '@/components/GroupSelector'
+import GroupSelector from './components/GroupSelector'
 import StudentSearcher from './components/StudentSearcher'
 import Pagination from '@/components/Pagination'
 import paginationMixins from '@/mixins/paginationMixins'
 import RecordTable from './components/RecordTable'
 import addForm from './components/addForm'
 import { getResidentPage } from '@/api/resident'
+import { getRoomByRoomIdAndBuildingId } from '@/api/room'
 export default {
   name: 'UserInfo',
   components: {
@@ -104,16 +89,40 @@ export default {
       this.PageSize = limit
       this.getTableData()
     },
-
-    async getTableData() {
+    searchRoomResident(selectorData) {
+      getRoomByRoomIdAndBuildingId(selectorData).then(res => {
+        if (res.data === null) {
+          this.$message.error('该住房不存在')
+          return
+        }
+        this.getTableData(res.data.id)
+      })
+    },
+    async getTableData(roomId = null) {
       const params = {
         PageNo: this.PageNo,
-        PageSize: this.PageSize
+        PageSize: this.PageSize,
+        roomId
       }
       const { data } = await getResidentPage(params)
-      this.tableData = data.records
+      this.tableData = this.generationTableData(data.records)
       this.count = data.total
       console.log(this.tableData)
+    },
+    generationTableData(records) {
+      return records.map(record => {
+        console.log(record)
+        let resident = record[0]
+        let user = record[1]
+        let room = record[2]
+        return {
+          ...resident,
+          name: user.name,
+          account: user.userId,
+          buildingId: room.buildingId,
+          roomId: room.roomId
+        }
+      })
     }
   },
   mounted() {
@@ -180,5 +189,9 @@ export default {
       margin-top: 0px;
     }
   }
+}
+.selector-wrapper {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

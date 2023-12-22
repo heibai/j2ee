@@ -12,7 +12,7 @@ export function createResident(data) {
 // 获取住户列表
 export function getResidentPage(params) {
   return request({
-    url: '/resident/getResidentPage',
+    url: '/resident/getResidentDetailPage',
     method: 'get',
     params
   })

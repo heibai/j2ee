@@ -41,6 +41,7 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
         if(room != null){
             int hadNum = Integer.parseInt(room.getHadNum())+1;
             int limitNum = Integer.parseInt(room.getLimitNum());
+            room.setStatus(String.valueOf(1));
             if(hadNum == limitNum){
                 room.setStatus(String.valueOf(2));
                 room.setHadNum(room.getLimitNum());
@@ -80,11 +81,17 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
+        List<List<Object>> resultList = new ArrayList<List<Object>>();
         List<Resident> residentList = residentMapper.getResidentList(req);
-//        List<Student> list = studentMapper.getStudentList(req);
-//        List<Student> studentList = (List<Student>) list.get(0);
-//        Integer total = ((List<Integer>) list.get(1)).get(0);
-//        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
+//       联查出用户信息 住户信息 和 住房信息
+        ListIterator<Resident> residentListIterator = residentList.listIterator();
+        while(residentListIterator.hasNext()){
+
+            //Users user = usersMapper.GetUsersById(resident.getUserId());
+            //Room room = roomMapper.selectById(resident.getRoomId());
+            //resident.setUser(user);
+            //resident.setRoom(room);
+        }
         Page<Resident> page = new Page<>(pageNo, pageSize);
         page.setRecords(residentList);
         page.setTotal(residentList.size());
@@ -102,15 +109,14 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
         while(residentListIterator.hasNext()){
             List<Object> result = new ArrayList<Object>();
             Resident resident = residentListIterator.next();
-            Users users = usersMapper.GetUsersByUserId(resident.getUserId());
+            Users users = usersMapper.GetUsersById(resident.getUserId());
+            Room room = roomMapper.selectById(resident.getRoomId());
             result.add(resident);
             result.add(users);
+            result.add(room);
             resultList.add(result);
         }
-//        List<Student> list = studentMapper.getStudentList(req);
-//        List<Student> studentList = (List<Student>) list.get(0);
-//        Integer total = ((List<Integer>) list.get(1)).get(0);
-//        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
+
         Page<List<Object>> page = new Page<>(pageNo, pageSize);
         page.setRecords(resultList);
         page.setTotal(residentList.size());

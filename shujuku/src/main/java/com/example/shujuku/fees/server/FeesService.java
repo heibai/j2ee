@@ -21,4 +21,6 @@ public interface FeesService extends IService<Fees> {
 
     public CommonResult deleteFees(String id);
 
+    public CommonResult payRoomFees(String roomId);
+
 }

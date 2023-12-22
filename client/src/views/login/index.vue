@@ -128,7 +128,7 @@
 
       <!-- 切换为注册 -->
       <a class="toggle" @click="registerMode = !registerMode">
-        <span v-if="!registerMode">学生注册</span>
+        <span v-if="!registerMode">注册</span>
         <span v-else>返回登录</span>
       </a>
       <!-- 切换为注册 -->
@@ -145,11 +145,15 @@ export default {
     // 手机号
     const validateAccount = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('手机号不能为空'))
+        return callback(new Error('账号不能为空'))
+      }
+      // 如果是登录模式，不验证手机号格式
+      if (!this.registerMode) {
+        return callback()
       }
       setTimeout(() => {
         if (!/^1[3456789]\d{9}$/.test(value)) {
-          callback(new Error('请输入正确格式的手机号'))
+          callback(new Error('账号请输入正确格式的手机号'))
         } else {
           callback()
         }
@@ -178,7 +182,9 @@ export default {
         name: ''
       },
       loginRules: {
-        account: [{ required: true, trigger: 'blur' }],
+        account: [
+          { required: true, trigger: 'blur', validator: validateAccount }
+        ],
         name: [{ required: true, trigger: 'blur' }],
         password: [
           { required: true, trigger: 'blur', validator: validatePassword }
@@ -260,7 +266,7 @@ export default {
             userId: this.loginForm.account,
             name: this.loginForm.name,
             password: this.loginForm.password,
-            role: 'resident'
+            role: 'visitor'
           }).then(() => {
             this.$message({ message: '注册成功', type: 'success' })
             this.loading = false

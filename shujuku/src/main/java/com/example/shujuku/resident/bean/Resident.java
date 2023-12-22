@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.shujuku.room.bean.Room;
+import com.example.shujuku.users.bean.Users;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,6 +42,7 @@ public class Resident implements Serializable {
     //为0表示不可用，1表示入住中，2表示未入住
     @TableField("status")
     private String status;
+
 
 
 }

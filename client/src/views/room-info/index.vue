@@ -27,14 +27,14 @@
         <el-col :span="12">
           <el-card shadow="hover">
             <div class="detail-info">
-              <span> 欠费 ：{{ roomInfo.fees ? roomInfo.fees : 0 }} 元 </span>
+              <span> 欠费 ：{{ fees }} 元 </span>
               <!-- 缴费 -->
               <el-button
                 v-has="'superAdmin'"
                 type="success"
                 size="mini"
                 icon="el-icon-money"
-                @click="handleSubmit()"
+                @click="payRoomFees"
               >
               </el-button>
             </div>
@@ -54,23 +54,19 @@
 
 <script>
 import GroupSelector from './components/GroupSelector'
-import PanelGroup from './components/PanelGroup'
 import RecordTable from './components/recordTable'
-import Evaluates from '../dashboard/student/components/Evaluates'
 import RoomInfoEditModal from './components/RoomInfoEditModal.vue'
 import {
   getRoomInfo,
   getRoomUsers,
   getRoomByRoomIdAndBuildingId
 } from '@/api/room'
-import { getRoomFees } from '@/api/fees'
+import { getRoomFees, payRoomFees } from '@/api/fees'
 export default {
   name: 'RoomInfo',
   components: {
     GroupSelector,
-    PanelGroup,
     RecordTable,
-    Evaluates,
     RoomInfoEditModal
   },
   data() {
@@ -83,11 +79,11 @@ export default {
         buildingId: null,
         roomId: null
       },
-      evaluatesData: [],
       evaluateForm: {
         note: '',
         score: 60
       },
+      fees: 0,
       editModalVisible: false
     }
   },
@@ -107,6 +103,7 @@ export default {
       await this.fetchRoomResident(roomId)
       await this.fetchRoomFees(roomId)
     }
+    console.log(this.roomInfo)
   },
   created() {
     // 在进入页面是判断角色 如果为住户则生成roomId
@@ -131,7 +128,7 @@ export default {
 
     async fetchRoomFees(roomId) {
       const roomFees = (await getRoomFees({ roomId })).data
-      this.roomInfo.fees = roomFees
+      this.fees = roomFees
     },
     async handleSearchRoom() {
       const roomInfo = (
@@ -154,20 +151,20 @@ export default {
       })
     },
 
-    handleSubmit() {
+    payRoomFees() {
       // 一键缴费
-      this.$confirm('此操作将帮用户缴纳所有欠费, 是否继续?', '提示', {
+      this.$confirm('此操作将帮住房缴纳所有欠费, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(async () => {
-          await deleteComplaint(row)
+          await payRoomFees({ roomId: this.roomInfo.id })
           this.$message({
             type: 'success',
             message: '缴费成功!'
           })
-          this.$emit('operateFinish')
+          await this.fetchRoomFees(this.roomInfo.id)
         })
         .catch(e => {
           console.log(e)

@@ -44,9 +44,7 @@ export default {
         PageNo: this.PageNo,
         PageSize: this.PageSize
       }
-
       const { data } = await getFeesList(params)
-
       this.tableData = this.generationTable(data.records)
       this.count = this.tableData.length
 

@@ -24,7 +24,7 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="layerCount"
+            :end-val="roomCount"
             :duration="3000"
             class="card-panel-num"
           />
@@ -42,7 +42,7 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="roomCount"
+            :end-val="residentCount"
             :duration="3200"
             class="card-panel-num"
           />
@@ -54,7 +54,7 @@
 
 <script>
 import CountTo from 'vue-count-to'
-import { getBuildingInfo } from '@/api/room'
+import { getRoomsTotalDetail } from '@/api/room'
 
 export default {
   components: {
@@ -65,28 +65,21 @@ export default {
       buildingName: 'NAN',
       layerCount: 0,
       roomCount: 0,
-      studentCount: 0
+      residentCount: 0
     }
   },
-  props: {
-    buildingId: {
-      type: Number,
-      required: true
-    }
-  },
-  watch: {
-    // buildingId(val) {
-    //   getBuildingInfo(val).then(res => {
-    //     this.buildingName = res.data.name
-    //     this.layerCount = res.data.floorCount
-    //     this.roomCount = res.data.roomCount
-    //     this.studentCount = res.data.studentCount
-    //   })
-    // }
+
+  created() {
+    this.fetchDashboardData()
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.$emit('handleSetLineChartData', type)
+    fetchDashboardData() {
+      getRoomsTotalDetail().then(res => {
+        console.log(res)
+        this.buildingName = res.data.buildingNum
+        this.roomCount = res.data.totalRoomNum
+        this.residentCount = res.data.totalHadNum
+      })
     }
   }
 }

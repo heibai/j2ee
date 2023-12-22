@@ -4,7 +4,7 @@
     <h1 class="main-title">添加工作人员</h1>
     <div class="wrapper top-wrapper">
       <div class="main-card right">
-        <AddAdminForm />
+        <AddAdminForm @operateFinish="fetchTableData" />
       </div>
     </div>
     <!-- 添加管理员 -->

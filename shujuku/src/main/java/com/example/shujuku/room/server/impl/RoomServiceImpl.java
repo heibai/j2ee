@@ -57,7 +57,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Override
     public CommonResult getRoomsTotalDetail() {
-        List<Room> roomList = roomMapper.getRoomsGroupByBuildingId();
+        List<Room> roomList = roomMapper.getAllRooms();
         HashMap<String, Object> resultmap = new HashMap<String, Object>();
         HashMap<String, HashMap<String, Integer>> buildingHashMap = new HashMap<String, HashMap<String, Integer>>();
         int buildingNum = 0;
@@ -67,6 +67,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
         ListIterator<Room> roomListIterator = roomList.listIterator();
         while (roomListIterator.hasNext()) {
             Room room = roomListIterator.next();
+            System.out.println(buildingHashMap.get(room.getBuildingId()));
             if (buildingHashMap.get(room.getBuildingId()) == null) {
                 HashMap<String, Integer> buildingDetailHashMap = new HashMap<String, Integer>();
                 buildingDetailHashMap.put("roomNum", 1);
@@ -95,7 +96,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Override
     public CommonResult getRoomById(String roomId) {
-        Room room = roomMapper.CheckRoom(roomId);
+        Room room = roomMapper.GetRoomById(roomId);
         if (room != null) {
             return CommonResult.success(room);
         } else return CommonResult.fail("查询room表失败");
@@ -151,10 +152,13 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Override
     public CommonResult deleteRoom(String roomId) {
-        Room room = roomMapper.CheckRoom(roomId);
+        Room room = roomMapper.GetRoomById(roomId);
         Assert.notNull(room, "删除room表数据失败，表中查询不到对应roomId的申请");
         if (SqlHelper.retBool(baseMapper.deleteById(roomId))) {
             return CommonResult.success(room);
         } else return CommonResult.fail("删除room表数据失败");
     }
+
+
+
 }

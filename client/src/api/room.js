@@ -11,7 +11,7 @@ export function getRoomPage(params) {
 // 查询房间
 export function getRoomInfo(params) {
   return request({
-    url: '/room/getRoom',
+    url: '/room/getRoomById',
     method: 'get',
     params
   })
@@ -56,5 +56,12 @@ export function getRoomUsers(params) {
     url: '/room/getRoomUsers',
     method: 'get',
     params
+  })
+}
+
+export function getRoomsTotalDetail() {
+  return request({
+    url: '/room/getRoomsTotalDetail',
+    method: 'get'
   })
 }

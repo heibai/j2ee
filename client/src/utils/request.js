@@ -13,10 +13,6 @@ const service = axios.create({
 // 请求预处理
 service.interceptors.request.use(
   config => {
-    // 如果浏览器存储有 Token，在请求的 header 中添加 Token
-    if (store.getters.token) {
-      config.headers['Authorization'] = getToken()
-    }
     return config
   },
   error => {
