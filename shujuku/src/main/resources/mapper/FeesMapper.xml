@@ -6,16 +6,22 @@
         t.id,
         t.fees_id,
         t.type,
+        t.price,
         t.room_id,
-        t.status
+        t.message,
+        t.status,
+        t.deadline
     </sql>
 
     <resultMap id="feesList" type="com.example.shujuku.fees.bean.Fees">
         <id column="id" property="id"/>
         <result column="fees_id" property="feesId"/>
         <result column="type" property="type"/>
+        <result column="price" property="price"/>
         <result column="room_id" property="roomId"/>
+        <result column="message" property="message"/>
         <result column="status" property="status"/>
+        <result column="deadline" property="deadline"/>
     </resultMap>
 
     <select id="getFeesList" resultMap="feesList">
