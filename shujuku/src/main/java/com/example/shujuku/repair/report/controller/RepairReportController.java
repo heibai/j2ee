@@ -30,8 +30,8 @@ public class RepairReportController {
 
     @ApiModelProperty("查询报修信息")
     @GetMapping("/getRepairReport")
-    public CommonResult getRepairReport(@Param("repairReportId") String reportId){
-        return repairReportService.getRepairReportByReportId(reportId);
+    public CommonResult getRepairReport(@Param("id") String id){
+        return repairReportService.getRepairReportById(id);
     }
 
     @ApiModelProperty("分页查询报修信息")

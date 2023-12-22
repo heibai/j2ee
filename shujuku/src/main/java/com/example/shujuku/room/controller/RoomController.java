@@ -50,14 +50,14 @@ public class RoomController {
 
     @ApiModelProperty("查询房间信息")
     @GetMapping("/getRoom")
-    public CommonResult getRoom(@Param("roomId") String roomId){
-        return roomService.getRoomByRoomId(roomId);
+    public CommonResult getRoom(@Param("id") String id){
+        return roomService.getRoomById(id);
     }
 
     @ApiModelProperty("分页查询房间信息")
     @GetMapping("/getRoomPage")
     public CommonResult getRoomPage(RoomPageReq roomPageReq){
-        return roomService.getRoomPage(roomPageReq);
+        return roomService.getRoomList(roomPageReq);
     }
 
     @ApiModelProperty("更新房间信息")

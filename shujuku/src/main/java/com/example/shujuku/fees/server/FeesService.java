@@ -11,7 +11,7 @@ public interface FeesService extends IService<Fees> {
 
     public CommonResult createFees(Fees fees);
 
-    public CommonResult getFeesByFeesId(String feesId);
+    public CommonResult getFeesById(String id);
 
     public CommonResult getFeesByRoomId(String roomId);
 
@@ -19,6 +19,6 @@ public interface FeesService extends IService<Fees> {
 
     public CommonResult updateFees(Fees fees);
 
-    public CommonResult deleteFees(String feesId);
+    public CommonResult deleteFees(String id);
 
 }

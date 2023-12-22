@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper
 public interface RoomMapper extends BaseMapper<Room>{
 
-    @Select("SELECT * FROM room WHERE room_Id = #{roomId}")
-    Room GetRoomByRoomId(String roomId);
+//    @Select("SELECT * FROM room WHERE room_Id = #{roomId}")
+//    Room GetRoomByRoomId(String roomId);
 
     @Select("SELECT * FROM room WHERE room_Id = #{roomId} and status = 1")
     Room CheckRoom(String roomId);

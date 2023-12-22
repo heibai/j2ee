@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper
 public interface FeesMapper extends BaseMapper<Fees>{
 
-    @Select("SELECT * FROM fees WHERE feesId = #{feesId}")
-    Fees GetFeesByFeesId(String feesId);
+//    @Select("SELECT * FROM fees WHERE feesId = #{feesId}")
+//    Fees GetFeesByFeesId(String feesId);
 
     List<Fees> GetFeesByRoomId(String roomId);
 

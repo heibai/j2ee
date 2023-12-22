@@ -1,12 +1,9 @@
 package com.example.shujuku.users.server.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.shujuku.common.CommonResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.shujuku.common.Tool;
 import com.example.shujuku.req.UsersLoginReq;
 import com.example.shujuku.req.UsersPageReq;
 import com.example.shujuku.users.bean.Users;
@@ -45,26 +42,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
-    public CommonResult getUsersByUserId(String userId){
-        Users users = usersMapper.GetUsersByUserId(userId);
+    public CommonResult getUsersById(String id){
+        Users users = usersMapper.selectById(id);
         if(users != null){
             return CommonResult.success(users);
         }else return CommonResult.fail("查询users表失败");
     }
 
     @Override
-    public CommonResult getUsersPage(UsersPageReq users) {
-        Page<Users> page = new Page<>(users.getPageNo(), users.getPageSize());
-        LambdaQueryWrapper<Users> queryWrapper = new LambdaQueryWrapper<Users>();
-        //多条件匹配查询
-        queryWrapper.eq(Tool.isPresent(users.getUserId()), Users::getUserId, users.getUserId());
-        queryWrapper.like(Tool.isPresent(users.getName()), Users::getName, users.getName());
-        queryWrapper.eq(Tool.isPresent(users.getRole()), Users::getRole, users.getRole());
-//        //查询
-        IPage<Users> ipage = this.baseMapper.selectPage(page, queryWrapper);
-        return CommonResult.success(ipage);
-    }
-
     public CommonResult getUsersList(UsersPageReq req){
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
@@ -91,10 +76,10 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
-    public CommonResult deleteUsers(String usersId){
-        Users users = usersMapper.selectById(usersId);
+    public CommonResult deleteUsers(String id){
+        Users users = usersMapper.selectById(id);
         Assert.notNull(users, "删除users表数据失败，表中查询不到对应usersId的申请");
-        if(SqlHelper.retBool(baseMapper.deleteById(usersId))){
+        if(SqlHelper.retBool(baseMapper.deleteById(id))){
             return CommonResult.success(users);
         }else return CommonResult.fail("删除users表数据失败");
     }

@@ -30,8 +30,8 @@ public class ComplaintController {
 
     @ApiModelProperty("查询入住信息")
     @GetMapping("/getComplaint")
-    public CommonResult getComplaint(@Param("complaintId") String complaintId){
-        return complaintService.getComplaintByComplaintId(complaintId);
+    public CommonResult getComplaint(@Param("id") String id){
+        return complaintService.getComplaintById(id);
     }
 
     @ApiModelProperty("分页查询入住信息")

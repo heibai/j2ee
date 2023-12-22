@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper
 public interface PropertyMapper extends BaseMapper<Property>{
 
-    @Select("SELECT * FROM property WHERE propertyId = #{propertyId}")
-    Property GetPropertyByPropertyId(String propertyId);
+//    @Select("SELECT * FROM property WHERE propertyId = #{propertyId}")
+//    Property GetPropertyByPropertyId(String propertyId);
 
     List<Property> getPropertyList(PropertyPageReq req);
 

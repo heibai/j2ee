@@ -94,8 +94,8 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     }
 
     @Override
-    public CommonResult getRoomByRoomId(String roomId) {
-        Room room = roomMapper.GetRoomByRoomId(roomId);
+    public CommonResult getRoomById(String roomId) {
+        Room room = roomMapper.CheckRoom(roomId);
         if (room != null) {
             return CommonResult.success(room);
         } else return CommonResult.fail("查询room表失败");
@@ -115,7 +115,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     }
 
     @Override
-    public CommonResult getRoomPage(RoomPageReq req) {
+    public CommonResult getRoomList(RoomPageReq req) {
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1) * pageSize);
@@ -143,7 +143,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Override
     public CommonResult deleteRoom(String roomId) {
-        Room room = roomMapper.GetRoomByRoomId(roomId);
+        Room room = roomMapper.CheckRoom(roomId);
         Assert.notNull(room, "删除room表数据失败，表中查询不到对应roomId的申请");
         if (SqlHelper.retBool(baseMapper.deleteById(roomId))) {
             return CommonResult.success(room);

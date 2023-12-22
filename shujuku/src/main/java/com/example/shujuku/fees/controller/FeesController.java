@@ -36,8 +36,8 @@ public class FeesController {
 
     @ApiModelProperty("查询费用信息")
     @GetMapping("/getFees")
-    public CommonResult getFees(@Param("feesId") String feesId){
-        return feesService.getFeesByFeesId(feesId);
+    public CommonResult getFees(@Param("id") String id){
+        return feesService.getFeesById(id);
     }
 
     @ApiModelProperty("查询房间待缴费用信息")

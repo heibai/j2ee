@@ -9,7 +9,7 @@ public interface ComplaintService extends IService<Complaint> {
 
     public CommonResult createComplaint(Complaint complaint);
 
-    public CommonResult getComplaintByComplaintId(String complaintId);
+    public CommonResult getComplaintById(String id);
 
     public CommonResult getComplaintPage(ComplaintPageReq complaintPageReq);
 

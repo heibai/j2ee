@@ -10,16 +10,14 @@ public interface UsersService extends IService<Users> {
 
     public CommonResult createUsers(Users users);
 
-    public CommonResult getUsersByUserId(String userId);
+    public CommonResult getUsersById(String id);
 
     public CommonResult login(UsersLoginReq usersLoginReq);
-
-    public CommonResult getUsersPage(UsersPageReq usersPageReq);
 
     public CommonResult getUsersList(UsersPageReq req);
 
     public CommonResult updateUsers(Users users);
 
-    public CommonResult deleteUsers(String usersId);
+    public CommonResult deleteUsers(String id);
 
 }
