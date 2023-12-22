@@ -109,7 +109,7 @@ const actions = {
 
   getUserInfo({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      getUser({ userId: state.userInfo.userId })
+      getUser({ id: state.userInfo.id })
         .then(response => {
           const { data } = response
           if (!data) {

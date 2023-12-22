@@ -11,6 +11,8 @@ public interface RoomService extends IService<Room> {
 
     public CommonResult getRoomById(String id);
 
+    public  CommonResult getRoomByRoomIdAndBuildingId(String roomId, String buildingId);
+
     public CommonResult getResidentableRoom();
 
     public CommonResult getRoomsTotalDetail();

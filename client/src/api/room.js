@@ -17,6 +17,14 @@ export function getRoomInfo(params) {
   })
 }
 
+export function getRoomByRoomIdAndBuildingId(params) {
+  return request({
+    url: '/room/getRoomByRoomIdAndBuildingId',
+    method: 'get',
+    params
+  })
+}
+
 // 可入住房间
 export function getRoomPageAvailable(params) {
   return request({

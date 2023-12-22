@@ -54,6 +54,12 @@ public class RoomController {
         return roomService.getRoomById(id);
     }
 
+    @ApiModelProperty("查询房间信息")
+    @GetMapping("/getRoomByRoomIdAndBuildingId")
+    public CommonResult getRoomByRoomIdAndBuildingId(@Param("roomId") String roomId,@Param("buildingId") String buildingId){
+        return roomService.getRoomByRoomIdAndBuildingId(roomId,buildingId);
+    }
+
     @ApiModelProperty("分页查询房间信息")
     @GetMapping("/getRoomPage")
     public CommonResult getRoomPage(RoomPageReq roomPageReq){

@@ -99,8 +99,9 @@ export default {
     </div>
     <div class="table-wrapper">
       <el-table :data="tableData" style="width: 100%" v-loading="tableLoading">
+        <el-table-column prop="buildingId" label="楼栋"> </el-table-column>
         <!-- 财产物品名 -->
-        <el-table-column prop="roomId" label="房间号"> </el-table-column>
+        <el-table-column prop="roomNum" label="房间号"> </el-table-column>
 
         <!-- 信息 -->
         <el-table-column prop="price" label="费用"> </el-table-column>
@@ -162,6 +163,7 @@ export default {
             <el-button
               type="success"
               size="mini"
+              v-if="scope.row.status == 1"
               @click="handleEdit(scope.$index, scope.row)"
               >缴费
             </el-button>

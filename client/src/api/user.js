@@ -24,6 +24,14 @@ export function getUser(params) {
   })
 }
 
+export function getUserByUserNameAndUserId(params) {
+  return request({
+    url: '/users/getUserByUserNameAndUserId',
+    method: 'get',
+    params
+  })
+}
+
 export function getUserList(params) {
   return request({
     url: '/users/getUsersPage',

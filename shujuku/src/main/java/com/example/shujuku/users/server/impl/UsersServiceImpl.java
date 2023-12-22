@@ -24,36 +24,44 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     protected UsersMapper usersMapper;
 
     @Override
-    public CommonResult createUsers(Users users){
+    public CommonResult createUsers(Users users) {
         boolean insertSuccess = SqlHelper.retBool(usersMapper.insert(users));
-        if(!insertSuccess){
-            log.info("插入users表失败",users);
+        if (!insertSuccess) {
+            log.info("插入users表失败", users);
             return CommonResult.fail("插入users表失败");
         }
         return CommonResult.success(users);
     }
 
     @Override
-    public CommonResult login(UsersLoginReq usersLoginReq){
+    public CommonResult login(UsersLoginReq usersLoginReq) {
         Users users = usersMapper.UserLogin(usersLoginReq);
-        if(users != null){
+        if (users != null) {
             return CommonResult.success(users);
-        }else return CommonResult.fail("查询users表失败");
+        } else return CommonResult.fail("查询users表失败");
     }
 
     @Override
-    public CommonResult getUsersById(String id){
+    public CommonResult getUsersById(String id) {
         Users users = usersMapper.selectById(id);
-        if(users != null){
+        if (users != null) {
             return CommonResult.success(users);
-        }else return CommonResult.fail("查询users表失败");
+        } else return CommonResult.fail("查询users表失败");
     }
 
     @Override
-    public CommonResult getUsersPage(UsersPageReq req){
+    public CommonResult getUserByUserNameAndUserId(String name, String userId) {
+        Users users = usersMapper.getUserByUserNameAndUserId(name, userId);
+        if (users != null) {
+            return CommonResult.success(users);
+        } else return CommonResult.fail("查询users表失败");
+    }
+
+    @Override
+    public CommonResult getUsersPage(UsersPageReq req) {
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
-        req.setPageNo((pageNo - 1)*pageSize);
+        req.setPageNo((pageNo - 1) * pageSize);
         System.out.println(req);
         List<Users> usersList = usersMapper.getUsersList(req);
 //        List<Student> list = studentMapper.getStudentList(req);
@@ -67,20 +75,20 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
-    public CommonResult updateUsers(Users users){
+    public CommonResult updateUsers(Users users) {
         Users oldUsers = usersMapper.selectById(users.getId());
         Assert.notNull(oldUsers, "修改users表失败，表中查询不到对应usersId的教师");
-        if(SqlHelper.retBool(baseMapper.updateById(users))){
+        if (SqlHelper.retBool(baseMapper.updateById(users))) {
             return CommonResult.success(users);
-        }else return CommonResult.fail("更新users表失败");
+        } else return CommonResult.fail("更新users表失败");
     }
 
     @Override
-    public CommonResult deleteUsers(String id){
+    public CommonResult deleteUsers(String id) {
         Users users = usersMapper.selectById(id);
         Assert.notNull(users, "删除users表数据失败，表中查询不到对应usersId的申请");
-        if(SqlHelper.retBool(baseMapper.deleteById(id))){
+        if (SqlHelper.retBool(baseMapper.deleteById(id))) {
             return CommonResult.success(users);
-        }else return CommonResult.fail("删除users表数据失败");
+        } else return CommonResult.fail("删除users表数据失败");
     }
 }

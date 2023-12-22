@@ -12,6 +12,8 @@ public interface UsersService extends IService<Users> {
 
     public CommonResult getUsersById(String id);
 
+    public  CommonResult getUserByUserNameAndUserId(String name,String userId);
+
     public CommonResult login(UsersLoginReq usersLoginReq);
 
     public CommonResult getUsersPage(UsersPageReq req);

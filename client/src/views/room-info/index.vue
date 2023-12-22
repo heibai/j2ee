@@ -20,9 +20,7 @@
         <el-col :span="12">
           <el-card shadow="hover">
             <div class="detail-info">
-              <span>
-                居住人数： 0
-              </span>
+              <span> 居住人数： {{ roomInfo.hadNum }} </span>
             </div>
           </el-card>
         </el-col>
@@ -38,7 +36,7 @@
                 type="success"
                 size="mini"
                 icon="el-icon-money"
-                @click="handleSubmit(scope.$index, scope.row)"
+                @click="handleSubmit()"
               >
               </el-button>
             </div>
@@ -50,7 +48,7 @@
     <!-- 入住成员 -->
     <h1 class="main-title">入住成员</h1>
     <div class="wrapper main-card">
-      <RecordTable :table-data="students" />
+      <RecordTable :table-data="tableData" />
     </div>
     <!-- 宿舍成员 -->
   </div>
@@ -62,7 +60,11 @@ import PanelGroup from './components/PanelGroup'
 import RecordTable from './components/recordTable'
 import Evaluates from '../dashboard/student/components/Evaluates'
 import RoomInfoEditModal from './components/RoomInfoEditModal.vue'
-import { getRoomInfo, getRoomUsers } from '@/api/room'
+import {
+  getRoomInfo,
+  getRoomUsers,
+  getRoomByRoomIdAndBuildingId
+} from '@/api/room'
 export default {
   name: 'RoomInfo',
   components: {
@@ -77,10 +79,9 @@ export default {
       roomInfo: {},
       buildingInfo: {},
       floorInfo: {},
-      students: [],
+      tableData: [],
       selectorData: {
         buildingId: null,
-        floorId: null,
         roomId: null
       },
       evaluatesData: [],
@@ -95,6 +96,7 @@ export default {
     '$route.query.roomId': function(newVal) {
       if (newVal && this.$route.name === 'roomInfo') {
         this.fetchRoomInfo(newVal)
+        this.fetchRoomResident(newVal)
       }
     }
   },
@@ -102,6 +104,7 @@ export default {
     let roomId = this.$route.query.roomId
     if (roomId) {
       this.fetchRoomInfo(roomId)
+      this.fetchRoomResident(roomId)
     }
   },
   created() {
@@ -117,15 +120,32 @@ export default {
   },
   methods: {
     async fetchRoomInfo(roomId) {
-      const roomInfo = (await getRoomUsers({ roomId })).data
+      const roomInfo = (await getRoomInfo({ id: roomId })).data
+
       this.roomInfo = roomInfo
-      this.buildingInfo = roomInfo.building
-      this.students = roomInfo.users
     },
-    handleSearchRoom() {
+    async fetchRoomResident(roomId) {
+      const roomUsers = (await getRoomUsers({ roomId })).data
+      this.tableData = roomUsers
+    },
+    async handleSearchRoom() {
+      const roomInfo = (
+        await getRoomByRoomIdAndBuildingId({
+          roomId: this.selectorData.roomId,
+          buildingId: this.selectorData.buildingId
+        })
+      ).data
+      if (roomInfo === null) {
+        this.$message({
+          type: 'error',
+          message: '未找到该房间'
+        })
+        return
+      }
+      this.roomInfo = roomInfo
       this.$router.push({
         name: 'roomInfo',
-        query: { roomId: this.selectorData.roomId }
+        query: { roomId: this.roomInfo.id }
       })
     },
 

@@ -50,7 +50,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
             fees.setStatus(String.valueOf(1));
             fees.setType(type);
             fees.setDeadline(LocalDateTime.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            fees.setRoomId(room.getRoomId());
+            fees.setRoomId(room.getId());
             feesMapper.insert(fees);
         }
         return CommonResult.success("新建住宿费成功");
@@ -97,7 +97,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
         while(roomListIterator.hasNext()){
             List<Object> result = new ArrayList<Object>();
             Room room = roomListIterator.next();
-            req.setRoomId(room.getRoomId());
+            req.setRoomId(room.getId());
             List<Fees> feesList = feesMapper.getFeesList(req);
             result.add(room);
             result.add(feesList);

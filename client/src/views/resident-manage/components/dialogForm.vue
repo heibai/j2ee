@@ -35,7 +35,7 @@
 
 <script>
 import selectRoomDialog from './selectRoomDialog.vue'
-import { getUser } from '@/api/user'
+import { getUserByUserNameAndUserId } from '@/api/user'
 
 export default {
   props: {
@@ -47,8 +47,8 @@ export default {
       type: Object,
       default: () => {
         return {
-          name: 'admin',
-          userId: 'admin'
+          name: 'resident1',
+          userId: 'resident1'
         }
       }
     },
@@ -82,7 +82,7 @@ export default {
     },
     async searchUser(data) {
       // 搜寻有没有对应的用户
-      const res = await getUser(data)
+      const res = await getUserByUserNameAndUserId(data)
       if (res.code !== 200) {
         this.$message({
           type: 'error',
@@ -90,7 +90,14 @@ export default {
         })
       } else {
         console.log(res)
-        return res.data
+        if (res.data.role !== 'visitor') {
+          this.$message({
+            type: 'error',
+            message: '该用户无法入户'
+          })
+        } else {
+          return res.data
+        }
       }
     },
     async handleSubmit() {

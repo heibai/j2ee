@@ -102,6 +102,14 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     }
 
     @Override
+    public  CommonResult getRoomByRoomIdAndBuildingId(String roomId, String buildingId) {
+        Room room = roomMapper.getRoomByRoomIdAndBuildingId(roomId, buildingId);
+        if (room != null) {
+            return CommonResult.success(room);
+        } else return CommonResult.fail("查询room表失败");
+    }
+
+    @Override
     public CommonResult getRoomUsers(String roomId) {
         List<Resident> residentList = residentMapper.getResidentListByRoomId(roomId);
         List<Users> usersList = new ArrayList<Users>();

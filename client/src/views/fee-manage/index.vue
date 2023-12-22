@@ -46,10 +46,28 @@ export default {
       }
 
       const { data } = await getFeesList(params)
-      this.tableData = data.records
-      this.count = data.total
+
+      this.tableData = this.generationTable(data.records)
+      this.count = this.tableData.length
 
       console.log(this.tableData)
+    },
+    generationTable(records) {
+      console.log(records)
+      let tableData = []
+      records.forEach(record => {
+        const roomInfo = record[0]
+        const feeList = record[1]
+        feeList.forEach(fee => {
+          tableData.push({
+            ...roomInfo,
+            roomNum: roomInfo.roomId,
+            ...fee,
+            roomId: roomInfo.id
+          })
+        })
+      })
+      return tableData
     }
   }
 }

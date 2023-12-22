@@ -42,3 +42,12 @@ export function updateFees(data) {
     data
   })
 }
+
+// 查询房间欠费
+export function getRoomFees(params) {
+  return request({
+    url: '/fees/getRoomFees',
+    method: 'get',
+    params
+  })
+}

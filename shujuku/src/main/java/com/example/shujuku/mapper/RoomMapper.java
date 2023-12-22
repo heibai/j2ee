@@ -21,7 +21,8 @@ public interface RoomMapper extends BaseMapper<Room>{
     List<Room> getRoomsGroupByBuildingId();
 
 
-
+    @Select("SELECT * FROM room WHERE room_Id = #{roomId} and building_id = #{buildingId}")
+    Room getRoomByRoomIdAndBuildingId(String roomId,String buildingId);
 
     List<Room> getResidentableRooms();
 

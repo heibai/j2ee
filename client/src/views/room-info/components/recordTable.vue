@@ -6,15 +6,15 @@
           <a @click="gotoUserDetail(scope.row.id)">{{ scope.row.name }}</a>
         </template>
       </el-table-column>
-      <el-table-column prop="phone" label="电话号"></el-table-column>
-      <el-table-column label="入住时间">
+      <el-table-column prop="userId" label="电话号"></el-table-column>
+      <!-- <el-table-column label="入住时间">
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
           <span style="margin-left: 10px">{{
             scope.row.checkTime | formatDate('YYYY-MM-DD')
           }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
   </div>
 </template>

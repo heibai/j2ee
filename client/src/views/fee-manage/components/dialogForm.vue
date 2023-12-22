@@ -26,8 +26,8 @@
       <el-form-item prop="type" label="类型" required>
         <!-- 使用select标签 -->
         <el-select v-model="formData.type" placeholder="请选择">
-          <el-option label="租金" value="0"></el-option>
-          <el-option label="水电费" value="1"></el-option>
+          <el-option label="租金" value="1"></el-option>
+          <el-option label="水电费" value="2"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item prop="price" label="金额" required>

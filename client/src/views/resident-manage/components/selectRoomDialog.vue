@@ -2,6 +2,7 @@
 import paginationMixins from '@/mixins/paginationMixins'
 import Pagination from '@/components/Pagination'
 import { createResident } from '@/api/resident'
+import { updateUserInfo } from '@/api/user'
 import { getRoomPageAvailable } from '@/api/room'
 export default {
   components: {
@@ -61,7 +62,7 @@ export default {
       console.log()
       let reqData = {
         userId: this.checkInUser.id,
-        ...this.selectorData
+        roomId: this.currRow.id
       }
       console.log(reqData)
       // TODO入住逻辑
@@ -72,12 +73,34 @@ export default {
             type: 'success',
             message: '入住成功'
           })
+          // 将用户信息更新为住户
+          this.updateUserInfo()
           this.$emit('update:visible', false)
           this.operateFinish()
         } else {
           this.$message({
             type: 'error',
             message: '入住失败'
+          })
+        }
+      })
+    },
+    updateUserInfo() {
+      let reqData = {
+        ...this.checkInUser,
+        role: 'resident'
+      }
+      updateUserInfo(reqData).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '更新用户信息成功'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '更新用户信息失败'
           })
         }
       })

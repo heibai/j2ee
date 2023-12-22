@@ -41,6 +41,13 @@ public class UsersController {
         return usersService.getUsersById(id);
     }
 
+
+    @ApiModelProperty("查询用户")
+    @GetMapping("/getUserByUserNameAndUserId")
+    public CommonResult getUserByUserNameAndUserId(@Param("name") String name,@Param("userId") String userId){
+        return usersService.getUserByUserNameAndUserId(name,userId);
+    }
+
     @ApiModelProperty("分页查询用户")
     @GetMapping("/getUsersPage")
     public CommonResult getUsersPage(UsersPageReq usersPageReq){

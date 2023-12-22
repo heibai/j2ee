@@ -1,5 +1,6 @@
 <script>
 import { deleteResident } from '@/api/resident'
+import { updateUserInfo } from '@/api/user'
 export default {
   name: 'RecordTable',
   components: {},
@@ -36,6 +37,7 @@ export default {
       })
         .then(async () => {
           await deleteResident(row)
+
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -49,6 +51,26 @@ export default {
             message: '已取消删除'
           })
         })
+    },
+    updateUserInfo() {
+      let reqData = {
+        id: row.userId,
+        role: 'visitor'
+      }
+      updateUserInfo(reqData).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '更新用户信息成功'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '更新用户信息失败'
+          })
+        }
+      })
     }
   }
 }

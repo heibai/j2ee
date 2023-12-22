@@ -23,13 +23,14 @@
         <result column="status" property="status"/>
     </resultMap>
 
+<!--    &#45;&#45;         group by t.building_id-->
+
     <select id="getResidentableRooms" resultMap="roomList">
         SELECT SQL_CALC_FOUND_ROWS
         <include refid="Base_Column_List" />
         FROM room t
         WHERE t.status = 1
         and t.limit_num > t.had_num
-        group by t.building_id
         order by t.room_id;
     </select>
 
