@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -47,7 +48,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
             fees.setPrice(Double.valueOf(price));
             fees.setStatus(String.valueOf(1));
             fees.setType(type);
-            fees.setDeadline(DateTime.parse(deadline));
+            fees.setDeadline(LocalDateTime.parse(deadline));
             fees.setRoomId(room.getRoomId());
             feesMapper.insert(fees);
         }
