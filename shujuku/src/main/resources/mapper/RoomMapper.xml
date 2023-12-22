@@ -27,7 +27,7 @@
         WHERE t.status = 1
         and t.limit_num > t.had_num
         group by t.building_id
-        order by t.room_id
+        order by t.room_id;
     </select>
 
     <select id="getResidentedRooms" resultMap="roomList">
@@ -37,7 +37,7 @@
         WHERE t.status != 0
         and t.had_num > 0
         group by t.building_id
-        order by t.room_id
+        order by t.room_id;
     </select>
 
     <select id="getRoomsGroupByBuildingId" resultMap="roomList">
@@ -47,7 +47,7 @@
         WHERE t.status != 0
         and t.id = t.id
         group by t.building_id
-        order by t.room_id
+        order by t.room_id;
     </select>
 
     <select id="getAllRooms" resultMap="roomList">
@@ -56,7 +56,7 @@
         FROM room t
         WHERE t.status != 0
         and t.id = t.id
-        order by t.room_id
+        order by t.room_id;
     </select>
 
     <select id="getRoomList" resultMap="roomList">

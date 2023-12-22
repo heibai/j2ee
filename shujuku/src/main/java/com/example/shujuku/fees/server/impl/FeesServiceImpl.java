@@ -67,28 +67,25 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
 
     @Override
     public CommonResult getFeesByFeesId(String feesId){
-        Fees fees = feesMapper.selectById(feesId);
+        Fees fees = feesMapper.GetFeesByFeesId(feesId);
         if(fees != null){
             return CommonResult.success(fees);
         }else return CommonResult.fail("查询fees表失败");
     }
 
     @Override
-    public CommonResult getFeesPage(FeesPageReq fees) {
-        Page<Fees> page = new Page<>(fees.getPageNo(), fees.getPageSize());
-        LambdaQueryWrapper<Fees> queryWrapper = new LambdaQueryWrapper<Fees>();
-        //多条件匹配查询
-        queryWrapper.eq(Tool.isPresent(fees.getFeesId()), Fees::getFeesId, fees.getFeesId());
-//        queryWrapper.like(Tool.isPresent(fees.getName()), Fees::getName, fees.getName());
-        queryWrapper.eq(Tool.isPresent(fees.getRoomId()), Fees::getRoomId, fees.getRoomId());
-        queryWrapper.eq(Tool.isPresent(fees.getType()), Fees::getType, fees.getType());
-        queryWrapper.eq(Tool.isPresent(fees.getStatus()), Fees::getStatus, fees.getStatus());
-//
-        //        //查询
-        IPage<Fees> ipage = this.baseMapper.selectPage(page, queryWrapper);
-        return CommonResult.success(ipage);
+    public CommonResult getFeesByRoomId(String roomId){
+        List<Fees> feesList = feesMapper.GetFeesByRoomId(roomId);
+        ListIterator<Fees> feesListIterator = feesList.listIterator();
+        Double totalFees = 0.0;
+        while(feesListIterator.hasNext()){
+            Fees fees = feesListIterator.next();
+            totalFees = totalFees + fees.getPrice();
+        }
+        return CommonResult.success(totalFees);
     }
 
+    @Override
     public CommonResult getFeesList(FeesPageReq req){
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
@@ -107,7 +104,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
 
     @Override
     public CommonResult updateFees(Fees fees){
-        Fees oldFees = feesMapper.selectById(fees.getFeesId());
+        Fees oldFees = feesMapper.GetFeesByFeesId(fees.getFeesId());
         Assert.notNull(oldFees, "修改fees表失败，表中查询不到对应feesId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(fees))){
             return CommonResult.success(fees);
@@ -116,7 +113,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
 
     @Override
     public CommonResult deleteFees(String feesId){
-        Fees fees = feesMapper.selectById(feesId);
+        Fees fees = feesMapper.GetFeesByFeesId(feesId);
         Assert.notNull(fees, "删除fees表数据失败，表中查询不到对应feesId的申请");
         if(SqlHelper.retBool(baseMapper.deleteById(feesId))){
             return CommonResult.success(fees);

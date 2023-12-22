@@ -22,6 +22,14 @@
         <result column="status" property="status"/>
     </resultMap>
 
+    <select id="getResidentListByRoomId" resultMap="residentList">
+        SELECT SQL_CALC_FOUND_ROWS
+        <include refid="Base_Column_List" />
+        FROM resident t
+        WHERE t.room_id = #{roomId}
+        and t.status != 0;
+    </select>
+
     <select id="getResidentList" resultMap="residentList">
         SELECT SQL_CALC_FOUND_ROWS
         <include refid="Base_Column_List" />

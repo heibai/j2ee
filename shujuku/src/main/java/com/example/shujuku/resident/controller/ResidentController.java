@@ -42,7 +42,7 @@ public class ResidentController {
         return residentService.getResidentList(residentPageReq);
     }
 
-    @ApiModelProperty("分页查询入住信息")
+    @ApiModelProperty("分页联查入住信息")
     @GetMapping("/getResidentDetailPage")
     public CommonResult getResidentDetailPage(ResidentPageReq residentPageReq){
         return residentService.getResidentDetailList(residentPageReq);

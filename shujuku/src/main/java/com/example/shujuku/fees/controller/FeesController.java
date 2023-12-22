@@ -40,6 +40,12 @@ public class FeesController {
         return feesService.getFeesByFeesId(feesId);
     }
 
+    @ApiModelProperty("查询房间待缴费用信息")
+    @GetMapping("/getRoomFees")
+    public CommonResult getRoomFees(@Param("roomId") String roomId){
+        return feesService.getFeesByRoomId(roomId);
+    }
+
     @ApiModelProperty("分页查询费用信息")
     @GetMapping("/getFeesPage")
     public CommonResult getFeesPage(FeesPageReq feesPageReq){

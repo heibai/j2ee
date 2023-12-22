@@ -1,16 +1,17 @@
 package com.example.shujuku.room.server.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.shujuku.common.CommonResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.shujuku.common.Tool;
+import com.example.shujuku.mapper.ResidentMapper;
+import com.example.shujuku.mapper.UsersMapper;
 import com.example.shujuku.req.RoomPageReq;
+import com.example.shujuku.resident.bean.Resident;
 import com.example.shujuku.room.bean.Room;
 import com.example.shujuku.mapper.RoomMapper;
 import com.example.shujuku.room.server.RoomService;
+import com.example.shujuku.users.bean.Users;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Autowired
     protected RoomMapper roomMapper;
+    @Autowired
+    protected ResidentMapper residentMapper;
+    @Autowired
+    protected UsersMapper usersMapper;
 
     @Override
     public CommonResult createRoom(Room room){
@@ -97,19 +102,19 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     }
 
     @Override
-    public CommonResult getRoomPage(RoomPageReq room) {
-        Page<Room> page = new Page<>(room.getPageNo(), room.getPageSize());
-        LambdaQueryWrapper<Room> queryWrapper = new LambdaQueryWrapper<Room>();
-        //多条件匹配查询
-//        queryWrapper.like(Tool.isPresent(room.getName()), Room::getName, room.getName());
-        queryWrapper.eq(Tool.isPresent(room.getRoomId()), Room::getRoomId, room.getRoomId());
-        queryWrapper.eq(Tool.isPresent(room.getBuildingId()), Room::getBuildingId, room.getBuildingId());
-        queryWrapper.eq(Tool.isPresent(room.getStatus()), Room::getStatus, room.getStatus());
-//查询
-        IPage<Room> ipage = this.baseMapper.selectPage(page, queryWrapper);
-        return CommonResult.success(ipage);
+    public CommonResult getRoomUsers(String roomId){
+        List<Resident> residentList = residentMapper.getResidentListByRoomId(roomId);
+        List<Users> usersList = new ArrayList<Users>();
+        ListIterator<Resident> residentListIterator = residentList.listIterator();
+        while(residentListIterator.hasNext()){
+            Resident resident = residentListIterator.next();
+            Users users = usersMapper.GetUsersByUserId(resident.getUserId());
+            usersList.add(users);
+        }
+        return CommonResult.success(usersList);
     }
 
+    @Override
     public CommonResult getRoomList(RoomPageReq req){
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
