@@ -14,7 +14,7 @@ public interface UsersService extends IService<Users> {
 
     public CommonResult login(UsersLoginReq usersLoginReq);
 
-    public CommonResult getUsersList(UsersPageReq req);
+    public CommonResult getUsersPage(UsersPageReq req);
 
     public CommonResult updateUsers(Users users);
 

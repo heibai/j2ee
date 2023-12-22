@@ -9,7 +9,7 @@ public interface RepairReportService extends IService<RepairReport> {
 
     public CommonResult createRepairReport(RepairReport repairReport);
 
-    public CommonResult getRepairReportById(String id);
+    public CommonResult getRepairReportByReportId(String reportId);
 
     public CommonResult getRepairReportDetailList(RepairReportPageReq req);
 

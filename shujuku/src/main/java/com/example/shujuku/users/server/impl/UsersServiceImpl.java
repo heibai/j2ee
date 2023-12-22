@@ -50,7 +50,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
-    public CommonResult getUsersList(UsersPageReq req){
+    public CommonResult getUsersPage(UsersPageReq req){
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);

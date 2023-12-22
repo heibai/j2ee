@@ -29,9 +29,9 @@ public class RepairReportController {
     }
 
     @ApiModelProperty("查询报修信息")
-    @GetMapping("/getRepairReport")
-    public CommonResult getRepairReport(@Param("id") String id){
-        return repairReportService.getRepairReportById(id);
+    @GetMapping("/getRepairReportByReportId")
+    public CommonResult getRepairReport(@Param("reportId") String reportId){
+        return repairReportService.getRepairReportByReportId(reportId);
     }
 
     @ApiModelProperty("分页查询报修信息")
