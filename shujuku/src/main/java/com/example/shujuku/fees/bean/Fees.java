@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -43,6 +43,6 @@ public class Fees implements Serializable {
     private String status;
 
     @TableField("deadline")
-    private DateTime deadline;
+    private LocalDateTime deadline;
 
 }
