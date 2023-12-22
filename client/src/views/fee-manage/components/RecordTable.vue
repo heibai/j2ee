@@ -86,7 +86,10 @@ export default {
             <el-tag type="danger" v-else>无</el-tag>
           </template>
         </el-table-column>
-        <!-- 投诉时间 -->
+
+        <!-- 缴费时间 -->
+        <el-table-column prop="time" label="缴费时间"> </el-table-column>
+
         <el-table-column prop="time" label="截止时间"> </el-table-column>
 
         <!-- 回应时间 -->

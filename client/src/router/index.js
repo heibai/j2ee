@@ -73,24 +73,6 @@ export const constantRoutes = [
 const adminRoutes = [
   //  管理员路由 =========================
   {
-    path: '/adminManage',
-    component: Layout,
-    meta: {
-      roles: ['superAdmin']
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/admin-manage/index'),
-        name: 'adminManage',
-        meta: {
-          title: '管理员管理',
-          icon: 'edit'
-        }
-      }
-    ]
-  },
-  {
     // 公共财产管理
     path: '/publicPropertyManage',
     component: Layout,
@@ -111,42 +93,6 @@ const adminRoutes = [
     ]
   },
 
-  // {
-  //   path: '/buildingManage',
-  //   component: Layout,
-  //   meta: {
-  //     roles: ['superAdmin']
-  //   },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/building-manage/index'),
-  //       name: 'cleanRecord',
-  //       meta: {
-  //         title: '楼栋管理',
-  //         icon: 'international'
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/floorManage',
-  //   component: Layout,
-  //   meta: {
-  //     roles: ['superAdmin', 'admin']
-  //   },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/floor-manage/index'),
-  //       name: 'floorManage',
-  //       meta: {
-  //         title: '楼层管理',
-  //         icon: 'list'
-  //       }
-  //     }
-  //   ]
-  // },
   // 物业管理
   {
     path: '/propertyManage',
@@ -160,8 +106,8 @@ const adminRoutes = [
       // TODO 处理业主投诉或报修意见
       {
         path: 'index',
-        component: () => import('@/views/building-manage/index'),
-        name: 'cleanRecord',
+        component: () => import('@/views/admin-manage/index'),
+        name: 'admin-manage',
         meta: {
           title: '物业人员管理'
         }
