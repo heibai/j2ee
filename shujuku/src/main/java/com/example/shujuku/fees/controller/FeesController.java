@@ -4,8 +4,6 @@ import com.example.shujuku.common.CommonResult;
 import com.example.shujuku.req.FeesPageReq;
 import com.example.shujuku.fees.bean.Fees;
 import com.example.shujuku.fees.server.FeesService;
-import com.example.shujuku.fees.bean.Fees;
-import com.example.shujuku.fees.server.FeesService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 import lombok.extern.slf4j.Slf4j;
