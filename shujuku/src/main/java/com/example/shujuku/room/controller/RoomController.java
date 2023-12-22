@@ -36,6 +36,12 @@ public class RoomController {
         return roomService.getResidentableRoom();
     }
 
+    @ApiModelProperty("查询住房整体信息")
+    @GetMapping("/getRoomsTotalDetail")
+    public CommonResult getRoomsTotalDetail(){
+        return roomService.getRoomsTotalDetail();
+    }
+
     @ApiModelProperty("查询房间信息")
     @GetMapping("/getRoom")
     public CommonResult getRoom(@Param("roomId") String roomId){

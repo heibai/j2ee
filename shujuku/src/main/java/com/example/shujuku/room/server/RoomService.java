@@ -13,6 +13,8 @@ public interface RoomService extends IService<Room> {
 
     public CommonResult getResidentableRoom();
 
+    public CommonResult getRoomsTotalDetail();
+
     public CommonResult getRoomPage(RoomPageReq roomPageReq);
 
     public CommonResult getRoomList(RoomPageReq req);

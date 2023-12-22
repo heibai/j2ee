@@ -16,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 
 @Slf4j
 @Service
@@ -41,14 +44,53 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
         return CommonResult.fail("请输入可住人数");
     }
 
+    @Override
     public CommonResult getResidentableRoom(){
         List<Room> roomList = roomMapper.getResidentableRooms();
         return CommonResult.success(roomList);
     }
 
     @Override
+    public CommonResult getRoomsTotalDetail(){
+        List<Room> roomList = roomMapper.getRoomsGroupByBuildingId();
+        HashMap<String,Object> resultmap = new HashMap<String,Object>();
+        HashMap<String,HashMap<String,Integer>> buildingHashMap = new HashMap<String,HashMap<String,Integer>>();
+        int buildingNum = 0;
+        int totalHadNum = 0;
+        int totalLimitNum = 0;
+        int totalRoomNum = 0;
+        ListIterator<Room> roomListIterator = roomList.listIterator();
+        while(roomListIterator.hasNext()){
+            Room room = roomListIterator.next();
+            if(buildingHashMap.get(room.getBuildingId())==null){
+                HashMap<String,Integer> buildingDetailHashMap = new HashMap<String,Integer>();
+                buildingDetailHashMap.put("roomNum",1);
+                buildingDetailHashMap.put("hadNum",Integer.valueOf(room.getHadNum()));
+                buildingDetailHashMap.put("limitNum",Integer.valueOf(room.getLimitNum()));
+                buildingHashMap.put(room.getBuildingId(),buildingDetailHashMap);
+                buildingNum = buildingNum + 1;
+            }else{
+                HashMap<String,Integer> buildingDetailHashMap = buildingHashMap.get(room.getBuildingId());
+                buildingDetailHashMap.put("roomNum",buildingDetailHashMap.get("roomNum")+1);
+                buildingDetailHashMap.put("hadNum",buildingDetailHashMap.get("hadNum")+Integer.valueOf(room.getHadNum()));
+                buildingDetailHashMap.put("limitNum",buildingDetailHashMap.get("limitNum")+Integer.valueOf(room.getLimitNum()));
+                buildingHashMap.put(room.getBuildingId(),buildingDetailHashMap);
+            }
+            totalRoomNum = totalRoomNum + 1;
+            totalHadNum = totalHadNum + Integer.valueOf(room.getHadNum());
+            totalLimitNum = totalLimitNum + Integer.valueOf(room.getLimitNum());
+        }
+        resultmap.put("buildingNum",buildingNum);
+        resultmap.put("totalRoomNum",totalRoomNum);
+        resultmap.put("totalHadNum",totalHadNum);
+        resultmap.put("totalLimitNum",totalLimitNum);
+        resultmap.put("buildingHashMap",buildingHashMap);
+        return CommonResult.success(resultmap);
+    }
+
+    @Override
     public CommonResult getRoomByRoomId(String roomId){
-        Room room = roomMapper.selectById(roomId);
+        Room room = roomMapper.GetRoomByRoomId(roomId);
         if(room != null){
             return CommonResult.success(room);
         }else return CommonResult.fail("查询room表失败");
@@ -86,7 +128,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Override
     public CommonResult updateRoom(Room room){
-        Room oldRoom = roomMapper.selectById(room.getRoomId());
+        Room oldRoom = roomMapper.GetRoomByRoomId(room.getRoomId());
         Assert.notNull(oldRoom, "修改room表失败，表中查询不到对应roomId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(room))){
             return CommonResult.success(room);
@@ -95,7 +137,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Override
     public CommonResult deleteRoom(String roomId){
-        Room room = roomMapper.selectById(roomId);
+        Room room = roomMapper.GetRoomByRoomId(roomId);
         Assert.notNull(room, "删除room表数据失败，表中查询不到对应roomId的申请");
         if(SqlHelper.retBool(baseMapper.deleteById(roomId))){
             return CommonResult.success(room);
