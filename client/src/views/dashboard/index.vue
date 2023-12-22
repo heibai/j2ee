@@ -3,9 +3,11 @@ import { mapGetters } from 'vuex'
 import adminDashboard from './admin'
 import studentDashboard from './student'
 import RecordTable from './components/RecordTable.vue'
+import PanelGroup from './components/PanelGroup'
+
 export default {
   name: 'Dashboard',
-  components: { adminDashboard, studentDashboard, RecordTable },
+  components: { adminDashboard, studentDashboard, RecordTable, PanelGroup },
   data() {
     return {
       currentRole: 'adminDashboard'
@@ -26,13 +28,13 @@ export default {
 <template>
   <div class="dashboard-container">
     <!-- <component :is="currentRole" /> -->
+    <h1 class="main-title">暨云小区</h1>
 
     <div class="wrapper">
-      <!-- <PanelGroup :building-id="buildingId"></PanelGroup> -->
+      <PanelGroup :building-id="buildingId"></PanelGroup>
     </div>
     <!-- 管理概览 -->
     <!-- 公共财产管理 -->
-    <h1 class="main-title">暨云小区</h1>
     <div class="wrapper">
       <RecordTable
         type="public"
@@ -63,6 +65,7 @@ export default {
 .dashboard-container {
   padding: 0px 60px 0px;
   .main-title {
+    margin-top: 20px;
     display: flex;
     align-items: center;
   }
