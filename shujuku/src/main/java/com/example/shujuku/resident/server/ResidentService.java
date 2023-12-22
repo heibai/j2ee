@@ -9,7 +9,7 @@ public interface ResidentService extends IService<Resident> {
 
     public CommonResult createResident(Resident resident);
 
-    public CommonResult getResidentByResidentId(String residentId);
+    public CommonResult getResidentById(String id);
 
     public CommonResult getResidentList(ResidentPageReq req);
 
@@ -17,6 +17,6 @@ public interface ResidentService extends IService<Resident> {
 
     public CommonResult updateResident(Resident resident);
 
-    public CommonResult deleteResident(String residentId);
+    public CommonResult deleteResident(String id);
 
 }

@@ -1,5 +1,6 @@
 <script>
 import propertyForm from './propertyForm.vue'
+import { addProperty } from '@/api/property'
 export default {
   name: 'addProperty',
   components: {
@@ -7,13 +8,21 @@ export default {
   },
   data() {
     return {
-      fromData: {},
       visible: false
     }
   },
   methods: {
     handleSubmit(data) {
       //  处理新增逻辑
+      addProperty(data)
+        .then(() => {
+          this.$message.success('新增成功')
+          this.visible = false
+          this.$emit('operateFinish')
+        })
+        .finally(() => {
+          this.updateLoading = false
+        })
     },
     show() {
       this.visible = true

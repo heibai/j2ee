@@ -1,33 +1,49 @@
 <script>
-import RecordTable from '@/components/RecordTable'
+import RecordTable from './components/RecordTable'
 import addProperty from './components/addProperty.vue'
-import editProperty from './components/editProperty.vue'
+import Pagination from '@/components/Pagination'
+import paginationMixins from '@/mixins/paginationMixins'
+import { getProperty } from '@/api/property'
 export default {
   name: 'PublicPropertyManage',
   components: {
     RecordTable,
-    addProperty,
-    editProperty
+    Pagination,
+    addProperty
   },
-
+  mixins: [paginationMixins],
   data() {
     return {
-      buildingId: 0,
-      getupTableData: [],
-      backTableData: [],
-      cleanTableData: [],
-      editTableData: []
+      tableData: []
     }
+  },
+  created() {
+    this.getPropertyTableData()
   },
   methods: {
     handleAdd() {
-      console.log(this.$refs)
       this.$refs.addProperty.show()
     },
-    handleEdit(row) {
-      console.log(row)
-      this.editTableData = row
-      this.$refs.editProperty.show()
+
+    operateFinish() {
+      this.getPropertyTableData()
+    },
+    async handlePagination({ page, limit }) {
+      this.PageNo = page
+      this.PageSize = limit
+      this.getPropertyTableData()
+    },
+    async getPropertyTableData() {
+      const params = {
+        PageNo: this.PageNo,
+        PageSize: this.PageSize
+      }
+
+      const { data } = await getProperty(params)
+      this.tableData = data.records
+      this.count = data.total
+
+      console.log(this.tableData)
     }
   }
 }
@@ -38,33 +54,36 @@ export default {
     <div class="wrapper"></div>
     <!-- 管理概览 -->
     <!-- 公共财产管理 -->
-    <h1 class="main-title">小区公共财产</h1>
+    <h1 class="main-title">
+      <span>
+        公共财产管理
+      </span>
+      <el-button type="primary" icon="el-icon-plus" @click="handleAdd">
+        新增公共财产
+      </el-button>
+    </h1>
 
     <!-- 新增按钮 -->
     <div class="operation-container">
-      <el-button
-        type="primary"
-        icon="el-icon-plus"
-        size="small"
-        @click="handleAdd"
-      >
-        新增公共财产
-      </el-button>
+      <div class="wrapper">
+        <RecordTable
+          type="public"
+          title="公共财产"
+          icon="el-icon-suitcase"
+          :table-data="tableData"
+          :show-pagination="false"
+          @operateFinish="operateFinish"
+        >
+        </RecordTable>
+        <Pagination
+          :total="count"
+          :page="PageNo"
+          @pagination="handlePagination"
+          :hidden="tableData.length === 0"
+        />
+      </div>
     </div>
-
-    <div class="wrapper">
-      <RecordTable
-        type="public"
-        title="公共财产"
-        icon="el-icon-suitcase"
-        :table-data="[]"
-        :show-pagination="false"
-      >
-      </RecordTable>
-    </div>
-
-    <addProperty ref="addProperty"></addProperty>
-    <editProperty ref="editProperty"> </editProperty>
+    <addProperty @operateFinish="operateFinish" ref="addProperty"></addProperty>
   </div>
 </template>
 
@@ -74,6 +93,7 @@ export default {
   .main-title {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
 
   .operation-container {

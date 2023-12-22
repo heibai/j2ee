@@ -9,12 +9,12 @@ public interface PropertyService extends IService<Property> {
 
     public CommonResult createProperty(Property property);
 
-    public CommonResult getPropertyByPropertyId(String propertyId);
+    public CommonResult getPropertyById(String id);
 
     public CommonResult getPropertyList(PropertyPageReq req);
 
     public CommonResult updateProperty(Property property);
 
-    public CommonResult deleteProperty(String propertyId);
+    public CommonResult deleteProperty(String id);
 
 }

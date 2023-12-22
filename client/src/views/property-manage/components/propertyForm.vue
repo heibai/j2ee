@@ -1,12 +1,15 @@
 <template>
+  <!--  :close-on-click-modal="false" -->
+
   <el-dialog
     class="visitor-create-modal"
-    title="新增访客记录"
+    :title="submitText"
     :visible="visible"
     @update:visible="$emit('update:visible', $event)"
     width="600px"
+    destroy-on-close
   >
-    <el-form :model="formData" label-position="top" ref="form">
+    <el-form :model="formData" label-position="top" ref="form" :rules="rules">
       <!-- <el-form-item label="访问宿舍楼" prop="buildingId" required>
         <el-select v-model="formData.buildingId" placeholder="请选择" clearable>
           <el-option
@@ -17,14 +20,26 @@
           >
           </el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item prop="name" label="姓名" required>
+      </el-form-item> -->
+      <el-form-item prop="name" label="物品名" required>
         <el-input v-model="formData.name"></el-input>
       </el-form-item>
-      <el-form-item prop="phone" label="手机号" required>
-        <el-input v-model="formData.phone"></el-input>
+      <el-form-item prop="message" label="描述" required>
+        <!-- 使用textarea标签 -->
+        <el-input type="textarea" v-model="formData.message"></el-input>
       </el-form-item>
-      <el-form-item prop="idNumber" label="身份证号" required>
+
+      <!-- 拥有人 -->
+      <el-form-item prop="ownerId" label="拥有人" required>
+        <el-input v-model="formData.ownerId"></el-input>
+      </el-form-item>
+
+      <!-- 财产等级 -->
+      <el-form-item prop="ownerLevel" label="财产等级" required>
+        <el-input v-model="formData.ownerLevel"></el-input>
+      </el-form-item>
+
+      <!-- <el-form-item prop="idNumber" label="身份证号" required>
         <el-input v-model="formData.idNumber"></el-input>
       </el-form-item>
       <el-form-item label="性别" prop="sex" required>
@@ -38,81 +53,64 @@
       <el-button @click="$emit('update:visible', false)">
         取消
       </el-button>
-      <el-button
-        :loading="updateLoading"
-        type="primary"
-        @click="onConfirmClick"
-      >
-        确定
+      <el-button :loading="updateLoading" type="primary" @click="handleSubmit">
+        {{ submitText }}
       </el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-import { getManageBuildings } from '@/api/building'
-import { createVisitor } from '@/api/visitor'
-
 export default {
   props: {
     visible: {
       type: Boolean,
       default: false
     },
-    fromData: {
+    existFormData: {
       type: Object,
-      default: () => {}
+      default: () => {
+        return {
+          name: '',
+          message: '',
+          ownerId: '',
+          ownerLevel: ''
+        }
+      }
+    },
+    submitText: {
+      type: String,
+      default: '确定'
+    },
+    editMode: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      // formData: {
-      //   name: '',
-      //   phone: '',
-      //   idNumber: '',
-      //   sex: 0,
-      //   buildingId: undefined
-      // },
-      updateLoading: false,
-      buildingsData: []
+      formData: this.existFormData,
+      rules: {
+        name: [{ required: true, message: '请输入物品名', trigger: 'blur' }],
+        message: [{ required: true, message: '请输入描述', trigger: 'blur' }]
+      },
+      updateLoading: false
     }
   },
   methods: {
+    initFormData(row) {
+      this.formData = row
+    },
     handleSubmit() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.$emit('submit', this.formData)
+          this.updateLoading = true
+          this.$emit('finish', this.formData)
         }
       })
     }
-    // onConfirmClick() {
-    //   this.$refs.form.validate(valid => {
-    //     if (valid) {
-    //       this.updateLoading = true
-    //       createVisitor({
-    //         ...this.formData,
-    //         buildingId: Number(this.formData.buildingId)
-    //       })
-    //         .then(() => {
-    //           this.$message.success('新增成功')
-    //           this.$emit('update:visible', false)
-    //           this.$emit('create-success')
-    //         })
-    //         .finally(() => {
-    //           this.updateLoading = false
-    //         })
-    //     }
-    //   })
-    // },
-    // fetchBuildingsData() {
-    //   getManageBuildings().then(res => {
-    //     this.buildingsData = res.data.buildings
-    //   })
-    // }
   },
-  mounted() {
-    this.fetchBuildingsData()
-  }
+  mounted() {}
 }
 </script>
 

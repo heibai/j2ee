@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper
 public interface ComplaintMapper extends BaseMapper<Complaint>{
 
-    @Select("SELECT * FROM complaint WHERE complaintId = #{complaintId}")
-    Complaint GetComplaintByComplaintId(String complaintId);
+//    @Select("SELECT * FROM complaint WHERE complaintId = #{complaintId}")
+//    Complaint GetComplaintByComplaintId(String complaintId);
 
     List<Complaint> getComplaintList(ComplaintPageReq req);
 

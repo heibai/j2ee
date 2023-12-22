@@ -9,7 +9,7 @@ public interface RoomService extends IService<Room> {
 
     public CommonResult createRoom(Room room);
 
-    public CommonResult getRoomByRoomId(String roomId);
+    public CommonResult getRoomById(String id);
 
     public CommonResult getResidentableRoom();
 
@@ -21,6 +21,6 @@ public interface RoomService extends IService<Room> {
 
     public CommonResult updateRoom(Room room);
 
-    public CommonResult deleteRoom(String roomId);
+    public CommonResult deleteRoom(String id);
 
 }

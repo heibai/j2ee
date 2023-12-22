@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: 'http://localhost:8080/api', // url = base url + request url
+  baseURL: 'http://localhost:8800', // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 10000 // request timeout
 })
@@ -30,7 +30,8 @@ service.interceptors.response.use(
   response => {
     const code = response.status
     const res = response.data
-    if (code !== 200 || !res.success) {
+    console.log(response)
+    if (code !== 200) {
       Message({
         message: res.msg || 'Error',
         type: 'error',

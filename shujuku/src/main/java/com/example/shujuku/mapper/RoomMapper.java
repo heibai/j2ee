@@ -11,10 +11,10 @@ import java.util.List;
 @Mapper
 public interface RoomMapper extends BaseMapper<Room>{
 
-    @Select("SELECT * FROM room WHERE roomId = #{roomId}")
-    Room GetRoomByRoomId(String roomId);
+//    @Select("SELECT * FROM room WHERE room_Id = #{roomId}")
+//    Room GetRoomByRoomId(String roomId);
 
-    @Select("SELECT * FROM room WHERE roomId = #{roomId} and status = 1")
+    @Select("SELECT * FROM room WHERE room_Id = #{roomId} and status = 1")
     Room CheckRoom(String roomId);
 
     @Select("select * building_id from room where status != 0 order by building_id")

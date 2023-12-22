@@ -69,13 +69,6 @@ export default {
     </div>
     <div class="table-wrapper">
       <!-- 新增按钮 -->
-      <el-button
-        class="add-btn-wrapper"
-        type="primary"
-        size="mini"
-        @click="handleAdd"
-        >新增
-      </el-button>
 
       <el-table :data="tableData" style="width: 100%" v-loading="tableLoading">
         <!-- 财产物品名 -->

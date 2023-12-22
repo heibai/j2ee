@@ -7,7 +7,7 @@
     width="600px"
   >
     <el-form :model="formData" label-position="top" ref="form">
-      <el-form-item label="访问宿舍楼" prop="buildingId" required>
+      <el-form-item label="入住楼栋" prop="buildingId" required>
         <el-select v-model="formData.buildingId" placeholder="请选择" clearable>
           <el-option
             v-for="item in buildingsData"
@@ -18,6 +18,10 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item prop="name" label="入住房间" required style="width: 210px;">
+        <el-input v-model="formData.roomId"></el-input>
+      </el-form-item>
+
       <el-form-item prop="name" label="姓名" required>
         <el-input v-model="formData.name"></el-input>
       </el-form-item>
@@ -66,6 +70,7 @@ export default {
         name: '',
         phone: '',
         idNumber: '',
+        roomId: '',
         sex: 0,
         buildingId: undefined
       },

@@ -36,8 +36,8 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
     }
 
     @Override
-    public CommonResult getPropertyByPropertyId(String propertyId){
-        Property property = propertyMapper.GetPropertyByPropertyId(propertyId);
+    public CommonResult getPropertyById(String id){
+        Property property = propertyMapper.selectById(id);
         if(property != null){
             return CommonResult.success(property);
         }else return CommonResult.fail("查询property表失败");
@@ -62,7 +62,7 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
 
     @Override
     public CommonResult updateProperty(Property property){
-        Property oldProperty = propertyMapper.GetPropertyByPropertyId(property.getPropertyId());
+        Property oldProperty = propertyMapper.selectById(property.getId());
         Assert.notNull(oldProperty, "修改property表失败，表中查询不到对应propertyId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(property))){
             return CommonResult.success(property);
@@ -70,10 +70,10 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
     }
 
     @Override
-    public CommonResult deleteProperty(String propertyId){
-        Property property = propertyMapper.GetPropertyByPropertyId(propertyId);
+    public CommonResult deleteProperty(String id){
+        Property property = propertyMapper.selectById(id);
         Assert.notNull(property, "删除property表数据失败，表中查询不到对应propertyId的申请");
-        if(SqlHelper.retBool(baseMapper.deleteById(propertyId))){
+        if(SqlHelper.retBool(baseMapper.deleteById(id))){
             return CommonResult.success(property);
         }else return CommonResult.fail("删除property表数据失败");
     }

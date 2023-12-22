@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
+import { title } from '@/settings'
 
 // 同步路由
 export const constantRoutes = [
@@ -101,7 +102,7 @@ const adminRoutes = [
       {
         path: 'index',
         component: () => import('@/views/property-manage/index'),
-        name: 'adminManage',
+        name: 'propertyManage',
         meta: {
           title: '公共财产管理',
           icon: 'star'
@@ -110,38 +111,76 @@ const adminRoutes = [
     ]
   },
 
+  // {
+  //   path: '/buildingManage',
+  //   component: Layout,
+  //   meta: {
+  //     roles: ['superAdmin']
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/building-manage/index'),
+  //       name: 'cleanRecord',
+  //       meta: {
+  //         title: '楼栋管理',
+  //         icon: 'international'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/floorManage',
+  //   component: Layout,
+  //   meta: {
+  //     roles: ['superAdmin', 'admin']
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/floor-manage/index'),
+  //       name: 'floorManage',
+  //       meta: {
+  //         title: '楼层管理',
+  //         icon: 'list'
+  //       }
+  //     }
+  //   ]
+  // },
+  // 物业管理
   {
-    path: '/buildingManage',
+    path: '/propertyManage',
     component: Layout,
     meta: {
-      roles: ['superAdmin']
+      roles: ['superAdmin', 'admin'],
+      title: '物业管理',
+      icon: 'international'
     },
     children: [
+      // TODO 处理业主投诉或报修意见
       {
         path: 'index',
         component: () => import('@/views/building-manage/index'),
         name: 'cleanRecord',
         meta: {
-          title: '楼栋管理',
-          icon: 'international'
+          title: '物业人员管理'
         }
-      }
-    ]
-  },
-  {
-    path: '/floorManage',
-    component: Layout,
-    meta: {
-      roles: ['superAdmin', 'admin']
-    },
-    children: [
+      },
+
       {
-        path: 'index',
-        component: () => import('@/views/floor-manage/index'),
-        name: 'floorManage',
+        path: 'complaintIndex',
+        component: () => import('@/views/complaint/index'),
+        name: 'complaint-manage',
         meta: {
-          title: '楼层管理',
-          icon: 'list'
+          title: '投诉管理'
+        }
+      },
+      {
+        path: 'repairIndex',
+        component: () => import('@/views/repair-report/index'),
+        name: 'repair',
+        meta: {
+          title: '报修管理'
         }
       }
     ]
@@ -157,7 +196,7 @@ const adminRoutes = [
       // TODO对业主的费用进行管理
       {
         path: 'index',
-        component: () => import('@/views/user-info/index'),
+        component: () => import('@/views/resident-manage/index'),
         name: 'residents',
         meta: {
           title: '住户管理',
@@ -166,18 +205,26 @@ const adminRoutes = [
       }
     ]
   },
-  // 物业管理
+  // 房间管理
   {
-    path: '/propertyManage',
+    path: '/roomManage',
     component: Layout,
     meta: {
-      roles: ['superAdmin', 'admin']
+      roles: ['superAdmin']
     },
     children: [
-      // TODO 处理业主投诉或报修意见
+      // TODO对业主的费用进行管理
+      {
+        path: 'index',
+        component: () => import('@/views/room-manage/index'),
+        name: 'rooms',
+        meta: {
+          title: '房间管理',
+          icon: 'people'
+        }
+      }
     ]
   },
-
   {
     path: '/roomInfo',
     component: Layout,
@@ -190,7 +237,7 @@ const adminRoutes = [
         component: () => import('@/views/room-info/index'),
         name: 'roomInfo',
         meta: {
-          title: '宿舍信息',
+          title: '住房信息',
           icon: 'peoples'
         }
       }
@@ -214,91 +261,62 @@ const adminRoutes = [
       }
     ]
   },
-
-  // {
-  //   path: '/recordManage',
-  //   component: Layout,
-  //   meta: {
-  //     roles: ['superAdmin', 'admin'],
-  //     title: '记录查看',
-  //     icon: 'tree'
-  //   },
-  //   children: [
-  //     {
-  //       path: '/recordManage/getup',
-  //       component: () => import('@/views/record-manage/getup-record-manage'),
-  //       name: 'getupRecordManage',
-  //       meta: {
-  //         title: '起床记录'
-  //       }
-  //     },
-  //     {
-  //       path: '/recordManage/back',
-  //       component: () => import('@/views/record-manage/back-record-manage'),
-  //       name: 'backRecordManage',
-  //       meta: {
-  //         title: '归宿记录'
-  //       }
-  //     },
-  //     {
-  //       path: '/recordManage/clean',
-  //       component: () => import('@/views/record-manage/clean-record-manage'),
-  //       name: 'cleanRecordManage',
-  //       meta: {
-  //         title: '清扫记录',
-  //         noCache: true
-  //       }
-  //     }
-  //   ]
-  // },
-  // 报修|投诉管理
+  // 费用管理
   {
-    // TODO报修|投诉管理
-    path: '/repairManage',
+    path: '/feeManage',
     component: Layout,
     meta: {
       roles: ['superAdmin', 'admin']
-    },
-
-    children: []
-  },
-  {
-    path: '/visitorManage',
-    component: Layout,
-    meta: {
-      roles: ['superAdmin']
     },
     children: [
       {
         path: 'index',
-        component: () => import('@/views/visitor-manage/index'),
-        name: 'visitorManage',
+        component: () => import('@/views/fee-manage/index'),
+        name: 'feeManage',
         meta: {
-          title: '来访人员登记',
-          icon: 'user'
+          title: '费用管理',
+          icon: 'money'
         }
       }
     ]
-  },
-  // 统计模块
-  {
-    path: '/statistics',
-    component: Layout,
-    meta: {
-      roles: ['superAdmin', 'admin']
-    },
-    children: [
-      // {
-      //   path: 'index',
-      //   component: () => import('@/views/statistics/index'),
-      //   name: 'statistics',
-      //   meta: {
-      //     title: '统计模块',
-      //     icon: 'chart'
-      //   }
-      // }
-    ]
   }
+  // {
+  //   path: '/visitorManage',
+  //   component: Layout,
+  //   meta: {
+  //     roles: ['superAdmin']
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/visitor-manage/index'),
+  //       name: 'visitorManage',
+  //       meta: {
+  //         title: '住户登记',
+  //         icon: 'user'
+  //       }
+  //     }
+  //   ]
+  // },
+  // 统计模块
+  // {
+  //   path: '/statistics',
+  //   component: Layout,
+  //   meta: {
+  //     roles: ['superAdmin', 'admin']
+  //   },
+  //   children: [
+  //     // {
+  //     //   path: 'index',
+  //     //   component: () => import('@/views/statistics/index'),
+  //     //   name: 'statistics',
+  //     //   meta: {
+  //     //     title: '统计模块',
+  //     //     icon: 'chart'
+  //     //   }
+  //     // }
+  //   ]
+  // }
 ]
 
 // 业主专属模块

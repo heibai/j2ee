@@ -3,75 +3,62 @@
     <!-- 宿舍基础信息 -->
     <h1 class="main-title">
       <span class="mr-gap">宿舍基础信息</span>
-      <el-button
-        type="primary"
-        icon="el-icon-edit"
-        circle
-        v-if="roomInfo.id"
-        @click="editModalVisible = true"
-      ></el-button>
-      <room-info-edit-modal
-        :visible.sync="editModalVisible"
-        :roomInfo="roomInfo"
-        @update-success="fetchRoomInfo(roomInfo.id)"
-      />
     </h1>
-    <div class="wrapper main-card selector-wrapper">
+    <div v-has="'superAdmin'" class="wrapper main-card selector-wrapper">
       <GroupSelector :selectorData="selectorData" />
       <el-button
         type="primary"
         round
         @click="handleSearchRoom"
         :disabled="selectorData.roomId === null"
-        >检索宿舍</el-button
+        >检索住房</el-button
       >
     </div>
-    <div class="wrapper">
-      <PanelGroup :roomInfo="roomInfo" />
-    </div>
-    <!-- 宿舍基础信息 -->
 
-    <!-- 宿舍成员 -->
-    <h1 class="main-title">宿舍成员</h1>
+    <div class="detail-wrapper">
+      <el-row :gutter="12">
+        <el-col :span="12">
+          <el-card shadow="hover">
+            <div class="detail-info">
+              <span>
+                居住人数： 0
+              </span>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card shadow="hover">
+            <div class="detail-info">
+              <span>
+                欠费 ： 0
+              </span>
+              <!-- 缴费 -->
+              <el-button
+                type="success"
+                size="mini"
+                icon="el-icon-money"
+                @click="handleEdit(scope.$index, scope.row)"
+              >
+              </el-button>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
+
+    <!-- 入住成员 -->
+    <h1 class="main-title">入住成员</h1>
     <div class="wrapper main-card">
-      <StudentsTable :table-data="students" />
+      <RecordTable :table-data="students" />
     </div>
     <!-- 宿舍成员 -->
-
-    <!-- 宿舍评价 -->
-    <h1 class="main-title">宿舍评价</h1>
-    <div class="wrapper">
-      <div class="main-card form-wrapper">
-        <el-form :model="evaluateForm" ref="evaluateForm" label-width="100px">
-          <el-form-item label="宿舍评价" prop="note" required>
-            <el-input type="textarea" v-model="evaluateForm.note"></el-input>
-          </el-form-item>
-          <el-form-item label="评分" prop="score" required>
-            <el-input-number
-              v-model="evaluateForm.score"
-              controls-position="right"
-              :min="1"
-              :max="100"
-            ></el-input-number>
-          </el-form-item>
-        </el-form>
-        <div class="btn-wrapper">
-          <el-button type="primary" @click="handleSubmit">发表评分</el-button>
-        </div>
-      </div>
-      <Evaluates
-        :evaluatesData="evaluatesData"
-        @afterDel="fetchRoomInfo(roomInfo.id)"
-      ></Evaluates>
-    </div>
-    <!-- 宿舍评价 -->
   </div>
 </template>
 
 <script>
-import GroupSelector from '@/components/GroupSelector'
+import GroupSelector from './components/GroupSelector'
 import PanelGroup from './components/PanelGroup'
-import StudentsTable from './components/StudentsTable'
+import RecordTable from './components/recordTable'
 import Evaluates from '../dashboard/student/components/Evaluates'
 import RoomInfoEditModal from './components/RoomInfoEditModal.vue'
 
@@ -82,7 +69,7 @@ export default {
   components: {
     GroupSelector,
     PanelGroup,
-    StudentsTable,
+    RecordTable,
     Evaluates,
     RoomInfoEditModal
   },
@@ -118,15 +105,21 @@ export default {
       this.fetchRoomInfo(roomId)
     }
   },
+  created() {
+    // 在进入页面是判断角色 如果为住户则生成roomId
+    if (this.$store.getter.role === 'resident') {
+      // TODO 寻找该用户的住房
+    }
+  },
   methods: {
     async fetchRoomInfo(roomId) {
-      const roomInfo = (await getRoomInfo(roomId)).data
+      const roomInfo = (await getRoomInfo({ roomId })).data
       this.roomInfo = roomInfo
       this.buildingInfo = roomInfo.building
       this.students = roomInfo.users
-      const evaluates = (await getEvaluates({ roomId: roomInfo.id })).data
-        .evaluates
-      this.evaluatesData = evaluates
+      // const evaluates = (await getEvaluates({ roomId: roomInfo.id })).data
+      //   .evaluates
+      // this.evaluatesData = evaluates
     },
     handleSearchRoom() {
       this.$router.push({
@@ -158,6 +151,18 @@ export default {
 #RoomInfo {
   > .wrapper {
     margin: 40px 0;
+  }
+
+  > .detail-wrapper {
+    margin: 40px 0;
+    .detail-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      > span {
+        height: 26px;
+      }
+    }
   }
   .selector-wrapper {
     display: flex;

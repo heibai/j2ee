@@ -32,7 +32,7 @@ export default {
     </div>
     <!-- 管理概览 -->
     <!-- 公共财产管理 -->
-    <h1 class="main-title">小区公共财产</h1>
+    <h1 class="main-title">暨云小区</h1>
     <div class="wrapper">
       <RecordTable
         type="public"

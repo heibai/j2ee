@@ -1,25 +1,44 @@
 import request from '@/utils/request'
 
-export function getRooms(params) {
+export function getRoomPage(params) {
   return request({
-    url: '/room/getRooms',
+    url: '/room/getRoomPage',
     method: 'get',
     params
   })
 }
 
-export function getRoomInfo(roomId) {
+// 查询房间
+export function getRoomInfo(params) {
   return request({
-    url: '/room/getRoomInfo',
+    url: '/room/getRoom',
     method: 'get',
-    params: { roomId }
+    params
   })
 }
 
-export function updateRoomInfo({ roomId = null, peopleNum = null }) {
+// 可入住房间
+export function getRoomPageAvailable(params) {
   return request({
-    url: '/room/updateInfo',
+    url: '/room/getResidentableRoom',
+    method: 'get',
+    params
+  })
+}
+
+export function addRoom(data) {
+  return request({
+    url: '/room/createRoom',
     method: 'post',
-    data: { roomId, peopleNum }
+    data
+  })
+}
+
+// delete
+export function deleteRoom(params) {
+  return request({
+    url: '/room/deleteRoom',
+    method: 'get',
+    params
   })
 }

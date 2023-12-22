@@ -21,14 +21,28 @@
         <el-input
           ref="account"
           v-model="loginForm.account"
-          placeholder="学号/职工号"
+          placeholder="手机号"
           name="account"
           type="text"
           tabindex="1"
           autocomplete="on"
         />
       </el-form-item>
-      <!-- 学号/职工号 -->
+      <!-- 姓名 -->
+      <el-form-item v-if="registerMode" prop="name">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input
+          ref="name"
+          v-model="loginForm.name"
+          placeholder="姓名"
+          name="name"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+        />
+      </el-form-item>
 
       <!-- 密码 -->
       <el-tooltip
@@ -62,6 +76,16 @@
         </el-form-item>
       </el-tooltip>
       <!-- 密码 -->
+
+      <!-- 管理员登录还是非管理员登录 checkbox -->
+      <!-- <el-form-item v-if="!registerMode"> -->
+      <el-checkbox
+        v-if="!registerMode"
+        v-model="loginForm.adminMode"
+        style="margin: 0 0 10px;"
+        >管理员登录
+      </el-checkbox>
+      <!-- </el-form-item> -->
 
       <!-- 确认密码 -->
       <el-form-item v-if="registerMode" prop="repassword">
@@ -118,6 +142,20 @@ import { register } from '@/api/user'
 export default {
   name: 'Login',
   data() {
+    // 手机号
+    const validateAccount = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('手机号不能为空'))
+      }
+      setTimeout(() => {
+        if (!/^1[3456789]\d{9}$/.test(value)) {
+          callback(new Error('请输入正确格式的手机号'))
+        } else {
+          callback()
+        }
+      }, 100)
+    }
+
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('密码需要6位以上'))
@@ -136,10 +174,12 @@ export default {
       loginForm: {
         account: '',
         password: '',
-        repassword: ''
+        repassword: '',
+        name: ''
       },
       loginRules: {
         account: [{ required: true, trigger: 'blur' }],
+        name: [{ required: true, trigger: 'blur' }],
         password: [
           { required: true, trigger: 'blur', validator: validatePassword }
         ],
@@ -217,8 +257,10 @@ export default {
         if (valid) {
           this.loading = true
           register({
-            account: this.loginForm.account,
-            password: this.loginForm.password
+            userId: this.loginForm.account,
+            name: this.loginForm.name,
+            password: this.loginForm.password,
+            role: 'resident'
           }).then(() => {
             this.$message({ message: '注册成功', type: 'success' })
             this.loading = false

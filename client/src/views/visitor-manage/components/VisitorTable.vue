@@ -1,10 +1,16 @@
 <template>
   <div class="visitor-table">
     <div class="table-title" v-if="title">
-      来访人员记录
+      住户管理
     </div>
     <div class="table-wrapper">
       <el-table :data="tableData" style="width: 100%" v-loading="tableLoading">
+        <!-- 居住地址 -->
+        <el-table-column label="居住地址">
+          <template slot-scope="scope">
+            {{ scope.row.room.building.name }} {{ scope.row.room.name }}
+          </template>
+        </el-table-column>
         <el-table-column label="姓名" prop="name"></el-table-column>
         <el-table-column label="电话" prop="phone"></el-table-column>
         <el-table-column label="身份证" prop="idNumber"></el-table-column>
@@ -13,12 +19,12 @@
             {{ scope.row.sex === '0' ? '男' : '女' }}
           </template>
         </el-table-column>
-        <el-table-column label="到访宿舍楼">
+        <!-- <el-table-column label="到访宿舍楼">
           <template slot-scope="scope">
             {{ scope.row.building.name }}
           </template>
-        </el-table-column>
-        <el-table-column label="到访日日" prop="createdAt">
+        </el-table-column> -->
+        <el-table-column label="入住时间" prop="createdAt">
           <template slot-scope="scope">
             {{ $moment(scope.row.createdAt).format('YYYY-MM-DD HH:mm') }}
           </template>

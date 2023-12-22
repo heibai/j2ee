@@ -6,7 +6,6 @@
           <a @click="gotoUserDetail(scope.row.id)">{{ scope.row.name }}</a>
         </template>
       </el-table-column>
-      <el-table-column prop="account" label="学号"></el-table-column>
       <el-table-column prop="phone" label="电话号"></el-table-column>
       <el-table-column label="入住时间">
         <template slot-scope="scope">

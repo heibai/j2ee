@@ -32,8 +32,8 @@ public class PropertyController {
 
     @ApiModelProperty("查询入住信息")
     @GetMapping("/getProperty")
-    public CommonResult getProperty(@Param("propertyId") String propertyId){
-        return propertyService.getPropertyByPropertyId(propertyId);
+    public CommonResult getProperty(@Param("id") String id){
+        return propertyService.getPropertyById(id);
     }
 
     @ApiModelProperty("分页查询入住信息")
@@ -50,7 +50,7 @@ public class PropertyController {
 
     @ApiModelProperty("删除入住信息")
     @GetMapping("/deleteProperty")
-    public CommonResult deleteProperty(@Param("propertyId") String propertyId){
-        return propertyService.deleteProperty(propertyId);
+    public CommonResult deleteProperty(@Param("id") String id){
+        return propertyService.deleteProperty(id);
     }
 }

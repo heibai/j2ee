@@ -1,17 +1,15 @@
 <template>
   <div class="AddAdminForm">
-    <el-form class="form" ref="form" :model="formData">
-      <el-form-item label="管理员名" required prop="name">
+    <el-form class="form" ref="form" :model="formData" :rules="rules">
+      <el-form-item label="姓号" required prop="name">
         <el-input v-model.trim="formData.name" placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item label="学工号" required prop="account">
+
+      <el-form-item label="账户号" required prop="account">
         <el-input
           v-model.trim="formData.account"
           placeholder="请输入"
         ></el-input>
-      </el-form-item>
-      <el-form-item label="手机号" required prop="phone">
-        <el-input v-model.trim="formData.phone" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="密码" required prop="password">
         <el-input
@@ -20,10 +18,8 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="选择身份" required>
-        <el-radio v-model="formData.role" label="admin">普通管理员</el-radio>
-        <el-radio v-model="formData.role" label="superAdmin"
-          >超级管理员</el-radio
-        >
+        <el-radio v-model="formData.role" label="superAdmin">管理员</el-radio>
+        <el-radio v-model="formData.role" label="worker">物业人员</el-radio>
       </el-form-item>
     </el-form>
     <div class="btn-wrapper">
@@ -40,26 +36,49 @@
 </template>
 
 <script>
-import { addAdmin } from '@/api/user'
+import { register } from '@/api/user'
 export default {
   name: 'AddAdminForm',
   data() {
+    const validatePassword = (rule, value, callback) => {
+      if (value.length < 6) {
+        callback(new Error('密码需要6位以上'))
+      } else {
+        callback()
+      }
+    }
     return {
       formData: {
         name: '',
         account: '',
         phone: '',
         password: '',
-        role: 'admin'
+        role: 'superAdmin'
+      },
+      rules: {
+        password: [
+          {
+            required: true,
+            message: '请输入密码',
+            trigger: 'blur',
+            validator: validatePassword
+          }
+        ]
       }
     }
   },
   methods: {
     handleSubmit() {
+      // 验证是否有权限
+      if (this.$store.state.user.role !== 'superAdmin') {
+        this.$message.error('您没有权限进行此操作')
+        return
+      }
       this.$refs.form.validate(result => {
         if (result) {
-          addAdmin(this.formData).then(() => {
-            this.$message.success('注册管理员成功')
+          this.formData.userId = this.formData.account
+          register(this.formData).then(() => {
+            this.$message.success('注册成功')
             this.$parent.fetchAdminTableData().then(() => {
               this.$message.success('数据已更新')
             })

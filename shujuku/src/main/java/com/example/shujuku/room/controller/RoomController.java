@@ -50,8 +50,8 @@ public class RoomController {
 
     @ApiModelProperty("查询房间信息")
     @GetMapping("/getRoom")
-    public CommonResult getRoom(@Param("roomId") String roomId){
-        return roomService.getRoomByRoomId(roomId);
+    public CommonResult getRoom(@Param("id") String id){
+        return roomService.getRoomById(id);
     }
 
     @ApiModelProperty("分页查询房间信息")
@@ -68,7 +68,7 @@ public class RoomController {
 
     @ApiModelProperty("删除房间信息")
     @GetMapping("/deleteRoom")
-    public CommonResult deleteRoom(@Param("roomId") String roomId){
-        return roomService.deleteRoom(roomId);
+    public CommonResult deleteRoom(@Param("id") String id){
+        return roomService.deleteRoom(id);
     }
 }

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function register(data) {
   return request({
-    url: '/user/register',
+    url: '/users/createUser',
     method: 'post',
     data
   })
@@ -10,16 +10,17 @@ export function register(data) {
 
 export function login(data) {
   return request({
-    url: '/user/login',
+    url: '/users/login',
     method: 'post',
     data
   })
 }
 
-export function getInfo() {
+export function getUser(params) {
   return request({
-    url: '/user/info',
-    method: 'get'
+    url: '/users/getUser',
+    method: 'get',
+    params
   })
 }
 
