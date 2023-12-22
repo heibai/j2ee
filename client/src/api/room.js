@@ -42,3 +42,11 @@ export function deleteRoom(params) {
     params
   })
 }
+
+export function getRoomUsers(params) {
+  return request({
+    url: '/room/getRoomUsers',
+    method: 'get',
+    params
+  })
+}

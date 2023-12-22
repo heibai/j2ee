@@ -11,6 +11,8 @@ public interface ResidentService extends IService<Resident> {
 
     public CommonResult getResidentByResidentId(String residentId);
 
+    public CommonResult getResidentByUserId(String userId);
+
     public CommonResult getResidentList(ResidentPageReq req);
 
     public CommonResult getResidentDetailList(ResidentPageReq req);

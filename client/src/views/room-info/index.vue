@@ -62,8 +62,7 @@ import PanelGroup from './components/PanelGroup'
 import RecordTable from './components/recordTable'
 import Evaluates from '../dashboard/student/components/Evaluates'
 import RoomInfoEditModal from './components/RoomInfoEditModal.vue'
-
-import { getRoomInfo } from '@/api/room'
+import { getRoomInfo, getRoomUsers } from '@/api/room'
 export default {
   name: 'RoomInfo',
   components: {
@@ -100,17 +99,10 @@ export default {
     }
   },
   mounted() {
-    // if (this.$store.getter.role === 'resident') {
-    //   // TODO 寻找该用户的住房
-    //   this.$route.push({
-    //     name: 'roomInfo',
-    //     query: { roomId: this.$store.getters.room }
-    //   })
-    // }
-    // const roomId = this.$route.query.roomId
-    // if (roomId) {
-    //   this.fetchRoomInfo(roomId)
-    // }
+    let roomId = this.$route.query.roomId
+    if (roomId) {
+      this.fetchRoomInfo(roomId)
+    }
   },
   created() {
     // 在进入页面是判断角色 如果为住户则生成roomId
@@ -125,7 +117,7 @@ export default {
   },
   methods: {
     async fetchRoomInfo(roomId) {
-      const roomInfo = (await getRoomInfo({ roomId })).data
+      const roomInfo = (await getRoomUsers({ roomId })).data
       this.roomInfo = roomInfo
       this.buildingInfo = roomInfo.building
       this.students = roomInfo.users

@@ -58,6 +58,15 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
         return CommonResult.fail("找不到该房间");
     }
 
+
+    @Override
+    public  CommonResult getResidentByUserId(String userId){
+        Resident resident = residentMapper.GetResidentByUserId(userId);
+        if(resident != null){
+            return CommonResult.success(resident);
+        }else return CommonResult.fail("查询resident表失败");
+    }
+
     @Override
     public CommonResult getResidentByResidentId(String residentId){
         Resident resident = residentMapper.GetResidentByResidentId(residentId);
