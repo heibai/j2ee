@@ -15,12 +15,12 @@ import com.example.shujuku.mapper.FeesMapper;
 import com.example.shujuku.fees.server.FeesService;
 import com.example.shujuku.room.bean.Room;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -48,7 +48,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
             fees.setPrice(Double.valueOf(price));
             fees.setStatus(String.valueOf(1));
             fees.setType(type);
-            fees.setDeadline(LocalDateTime.parse(deadline));
+            fees.setDeadline(LocalDateTime.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             fees.setRoomId(room.getRoomId());
             feesMapper.insert(fees);
         }

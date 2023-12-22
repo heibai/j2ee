@@ -1,13 +1,11 @@
 package com.example.shujuku;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import java.time.LocalDateTime;
 
 @SpringBootTest
 class ShujukuApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
+    String b = "2023-12-22 00:00:00";
+    LocalDateTime a = LocalDateTime.parse(b);
 
 }
