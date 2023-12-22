@@ -27,9 +27,7 @@
         <el-col :span="12">
           <el-card shadow="hover">
             <div class="detail-info">
-              <span>
-                欠费 ： 0
-              </span>
+              <span> 欠费 ：{{ roomInfo.fees ? roomInfo.fees : 0 }} 元 </span>
               <!-- 缴费 -->
               <el-button
                 v-has="'superAdmin'"
@@ -65,6 +63,7 @@ import {
   getRoomUsers,
   getRoomByRoomIdAndBuildingId
 } from '@/api/room'
+import { getRoomFees } from '@/api/fees'
 export default {
   name: 'RoomInfo',
   components: {
@@ -93,18 +92,20 @@ export default {
     }
   },
   watch: {
-    '$route.query.roomId': function(newVal) {
+    '$route.query.roomId': async function(newVal) {
       if (newVal && this.$route.name === 'roomInfo') {
-        this.fetchRoomInfo(newVal)
-        this.fetchRoomResident(newVal)
+        await this.fetchRoomInfo(newVal)
+        await this.fetchRoomResident(newVal)
+        await this.fetchRoomFees(newVal)
       }
     }
   },
-  mounted() {
+  async mounted() {
     let roomId = this.$route.query.roomId
     if (roomId) {
-      this.fetchRoomInfo(roomId)
-      this.fetchRoomResident(roomId)
+      await this.fetchRoomInfo(roomId)
+      await this.fetchRoomResident(roomId)
+      await this.fetchRoomFees(roomId)
     }
   },
   created() {
@@ -121,12 +122,16 @@ export default {
   methods: {
     async fetchRoomInfo(roomId) {
       const roomInfo = (await getRoomInfo({ id: roomId })).data
-
       this.roomInfo = roomInfo
     },
     async fetchRoomResident(roomId) {
       const roomUsers = (await getRoomUsers({ roomId })).data
       this.tableData = roomUsers
+    },
+
+    async fetchRoomFees(roomId) {
+      const roomFees = (await getRoomFees({ roomId })).data
+      this.roomInfo.fees = roomFees
     },
     async handleSearchRoom() {
       const roomInfo = (

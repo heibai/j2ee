@@ -30,7 +30,13 @@ export default {
   methods: {
     handleEdit(index, row) {
       let formData = JSON.parse(JSON.stringify(row))
-      this.$refs.editForm.show(formData)
+      // 去住房信息中
+      this.$router.push({
+        path: '/roomInfo/index',
+        query: {
+          roomId: row.id
+        }
+      })
     },
     handleDelete(index, row) {
       this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {

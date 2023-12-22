@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getRepairReportPage(params) {
   return request({
-    url: '/repairReport/getRepairReportPage',
+    url: '/repairReport/getRepairReportDetailPage',
     method: 'get',
     params
   })

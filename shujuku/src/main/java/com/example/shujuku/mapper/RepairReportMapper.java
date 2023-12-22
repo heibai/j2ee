@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper
 public interface RepairReportMapper extends BaseMapper<RepairReport>{
 
-    @Select("SELECT * FROM repair_report WHERE reportId = #{reportId}")
-    RepairReport GetRepairReportByReportId(String reportId);
+    @Select("SELECT * FROM repair_report WHERE id = #{reportId}")
+    RepairReport GetRepairReportById(String reportId);
 
     List<RepairReport> getRepairReportList(RepairReportPageReq req);
 

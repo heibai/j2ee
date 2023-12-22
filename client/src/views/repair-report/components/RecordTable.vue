@@ -1,5 +1,6 @@
 <script>
 import detailForm from './detailForm.vue'
+import { formatDataTime } from '@/filters'
 import { deleteRepairReport, updateRepairReport } from '@/api/repair-report'
 export default {
   name: 'RecordTable',
@@ -31,6 +32,7 @@ export default {
   },
   computed: {},
   methods: {
+    formatDataTime,
     handleDetail(index, row) {
       this.$refs.detailForm.show(row)
     },
@@ -46,9 +48,13 @@ export default {
       formData.status = status
       let tip = formData.status == 2 ? '受理' : '解决'
       console.log(status)
+      if (formData.status == 2)
+        formData.repairerId = this.$store.getters.userInfo.id
       if (formData.status == 3) {
         // 需要 YYYY-MM-DD HH:mm:ss
-        formData.repairTime = this.$moment().format('YYYY-MM-DD HH:mm:ss')
+        formData.repairTime = this.$moment()
+          .format('YYYY-MM-DD HH:mm:ss')
+          .replace(' ', 'T')
       }
       // 确认受理
       this.$confirm(`确认${tip}该报修？`, '提示', {
@@ -101,17 +107,35 @@ export default {
     <div class="table-wrapper">
       <el-table :data="tableData" style="width: 100%" v-loading="tableLoading">
         <!-- 财产物品名 -->
-        <el-table-column prop="reportId" label="报修人"></el-table-column>
+        <el-table-column prop="reporterName" label="报修人"></el-table-column>
 
-        <el-table-column prop="repairerId" label="受理人"></el-table-column>
+        <el-table-column prop="repairerName" label="受理人"></el-table-column>
         <!-- 信息 -->
         <el-table-column prop="message" label="报修信息"> </el-table-column>
 
         <!-- 投诉时间 -->
-        <el-table-column prop="replyTime" label="报修时间"> </el-table-column>
+        <el-table-column prop="reportTime" label="报修时间">
+          <template slot-scope="scope">
+            <span>
+              {{
+                scope.row.reportTime
+                  ? formatDataTime(scope.row.reportTime)
+                  : 'N/A'
+              }}
+            </span>
+          </template>
+        </el-table-column>
 
         <!-- 回应时间 -->
-        <el-table-column prop="time" label="修复时间"> </el-table-column>
+        <el-table-column prop="repairTime" label="修复时间">
+          <template slot-scope="scope">
+            {{
+              scope.row.repairTime
+                ? formatDataTime(scope.row.repairTime)
+                : 'N/A'
+            }}
+          </template>
+        </el-table-column>
         <!-- 状态  1报修中 2 已受理 3 已修复-->
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">

@@ -15,8 +15,10 @@ export default {
     handleSubmit(data) {
       //  处理新增逻辑
       data.status = 1
-      data.reportId = this.$store.getters.userInfo.id
-      data.reportTime = this.$moment().format('YYYY-MM-DD HH:mm:ss')
+      data.reporterId = this.$store.getters.userInfo.id
+      data.reportTime = this.$moment()
+        .format('YYYY-MM-DD HH:mm:ss')
+        .replace(' ', 'T')
       createRepairReport(data)
         .then(() => {
           this.$message.success('新增成功')

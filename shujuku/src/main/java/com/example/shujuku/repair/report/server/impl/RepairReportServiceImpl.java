@@ -41,7 +41,7 @@ public class RepairReportServiceImpl extends ServiceImpl<RepairReportMapper, Rep
 
     @Override
     public CommonResult getRepairReportByReportId(String reportId){
-        RepairReport repairReport = repairReportMapper.GetRepairReportByReportId(reportId);
+        RepairReport repairReport = repairReportMapper.GetRepairReportById(reportId);
         if(repairReport != null){
             return CommonResult.success(repairReport);
         }else return CommonResult.fail("查询repairReport表失败");
@@ -58,8 +58,8 @@ public class RepairReportServiceImpl extends ServiceImpl<RepairReportMapper, Rep
         while(repairReportListIterator.hasNext()){
             HashMap<String,Object> resultMap = new HashMap<String,Object>();
             RepairReport repairReport = repairReportListIterator.next();
-            Users reporter = usersMapper.GetUsersByUserId(repairReport.getReporterId());
-            Users repairer = usersMapper.GetUsersByUserId(repairReport.getRepairerId());
+            Users reporter = usersMapper.GetUsersById(repairReport.getReporterId());
+            Users repairer = usersMapper.GetUsersById(repairReport.getRepairerId());
             resultMap.put("repairReport",repairReport);
             resultMap.put("reporter",reporter);
             resultMap.put("repairer",repairer);
@@ -103,7 +103,7 @@ public class RepairReportServiceImpl extends ServiceImpl<RepairReportMapper, Rep
 
     @Override
     public CommonResult deleteRepairReport(String reportId){
-        RepairReport repairReport = repairReportMapper.GetRepairReportByReportId(reportId);
+        RepairReport repairReport = repairReportMapper.GetRepairReportById(reportId);
         Assert.notNull(repairReport, "删除repairReport表数据失败，表中查询不到对应repairReportId的申请");
         if(SqlHelper.retBool(baseMapper.deleteById(reportId))){
             return CommonResult.success(repairReport);

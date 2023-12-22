@@ -39,10 +39,25 @@ export default {
       }
 
       const { data } = await getRepairReportPage(params)
-      this.tableData = data.records
+      this.tableData = this.generationTableData(data.records)
+
       this.count = data.total
 
       console.log(this.tableData)
+    },
+    generationTableData(records) {
+      return records.map(record => {
+        let obj = { ...record.repairReport }
+        obj.repairerName = 'N/A'
+        obj.reporterName = 'N/A'
+        if (record.repairer) {
+          obj.repairerName = record.repairer.name
+        }
+        if (record.reporter) {
+          obj.reporterName = record.reporter.name
+        }
+        return obj
+      })
     }
   }
 }
