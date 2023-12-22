@@ -35,7 +35,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
     protected SnowflakeIdGenerator snowflakeIdGenerator;
 
     @Override
-    public CommonResult createResidentFees(String price, String deadline){
+    public CommonResult createResidentFees(String price, String deadline,String type){
         List<Room> roomList = roomMapper.getResidentedRooms();
         ListIterator<Room> roomListIterator = roomList.listIterator();
         while(roomListIterator.hasNext()){
@@ -46,7 +46,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
             fees.setMessage("住宿费");
             fees.setPrice(Double.valueOf(price));
             fees.setStatus(String.valueOf(1));
-            fees.setType(String.valueOf(0));
+            fees.setType(type);
             fees.setDeadline(DateTime.parse(deadline));
             fees.setRoomId(room.getRoomId());
             feesMapper.insert(fees);
