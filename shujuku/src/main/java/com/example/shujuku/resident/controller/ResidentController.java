@@ -42,6 +42,12 @@ public class ResidentController {
         return residentService.getResidentList(residentPageReq);
     }
 
+    @ApiModelProperty("分页查询入住信息")
+    @GetMapping("/getResidentDetailPage")
+    public CommonResult getResidentDetailPage(ResidentPageReq residentPageReq){
+        return residentService.getResidentDetailList(residentPageReq);
+    }
+
     @ApiModelProperty("更新入住信息")
     @PostMapping("/updateResident")
     public CommonResult updateResident(@RequestBody Resident resident){
