@@ -72,7 +72,7 @@
 
 <script>
 import CountTo from 'vue-count-to'
-import { getBuildingInfo } from '@/api/building'
+import { getBuildingInfo } from '@/api/room'
 
 export default {
   components: {

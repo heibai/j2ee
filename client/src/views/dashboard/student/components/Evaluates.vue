@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import { removeEvaluate } from '@/api/evaluate'
 export default {
   data() {
     return {}

@@ -48,7 +48,10 @@
         一键发布
       </el-button>
     </span>
-    <selectRoomDialog :visible.sync="selectRoomVisible"></selectRoomDialog>
+    <selectRoomDialog
+      :visible.sync="selectRoomVisible"
+      :formData="formData"
+    ></selectRoomDialog>
   </el-dialog>
 </template>
 
@@ -115,6 +118,7 @@ export default {
         if (valid) {
           this.updateLoading = true
           this.formData.deadline = this.formData.time
+          this.formData.status = 1
           console.log(this.formData)
           this.$emit('finish', this.formData)
         }

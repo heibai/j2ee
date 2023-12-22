@@ -15,8 +15,7 @@
 </template>
 
 <script>
-import { getBuildings } from '@/api/building'
-import { getFloors } from '@/api/floor'
+import { getBuildings } from '@/api/room'
 import { getRooms } from '@/api/room'
 export default {
   name: 'RoomSelector',

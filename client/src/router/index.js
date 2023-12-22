@@ -119,7 +119,7 @@ const adminRoutes = [
         name: 'complaint-manage',
         meta: {
           title: '投诉管理',
-          roles: ['superAdmin']
+          roles: ['superAdmin', 'resident']
         }
       },
       {
@@ -128,7 +128,7 @@ const adminRoutes = [
         name: 'repair',
         meta: {
           title: '报修管理',
-          roles: ['superAdmin', 'worker']
+          roles: ['superAdmin', 'worker', 'resident']
         }
       }
     ]
@@ -177,13 +177,13 @@ const adminRoutes = [
     path: '/roomInfo',
     component: Layout,
     meta: {
-      roles: ['superAdmin', 'admin']
+      roles: ['superAdmin']
     },
     children: [
       {
         path: 'index',
         component: () => import('@/views/room-info/index'),
-        name: 'roomInfo',
+        name: 'roomAdminInfo',
         meta: {
           title: '住房信息',
           icon: 'peoples'
@@ -211,24 +211,6 @@ const adminRoutes = [
       }
     ]
   }
-  // {
-  //   path: '/visitorManage',
-  //   component: Layout,
-  //   meta: {
-  //     roles: ['superAdmin']
-  //   },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/visitor-manage/index'),
-  //       name: 'visitorManage',
-  //       meta: {
-  //         title: '住户登记',
-  //         icon: 'user'
-  //       }
-  //     }
-  //   ]
-  // },
   // 统计模块
   // {
   //   path: '/statistics',

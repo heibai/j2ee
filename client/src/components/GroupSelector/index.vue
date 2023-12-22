@@ -78,8 +78,7 @@
 </template>
 
 <script>
-import { getManageBuildings } from '@/api/building'
-import { getFloors } from '@/api/floor'
+import { getManageBuildings } from '@/api/room'
 import { getRooms } from '@/api/room'
 import { getStudents } from '@/api/user'
 export default {

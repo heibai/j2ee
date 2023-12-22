@@ -10,6 +10,7 @@
         t.room_id,
         t.message,
         t.status,
+        t.time,
         t.deadline
     </sql>
 

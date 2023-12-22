@@ -14,6 +14,7 @@ export default {
   methods: {
     handleSubmit(data) {
       console.log('req', data)
+
       //  处理新增逻辑
       createResidentFees(data)
         .then(() => {
@@ -27,6 +28,9 @@ export default {
     },
     show() {
       this.visible = true
+    },
+    hide() {
+      this.visible = false
     }
   }
 }

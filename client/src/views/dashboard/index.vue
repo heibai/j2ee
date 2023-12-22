@@ -1,27 +1,44 @@
 <script>
 import { mapGetters } from 'vuex'
-import adminDashboard from './admin'
-import studentDashboard from './student'
 import RecordTable from './components/RecordTable.vue'
+import Pagination from '@/components/Pagination'
 import PanelGroup from './components/PanelGroup'
+import paginationMixins from '@/mixins/paginationMixins'
+import { getProperty } from '@/api/property'
 
 export default {
   name: 'Dashboard',
-  components: { adminDashboard, studentDashboard, RecordTable, PanelGroup },
+  components: { RecordTable, PanelGroup, Pagination },
   data() {
     return {
-      currentRole: 'adminDashboard'
+      currentRole: 'adminDashboard',
+      tableData: []
     }
   },
+  mixins: [paginationMixins],
   computed: {
     ...mapGetters(['roles'])
   },
   created() {
-    // if (this.roles.includes('student')) {
-    //   this.currentRole = 'studentDashboard'
-    // }
+    this.getPropertyTableData()
   },
-  methods: {}
+  methods: {
+    async handlePagination({ page, limit }) {
+      this.PageNo = page
+      this.PageSize = limit
+      this.getPropertyTableData()
+    },
+    async getPropertyTableData() {
+      const params = {
+        PageNo: this.PageNo,
+        PageSize: this.PageSize
+      }
+      const { data } = await getProperty(params)
+      this.tableData = data.records
+      this.count = data.total
+      console.log(this.tableData)
+    }
+  }
 }
 </script>
 
@@ -31,7 +48,7 @@ export default {
     <h1 class="main-title">暨云小区</h1>
 
     <div class="wrapper">
-      <PanelGroup :building-id="buildingId"></PanelGroup>
+      <PanelGroup :building-id="1"></PanelGroup>
     </div>
     <!-- 管理概览 -->
     <!-- 公共财产管理 -->
@@ -40,9 +57,15 @@ export default {
         type="public"
         title="公共财产"
         icon="el-icon-suitcase"
-        :table-data="[]"
+        :tableData="tableData"
         :show-pagination="false"
       ></RecordTable>
+      <Pagination
+        :total="count"
+        :page="PageNo"
+        @pagination="handlePagination"
+        :hidden="tableData.length === 0"
+      />
     </div>
 
     <!-- <h1 class="main-title">最新公告</h1> -->

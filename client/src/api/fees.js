@@ -26,3 +26,19 @@ export function publishSingleFee(data) {
     data
   })
 }
+// 删除
+export function deleteFees(params) {
+  return request({
+    url: '/fees/deleteFees',
+    method: 'get',
+    params
+  })
+}
+
+export function updateFees(data) {
+  return request({
+    url: '/fees/updateFees',
+    method: 'post',
+    data
+  })
+}

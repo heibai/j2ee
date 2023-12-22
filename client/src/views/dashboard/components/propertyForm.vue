@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { getManageBuildings } from '@/api/building'
+import { getManageBuildings } from '@/api/room'
 import { createVisitor } from '@/api/visitor'
 
 export default {

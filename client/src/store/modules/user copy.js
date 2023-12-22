@@ -1,7 +1,7 @@
 import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
-import { getManageBuildings } from '@/api/building'
+import { getManageBuildings } from '@/api/room'
 
 const state = {
   allUserInfo: {},

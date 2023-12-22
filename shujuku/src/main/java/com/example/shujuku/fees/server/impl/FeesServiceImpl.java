@@ -107,7 +107,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
 
     @Override
     public CommonResult updateFees(Fees fees){
-        Fees oldFees = feesMapper.selectById(fees.getFeesId());
+        Fees oldFees = feesMapper.selectById(fees.getId());
         Assert.notNull(oldFees, "修改fees表失败，表中查询不到对应feesId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(fees))){
             return CommonResult.success(fees);

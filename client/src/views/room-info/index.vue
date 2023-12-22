@@ -2,7 +2,7 @@
   <div id="RoomInfo" class="page-wrapper">
     <!-- 宿舍基础信息 -->
     <h1 class="main-title">
-      <span class="mr-gap">宿舍基础信息</span>
+      <span class="mr-gap">住房基础信息</span>
     </h1>
     <div v-has="'superAdmin'" class="wrapper main-card selector-wrapper">
       <GroupSelector :selectorData="selectorData" />
@@ -34,10 +34,11 @@
               </span>
               <!-- 缴费 -->
               <el-button
+                v-has="'superAdmin'"
                 type="success"
                 size="mini"
                 icon="el-icon-money"
-                @click="handleEdit(scope.$index, scope.row)"
+                @click="handleSubmit(scope.$index, scope.row)"
               >
               </el-button>
             </div>
@@ -63,7 +64,6 @@ import Evaluates from '../dashboard/student/components/Evaluates'
 import RoomInfoEditModal from './components/RoomInfoEditModal.vue'
 
 import { getRoomInfo } from '@/api/room'
-import { getEvaluates, addEvaluate } from '@/api/evaluate'
 export default {
   name: 'RoomInfo',
   components: {
@@ -100,15 +100,27 @@ export default {
     }
   },
   mounted() {
-    const roomId = this.$route.query.roomId
-    if (roomId) {
-      this.fetchRoomInfo(roomId)
-    }
+    // if (this.$store.getter.role === 'resident') {
+    //   // TODO 寻找该用户的住房
+    //   this.$route.push({
+    //     name: 'roomInfo',
+    //     query: { roomId: this.$store.getters.room }
+    //   })
+    // }
+    // const roomId = this.$route.query.roomId
+    // if (roomId) {
+    //   this.fetchRoomInfo(roomId)
+    // }
   },
   created() {
     // 在进入页面是判断角色 如果为住户则生成roomId
-    if (this.$store.getter.role === 'resident') {
+    let role = this.$store.getters.role
+    if (role === 'resident') {
       // TODO 寻找该用户的住房
+      this.$router.push({
+        name: 'roomInfo',
+        query: { roomId: this.$store.getters.room }
+      })
     }
   },
   methods: {
@@ -117,9 +129,6 @@ export default {
       this.roomInfo = roomInfo
       this.buildingInfo = roomInfo.building
       this.students = roomInfo.users
-      // const evaluates = (await getEvaluates({ roomId: roomInfo.id })).data
-      //   .evaluates
-      // this.evaluatesData = evaluates
     },
     handleSearchRoom() {
       this.$router.push({
@@ -127,21 +136,29 @@ export default {
         query: { roomId: this.selectorData.roomId }
       })
     },
+
     handleSubmit() {
-      this.$refs.evaluateForm.validate(result => {
-        if (result) {
-          addEvaluate({
-            note: this.evaluateForm.note,
-            score: this.evaluateForm.score,
-            roomId: this.roomInfo.id
-          }).then(() => {
-            this.$message.success('发布成功')
-            this.fetchRoomInfo(this.roomInfo.id)
-          })
-        } else {
-          this.$message.error('请填充完整信息')
-        }
+      // 一键缴费
+      this.$confirm('此操作将帮用户缴纳所有欠费, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+        .then(async () => {
+          await deleteComplaint(row)
+          this.$message({
+            type: 'success',
+            message: '缴费成功!'
+          })
+          this.$emit('operateFinish')
+        })
+        .catch(e => {
+          console.log(e)
+          this.$message({
+            type: 'info',
+            message: '已取消缴费'
+          })
+        })
     }
   }
 }

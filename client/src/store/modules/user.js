@@ -133,7 +133,7 @@ const actions = {
       const { data } = response
       console.log(data)
       if (!data) {
-        reject('验证失败，请重新登录')
+        $message.error('获取用户信息失败')
       }
       commit('SET_ROOM', data.roomId)
     })

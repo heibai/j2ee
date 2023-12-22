@@ -32,6 +32,7 @@ export default {
 
     operateFinish() {
       this.getTableData()
+      this.$refs.addForm.hide()
     },
     async handlePagination({ page, limit }) {
       this.PageNo = page

@@ -1,11 +1,8 @@
 <script>
-import editForm from './editForm.vue'
 import { deleteComplaint } from '@/api/complaint'
+import { formatDataTime } from '@/filters'
 export default {
   name: 'RecordTable',
-  components: {
-    editForm
-  },
   data() {
     return {}
   },
@@ -31,6 +28,7 @@ export default {
   },
   computed: {},
   methods: {
+    formatDataTime,
     handleEdit(index, row) {
       let formData = JSON.parse(JSON.stringify(row))
       this.$refs.editForm.show(formData)
@@ -101,41 +99,24 @@ export default {
         </el-table-column>
 
         <!-- 缴费时间 -->
-        <el-table-column prop="time" label="缴费时间"> </el-table-column>
+        <el-table-column prop="time" label="缴费时间">
+          <template slot-scope="scope">
+            {{ scope.row.time ? formatDataTime(scope.row.time) : 'N/A' }}
+          </template>
+        </el-table-column>
 
-        <el-table-column prop="time" label="截止时间"> </el-table-column>
+        <el-table-column prop="deadline" label="截止时间">
+          <template slot-scope="scope">
+            {{
+              scope.row.deadline ? formatDataTime(scope.row.deadline) : 'N/A'
+            }}
+          </template>
+        </el-table-column>
 
         <!-- 回应时间 -->
         <!-- <el-table-column prop="replyTime" label="回应时间"> </el-table-column> -->
-
-        <!-- 操作区 -->
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button
-              type="primary"
-              size="mini"
-              @click="handleEdit(scope.$index, scope.row)"
-              >住户详情
-            </el-button>
-            <!-- 缴费 -->
-            <el-button
-              type="success"
-              size="mini"
-              @click="handleEdit(scope.$index, scope.row)"
-              >缴费
-            </el-button>
-            <el-button
-              type="danger"
-              size="mini"
-              @click="handleDelete(scope.$index, scope.row)"
-              >删除
-            </el-button>
-          </template>
-        </el-table-column>
       </el-table>
     </div>
-    <editForm ref="editForm" @operateFinish="$emit('operateFinish')">
-    </editForm>
   </div>
 </template>
 

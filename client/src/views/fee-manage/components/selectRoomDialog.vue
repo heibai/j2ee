@@ -1,8 +1,8 @@
 <script>
 import paginationMixins from '@/mixins/paginationMixins'
 import Pagination from '@/components/Pagination'
-import { createResident } from '@/api/resident'
-import { getRoomPageAvailable } from '@/api/room'
+import { publishSingleFee } from '@/api/fees'
+import { getRoomPage } from '@/api/room'
 export default {
   components: {
     Pagination
@@ -10,7 +10,17 @@ export default {
   mixins: [paginationMixins],
   inject: ['operateFinish'],
   props: {
-    visible: { type: Boolean, default: false }
+    visible: { type: Boolean, default: false },
+    formData: {
+      type: Object,
+      default: () => {
+        return {
+          price: '',
+          type: '',
+          deadline: null
+        }
+      }
+    }
   },
   data() {
     return {
@@ -52,41 +62,56 @@ export default {
         pageNo: this.PageNo,
         pageSize: this.PageSize
       }
-      getRoomPageAvailable(reqData).then(res => {
+      getRoomPage(reqData).then(res => {
         console.log(res)
         if (res.code === 200) {
-          console.log(res.data)
-          this.roomTable = res.data
-          this.count = 0
-          // this.count = res.data.total
+          this.roomTable = res.data.records
+          this.count = res.data.total
         }
         this.tableLoading = false
       })
     },
-    checkIn() {
-      console.log()
-      let reqData = {
-        userId: this.checkInUser.id,
-        ...this.selectorData
-      }
-      console.log(reqData)
-      // TODO入住逻辑
-      createResident(reqData).then(res => {
-        console.log(res)
-        if (res.code === 200) {
-          this.$message({
-            type: 'success',
-            message: '发布成功'
-          })
-          this.$emit('update:visible', false)
-          this.operateFinish()
-        } else {
-          this.$message({
-            type: 'error',
-            message: '入住失败'
-          })
-        }
+
+    publish() {
+      this.$confirm('此操作将发布收费, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+        .then(async () => {
+          this.selectRows.forEach(row => {
+            let reqData = {
+              ...this.formData,
+              deadline: this.formData.time.replace(' ', 'T'),
+              time: null,
+              roomId: row.roomId
+            }
+            console.log(reqData)
+            publishSingleFee(reqData).then(res => {
+              console.log(res)
+              if (res.code === 200) {
+                this.$message({
+                  type: 'success',
+                  message: '发布成功'
+                })
+                this.$emit('update:visible', false)
+                this.operateFinish()
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: '发布失败'
+                })
+              }
+            })
+          })
+        })
+        .catch(e => {
+          console.log(e)
+          this.$message({
+            type: 'info',
+            message: '已取消发布'
+          })
+        })
     }
   }
 }
@@ -94,7 +119,7 @@ export default {
 <template>
   <el-dialog
     width="30%"
-    title="内层 Dialog"
+    title="选择房间"
     :visible.sync="visible"
     @update:visible="$emit('update:visible', $event)"
     append-to-body
@@ -114,11 +139,11 @@ export default {
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="">查询</el-button>
+            <el-button type="primary" @click="getTableData">查询</el-button>
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="checkIn">发布</el-button>
+            <el-button type="primary" @click="publish">发布</el-button>
           </el-form-item>
         </el-form>
       </div>

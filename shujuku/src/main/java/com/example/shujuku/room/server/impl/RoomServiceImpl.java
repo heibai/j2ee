@@ -87,7 +87,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
 
     @Override
     public CommonResult updateRoom(Room room){
-        Room oldRoom = roomMapper.selectById(room.getRoomId());
+        Room oldRoom = roomMapper.selectById(room.getId());
         Assert.notNull(oldRoom, "修改room表失败，表中查询不到对应roomId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(room))){
             return CommonResult.success(room);

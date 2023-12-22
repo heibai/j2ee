@@ -54,7 +54,7 @@ public class FeesController {
 
     @ApiModelProperty("删除费用信息")
     @GetMapping("/deleteFees")
-    public CommonResult deleteFees(@Param("feesId") String feesId){
-        return feesService.deleteFees(feesId);
+    public CommonResult deleteFees(@Param("id") String id){
+        return feesService.deleteFees(id);
     }
 }

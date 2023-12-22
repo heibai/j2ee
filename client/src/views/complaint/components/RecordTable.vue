@@ -84,10 +84,19 @@ export default {
         <!-- 操作区 -->
         <el-table-column label="操作">
           <template slot-scope="scope">
+            <!-- 修改 -->
             <el-button
               type="primary"
               size="mini"
               @click="handleEdit(scope.$index, scope.row)"
+              >修改
+            </el-button>
+
+            <el-button
+              type="primary"
+              size="mini"
+              @click="handleEdit(scope.$index, scope.row)"
+              v-has="'superAdmin'"
               >回复
             </el-button>
             <el-button

@@ -25,8 +25,6 @@
 import PanelGroup from './components/PanelGroup'
 import StudentList from './components/StudentList'
 import Evaluates from './components/Evaluates'
-import { getStudents } from '@/api/user'
-import { getEvaluates } from '@/api/evaluate'
 export default {
   name: 'Info',
   components: {
@@ -45,14 +43,7 @@ export default {
       return this.$store.getters.name
     }
   },
-  mounted() {
-    getStudents({ roomId: this.$store.getters.room.id }).then(res => {
-      this.studentsData = res.data.users
-    })
-    getEvaluates({ roomId: this.$store.getters.room.id }).then(res => {
-      this.evaluatesData = res.data.evaluates
-    })
-  }
+  mounted() {}
 }
 </script>
 

@@ -54,7 +54,7 @@
 
 <script>
 import CountTo from 'vue-count-to'
-import { getBuildingInfo } from '@/api/building'
+import { getBuildingInfo } from '@/api/room'
 
 export default {
   components: {
@@ -75,14 +75,14 @@ export default {
     }
   },
   watch: {
-    buildingId(val) {
-      getBuildingInfo(val).then(res => {
-        this.buildingName = res.data.name
-        this.layerCount = res.data.floorCount
-        this.roomCount = res.data.roomCount
-        this.studentCount = res.data.studentCount
-      })
-    }
+    // buildingId(val) {
+    //   getBuildingInfo(val).then(res => {
+    //     this.buildingName = res.data.name
+    //     this.layerCount = res.data.floorCount
+    //     this.roomCount = res.data.roomCount
+    //     this.studentCount = res.data.studentCount
+    //   })
+    // }
   },
   methods: {
     handleSetLineChartData(type) {

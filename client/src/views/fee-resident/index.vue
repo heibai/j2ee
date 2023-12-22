@@ -1,6 +1,5 @@
 <script>
 import RecordTable from './components/RecordTable'
-import addForm from './components/addForm.vue'
 import Pagination from '@/components/Pagination'
 import paginationMixins from '@/mixins/paginationMixins'
 import { getFeesList } from '@/api/fees'
@@ -8,8 +7,7 @@ export default {
   name: 'PublicPropertyManage',
   components: {
     RecordTable,
-    Pagination,
-    addForm
+    Pagination
   },
   mixins: [paginationMixins],
   data() {
@@ -29,7 +27,6 @@ export default {
     handleAdd() {
       this.$refs.addForm.show()
     },
-
     operateFinish() {
       this.getTableData()
     },
@@ -38,16 +35,25 @@ export default {
       this.PageSize = limit
       this.getTableData()
     },
+
     async getTableData() {
       const params = {
         PageNo: this.PageNo,
         PageSize: this.PageSize,
         roomId: this.$store.getters.room
       }
-
-      const { data } = await getFeesList(params)
-      this.tableData = data.records
-      this.count = data.total
+      if (!params.roomId) {
+        setTimeout(async () => {
+          params.roomId = this.$store.getters.room
+          const { data } = await getFeesList(params)
+          this.tableData = data.records
+          this.count = data.total
+        }, 1000)
+      } else {
+        const { data } = await getFeesList(params)
+        this.tableData = data.records
+        this.count = data.total
+      }
 
       console.log(this.tableData)
     }
@@ -66,7 +72,6 @@ export default {
       </span>
     </h1>
 
-    <!-- 新增按钮 -->
     <div class="operation-container">
       <div class="wrapper">
         <RecordTable
@@ -84,7 +89,6 @@ export default {
         />
       </div>
     </div>
-    <addForm @operateFinish="operateFinish" ref="addForm"></addForm>
   </div>
 </template>
 

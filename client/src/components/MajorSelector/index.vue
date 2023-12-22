@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import { getFacultyList } from '@/api/faculty'
-
 export default {
   model: {
     prop: 'value',

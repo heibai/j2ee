@@ -88,7 +88,7 @@ export default {
 <template>
   <el-dialog
     width="30%"
-    title="内层 Dialog"
+    title="选择房间"
     :visible.sync="visible"
     @update:visible="$emit('update:visible', $event)"
     append-to-body

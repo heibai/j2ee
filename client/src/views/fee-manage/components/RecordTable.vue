@@ -1,6 +1,7 @@
 <script>
 import editForm from './editForm.vue'
-import { deleteComplaint } from '@/api/complaint'
+import { deleteFees, updateFees } from '@/api/fees'
+import { formatDataTime } from '@/filters'
 export default {
   name: 'RecordTable',
   components: {
@@ -31,9 +32,39 @@ export default {
   },
   computed: {},
   methods: {
+    formatDataTime,
     handleEdit(index, row) {
       let formData = JSON.parse(JSON.stringify(row))
-      this.$refs.editForm.show(formData)
+      formData.status = 2
+      // 缴费
+      this.$confirm('此操作将缴费, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          let res = await updateFees(formData)
+          this.$message({
+            type: 'success',
+            message: '缴费成功!'
+          })
+          this.$emit('operateFinish')
+        })
+        .catch(e => {
+          console.log(e)
+          this.$message({
+            type: 'info',
+            message: '已取消缴费'
+          })
+        })
+    },
+    toRoomDetail(index, row) {
+      this.$router.push({
+        path: '/roomInfo/index',
+        query: {
+          roomId: row.roomId
+        }
+      })
     },
     handleDelete(index, row) {
       this.$confirm('此操作将永久删除该信息, 是否继续?', '提示', {
@@ -42,7 +73,7 @@ export default {
         type: 'warning'
       })
         .then(async () => {
-          await deleteComplaint(row)
+          await deleteFees(row)
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -72,25 +103,48 @@ export default {
         <el-table-column prop="roomId" label="房间号"> </el-table-column>
 
         <!-- 信息 -->
-        <el-table-column prop="message" label="费用"> </el-table-column>
+        <el-table-column prop="price" label="费用"> </el-table-column>
 
-        <el-table-column prop="responses" label="费用类型"> </el-table-column>
+        <el-table-column prop="type" label="费用类型">
+          <template slot-scope="scope">
+            <!-- 为0表示已删除，为1表示待缴费，为2表示已缴费，为3表示已过期 -->
+            <el-tag type="danger" v-if="scope.row.type == 1">物业费</el-tag>
+            <el-tag type="warning" v-else-if="scope.row.type == 2"
+              >水电费
+            </el-tag>
+            <el-tag type="danger" v-else>无</el-tag>
+          </template>
+        </el-table-column>
 
         <!-- 状态 -->
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
             <!-- 为0表示已删除，为1表示待缴费，为2表示已缴费，为3表示已过期 -->
-            <el-tag type="warning" v-if="scope.row.status === 1">待缴费</el-tag>
-            <el-tag type="success" v-if="scope.row.status === 2">已缴费</el-tag>
-            <el-tag type="danger" v-if="scope.row.status === 3">已过期</el-tag>
+            <el-tag type="warning" v-if="scope.row.status == 1">待缴费</el-tag>
+            <el-tag type="success" v-else-if="scope.row.status == 2"
+              >已缴费</el-tag
+            >
+            <el-tag type="danger" v-else-if="scope.row.status == 3"
+              >已过期</el-tag
+            >
             <el-tag type="danger" v-else>无</el-tag>
           </template>
         </el-table-column>
 
         <!-- 缴费时间 -->
-        <el-table-column prop="time" label="缴费时间"> </el-table-column>
+        <el-table-column prop="time" label="缴费时间">
+          <template slot-scope="scope">
+            {{ scope.row.time ? formatDataTime(scope.row.time) : 'N/A' }}
+          </template>
+        </el-table-column>
 
-        <el-table-column prop="time" label="截止时间"> </el-table-column>
+        <el-table-column prop="deadline" label="截止时间">
+          <template slot-scope="scope">
+            {{
+              scope.row.deadline ? formatDataTime(scope.row.deadline) : 'N/A'
+            }}
+          </template>
+        </el-table-column>
 
         <!-- 回应时间 -->
         <!-- <el-table-column prop="replyTime" label="回应时间"> </el-table-column> -->
@@ -101,7 +155,7 @@ export default {
             <el-button
               type="primary"
               size="mini"
-              @click="handleEdit(scope.$index, scope.row)"
+              @click="toRoomDetail(scope.$index, scope.row)"
               >住户详情
             </el-button>
             <!-- 缴费 -->

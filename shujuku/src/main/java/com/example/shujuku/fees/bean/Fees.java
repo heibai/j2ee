@@ -42,6 +42,9 @@ public class Fees implements Serializable {
     @TableField("status")
     private String status;
 
+    @TableField("time")
+    private LocalDateTime time;
+
     @TableField("deadline")
     private LocalDateTime deadline;
 

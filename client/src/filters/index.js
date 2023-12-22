@@ -90,3 +90,8 @@ export function transRoleString(role) {
   }
   return roleMap[role]
 }
+
+export function formatDataTime(time) {
+  // 2023-12-22T14:35:18 移除 T
+  return time.replace('T', ' ')
+}
