@@ -25,15 +25,14 @@
 
     <select id="getResidentableRooms" resultMap="roomList">
         SELECT SQL_CALC_FOUND_ROWS
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM room t
         WHERE t.status = 1
-        and t.limit_num > t.had_num
     </select>
 
     <select id="getResidentedRooms" resultMap="roomList">
         SELECT SQL_CALC_FOUND_ROWS
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM room t
         WHERE t.status != 0
         and t.had_num > 0
@@ -46,9 +45,6 @@
         WHERE t.id = t.id
         <if test="id != null">
             and t.id = #{id}
-        </if>
-        <if test="userId != null">
-            and t.user_id = #{userId}
         </if>
         <if test="roomId != null">
             and t.room_id = #{roomId}

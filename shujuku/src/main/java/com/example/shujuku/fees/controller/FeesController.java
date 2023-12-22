@@ -26,8 +26,8 @@ public class FeesController {
 
     @ApiModelProperty("一键生成住宿费")
     @GetMapping("/createResidentFees")
-    public CommonResult createResidentFees(@Param("price") String price,@Param("deadline") String deadline){
-        return feesService.createResidentFees(price,deadline);
+    public CommonResult createResidentFees(@Param("price") String price,@Param("deadline") String deadline, @Param("type")String type){
+        return feesService.createResidentFees(price,deadline,type);
     }
 
     @ApiModelProperty("创建费用信息")

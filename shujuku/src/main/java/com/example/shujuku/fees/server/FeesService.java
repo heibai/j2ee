@@ -7,7 +7,7 @@ import com.example.shujuku.fees.bean.Fees;
 
 public interface FeesService extends IService<Fees> {
 
-    public CommonResult createResidentFees(String price, String deadline);
+    public CommonResult createResidentFees(String price, String deadline,String type);
 
     public CommonResult createFees(Fees fees);
 
