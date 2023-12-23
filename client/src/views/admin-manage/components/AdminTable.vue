@@ -56,7 +56,7 @@ export default {
           // 只有管理员能删除角色且不能删除自己
           if (
             row.role === 'superAdmin' &&
-            row.userId === this.$store.state.userId
+            row.userId === this.$store.getters.userInfo.userId
           ) {
             this.$message({
               type: 'error',

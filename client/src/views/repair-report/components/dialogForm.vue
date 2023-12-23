@@ -44,7 +44,12 @@
       <el-button @click="$emit('update:visible', false)">
         取消
       </el-button>
-      <el-button :loading="updateLoading" type="primary" @click="handleSubmit">
+      <el-button
+        :loading="updateLoading"
+        type="primary"
+        @click="handleSubmit"
+        v-if="!editMode"
+      >
         {{ submitText }}
       </el-button>
     </span>

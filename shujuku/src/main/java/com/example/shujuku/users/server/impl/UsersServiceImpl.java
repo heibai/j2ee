@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.DigestUtils;
 
 import java.util.List;
 
@@ -25,6 +26,16 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
     @Override
     public CommonResult createUsers(Users users) {
+        // 检验是否已存在该用户
+        Users oldUsers = usersMapper.GetUsersByUserId(users.getUserId());
+        // 返回错误信息
+        if (oldUsers != null) {
+            return CommonResult.fail("该用户已存在");
+        }
+
+        //对传入的 password 字段加密处理
+        String md5Password = DigestUtils.md5DigestAsHex(users.getPassword().getBytes());
+        users.setPassword(md5Password);
         boolean insertSuccess = SqlHelper.retBool(usersMapper.insert(users));
         if (!insertSuccess) {
             log.info("插入users表失败", users);
@@ -35,6 +46,9 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
     @Override
     public CommonResult login(UsersLoginReq usersLoginReq) {
+        //对传入的 password 字段加密处理
+        String md5Password = DigestUtils.md5DigestAsHex(usersLoginReq.getPassword().getBytes());
+        usersLoginReq.setPassword(md5Password);
         Users users = usersMapper.UserLogin(usersLoginReq);
         if (users != null) {
             return CommonResult.success(users);
@@ -77,6 +91,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     @Override
     public CommonResult updateUsers(Users users) {
         Users oldUsers = usersMapper.selectById(users.getId());
+        // 检测是否设置了password字段更新
+        if (users.getPassword() != null) {
+            //对传入的 password 字段加密处理
+            String md5Password = DigestUtils.md5DigestAsHex(users.getPassword().getBytes());
+            users.setPassword(md5Password);
+        } else {
+            users.setPassword(oldUsers.getPassword());
+        }
         Assert.notNull(oldUsers, "修改users表失败，表中查询不到对应usersId的教师");
         if (SqlHelper.retBool(baseMapper.updateById(users))) {
             return CommonResult.success(users);

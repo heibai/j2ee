@@ -46,6 +46,9 @@ public class FeesController {
         return feesService.getFeesByRoomId(roomId);
     }
 
+    //根据住房号查分页查询费用信息
+
+
     @ApiModelProperty("分页查询费用信息")
     @GetMapping("/getFeesPage")
     public CommonResult getFeesPage(FeesPageReq feesPageReq){

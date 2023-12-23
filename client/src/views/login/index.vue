@@ -267,7 +267,13 @@ export default {
             name: this.loginForm.name,
             password: this.loginForm.password,
             role: 'visitor'
-          }).then(() => {
+          }).then(res => {
+            let { code, msg } = res
+            if (code !== 200) {
+              this.$message({ message: msg, type: 'error' })
+              this.loading = false
+              return
+            }
             this.$message({ message: '注册成功', type: 'success' })
             this.loading = false
             this.registerMode = false

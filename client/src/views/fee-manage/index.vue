@@ -52,20 +52,29 @@ export default {
     },
     generationTable(records) {
       console.log(records)
-      let tableData = []
-      records.forEach(record => {
-        const roomInfo = record[0]
-        const feeList = record[1]
-        feeList.forEach(fee => {
-          tableData.push({
-            ...roomInfo,
-            roomNum: roomInfo.roomId,
-            ...fee,
-            roomId: roomInfo.id
-          })
-        })
+      // let tableData = []
+      // records.forEach(record => {
+      //   const feeList = record[0]
+      //   const roomInfo = record[1]
+      //   feeList.forEach(fee => {
+      //     tableData.push({
+      //       ...roomInfo,
+      //       roomNum: roomInfo.roomId,
+      //       ...fee,
+      //       roomId: roomInfo.id
+      //     })
+      //   })
+      // })
+      return records.map(record => {
+        const feeInfo = record[0]
+        const roomInfo = record[1]
+        return {
+          ...roomInfo,
+          roomNum: roomInfo.roomId,
+          ...feeInfo,
+          roomId: roomInfo.id
+        }
       })
-      return tableData
     }
   }
 }

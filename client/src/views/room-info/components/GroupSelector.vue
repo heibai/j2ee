@@ -26,18 +26,7 @@ export default {
     event: 'selected'
   },
   data() {
-    return {
-      groupData: {
-        buildingId: null,
-        floorId: null,
-        roomId: null,
-        userId: null
-      },
-      buildingsData: [],
-      floorsData: [],
-      roomsData: [],
-      usersData: []
-    }
+    return {}
   },
   props: {
     selectorData: {
@@ -45,56 +34,11 @@ export default {
       required: true
     }
   },
-  watch: {
-    'groupData.buildingId': function() {
-      this.groupData.floorId = null
-      this.groupData.roomId = null
-      this.groupData.userId = null
-      this.fetchFloorsData()
-    },
-    'groupData.floorId': function() {
-      this.groupData.roomId = null
-      this.groupData.userId = null
-      this.fetchRoomsData()
-    },
-    'groupData.roomId': function() {
-      this.groupData.userId = null
-      this.fetchUsersData()
-    },
-    groupData: {
-      deep: true,
-      handler(newVal) {
-        for (let key in this.selectorData) {
-          this.selectorData[key] = newVal[key]
-        }
-      }
-    }
-  },
+
   mounted() {
     // this.fetchBuildingsData()
   },
-  methods: {
-    async fetchBuildingsData() {
-      getManageBuildings().then(res => {
-        this.buildingsData = res.data.buildings
-      })
-    },
-    async fetchFloorsData() {
-      getFloors({ buildingId: this.groupData.buildingId }).then(res => {
-        this.floorsData = res.data.floors
-      })
-    },
-    async fetchRoomsData() {
-      getRooms({ floorId: this.groupData.floorId }).then(res => {
-        this.roomsData = res.data.rooms
-      })
-    },
-    async fetchUsersData() {
-      getStudents({ roomId: this.groupData.roomId }).then(res => {
-        this.usersData = res.data.users
-      })
-    }
-  }
+  methods: {}
 }
 </script>
 

@@ -22,3 +22,11 @@ export function updateProperty(data) {
     data
   })
 }
+
+export function deleteProperty(params) {
+  return request({
+    url: '/property/deleteProperty',
+    method: 'get',
+    params
+  })
+}

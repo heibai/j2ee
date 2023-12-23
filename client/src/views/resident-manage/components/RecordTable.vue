@@ -42,6 +42,7 @@ export default {
             type: 'success',
             message: '删除成功!'
           })
+
           this.$emit('operateFinish')
         })
         .catch(e => {
@@ -84,16 +85,16 @@ export default {
     <div class="table-wrapper">
       <el-table :data="tableData" style="width: 100%" v-loading="tableLoading">
         <!-- 财产物品名 -->
-        <el-table-column prop="userId" label="入住人">
+        <el-table-column prop="name" label="入住人">
           <template slot-scope="scope">
             {{ scope.row.name }}
           </template>
         </el-table-column>
 
         <!-- 信息 -->
-        <el-table-column prop="message" label="入住人电话">
+        <el-table-column prop="account" label="入住人电话">
           <template slot-scope="scope">
-            {{ scope.row.userId }}
+            {{ scope.row.account }}
           </template>
         </el-table-column>
 

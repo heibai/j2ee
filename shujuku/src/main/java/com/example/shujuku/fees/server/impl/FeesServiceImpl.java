@@ -92,17 +92,27 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
         List<List<Object>> resultList = new ArrayList<List<Object>>();
-        List<Room> roomList = roomMapper.getResidentedRooms();
-        ListIterator<Room> roomListIterator = roomList.listIterator();
-        while(roomListIterator.hasNext()){
+        List<Fees> feesList = feesMapper.getFeesList(req);
+        ListIterator<Fees> feesListIterator = feesList.listIterator();
+        while(feesListIterator.hasNext()){
             List<Object> result = new ArrayList<Object>();
-            Room room = roomListIterator.next();
-            req.setRoomId(room.getId());
-            List<Fees> feesList = feesMapper.getFeesList(req);
+            Fees fees = feesListIterator.next();
+            Room room = roomMapper.selectById(fees.getRoomId());
+            result.add(fees);
             result.add(room);
-            result.add(feesList);
             resultList.add(result);
         }
+        //List<Room> roomList = roomMapper.getResidentedRooms();
+        //ListIterator<Room> roomListIterator = roomList.listIterator();
+        //while(roomListIterator.hasNext()){
+        //    List<Object> result = new ArrayList<Object>();
+        //    Room room = roomListIterator.next();
+        //    req.setRoomId(room.getId());
+        //    List<Fees> feesList = feesMapper.getFeesList(req);
+        //    result.add(room);
+        //    result.add(feesList);
+        //    resultList.add(result);
+        //}
 //        List<Student> list = studentMapper.getStudentList(req);
 //        List<Student> studentList = (List<Student>) list.get(0);
 //        Integer total = ((List<Integer>) list.get(1)).get(0);
@@ -112,6 +122,9 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
         page.setTotal(resultList.size());
         return CommonResult.success(page);
     }
+
+    //
+
 
     @Override
     public CommonResult updateFees(Fees fees){

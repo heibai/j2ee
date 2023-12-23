@@ -48,6 +48,7 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
             }else if(hadNum > limitNum){
                 return CommonResult.fail("该房间已住满");
             }
+            room.setHadNum(String.valueOf(hadNum));
             boolean insertSuccess = SqlHelper.retBool(residentMapper.insert(resident));
             boolean insertSuccess2 = SqlHelper.retBool(roomMapper.updateById(room));
             if(!insertSuccess || !insertSuccess2){
@@ -137,6 +138,20 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
         Resident resident = residentMapper.selectById(id);
         Assert.notNull(resident, "删除resident表数据失败，表中查询不到对应residentId的申请");
         if(SqlHelper.retBool(baseMapper.deleteById(id))){
+            //还需要将user表中的用户身份改为resident
+            Users users = usersMapper.selectById(resident.getUserId());
+            users.setRole("visitor");
+            usersMapper.updateById(users);
+            //更新room表中的住户数量
+            Room room = roomMapper.selectById(resident.getRoomId());
+            int hadNum = Integer.parseInt(room.getHadNum())-1;
+            room.setHadNum(String.valueOf(hadNum));
+            if(hadNum == 0){
+                room.setStatus(String.valueOf(0));
+            }else if(hadNum < Integer.parseInt(room.getLimitNum())){
+                room.setStatus(String.valueOf(1));
+            }
+            roomMapper.updateById(room);
             return CommonResult.success(resident);
         }else return CommonResult.fail("删除resident表数据失败");
     }

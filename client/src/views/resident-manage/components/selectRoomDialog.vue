@@ -88,7 +88,7 @@ export default {
     },
     updateUserInfo() {
       let reqData = {
-        ...this.checkInUser,
+        id: this.checkInUser.id,
         role: 'resident'
       }
       updateUserInfo(reqData).then(res => {

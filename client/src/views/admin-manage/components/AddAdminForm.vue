@@ -94,9 +94,14 @@ export default {
       this.$refs.form.validate(result => {
         if (result) {
           this.formData.userId = this.formData.account
-          register(this.formData).then(() => {
-            this.$message.success('注册成功')
-            this.$emit('operateFinish')
+          register(this.formData).then(res => {
+            let { code } = res
+            if (code === 200) {
+              this.$message.success('注册成功')
+              this.$emit('operateFinish')
+            } else {
+              this.$message.error('注册失败')
+            }
           })
         } else {
           this.$message.error('请填充完整信息')

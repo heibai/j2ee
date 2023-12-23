@@ -1,5 +1,6 @@
 <script>
 import editProperty from './editProperty.vue'
+import { deleteProperty } from '@/api/property'
 export default {
   name: 'RecordTable',
   components: {
@@ -33,6 +34,29 @@ export default {
     handleEdit(index, row) {
       let formData = JSON.parse(JSON.stringify(row))
       this.$refs.editProperty.show(formData)
+    },
+    handleDelete(index, row) {
+      this.$confirm('此操作将永久删除该物品, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          await deleteProperty(row)
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+
+          this.$emit('operateFinish')
+        })
+        .catch(e => {
+          console.log(e)
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     }
   }
 }

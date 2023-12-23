@@ -37,8 +37,8 @@ export default {
         PageNo: this.PageNo,
         PageSize: this.PageSize
       }
-      let limitRole = ['superAdmin', 'admin']
-      if (limitRole.excludes(this.$store.getters.role)) {
+      let limitRole = ['superAdmin', 'worker']
+      if (!limitRole.includes(this.$store.getters.role)) {
         params.reporterId = this.$store.getters.userInfo.id
       }
       const { data } = await getRepairReportPage(params)

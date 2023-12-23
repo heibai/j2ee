@@ -20,7 +20,7 @@
         <el-col :span="12">
           <el-card shadow="hover">
             <div class="detail-info">
-              <span> 居住人数： {{ roomInfo.hadNum }} </span>
+              <span> 居住人数： {{ roomInfo ? roomInfo.hadNum : 0 }} </span>
             </div>
           </el-card>
         </el-col>
@@ -71,7 +71,9 @@ export default {
   },
   data() {
     return {
-      roomInfo: {},
+      roomInfo: {
+        hadNum: 0
+      },
       buildingInfo: {},
       floorInfo: {},
       tableData: [],
@@ -79,17 +81,18 @@ export default {
         buildingId: null,
         roomId: null
       },
-      evaluateForm: {
-        note: '',
-        score: 60
-      },
+
       fees: 0,
       editModalVisible: false
     }
   },
   watch: {
     '$route.query.roomId': async function(newVal) {
-      if (newVal && this.$route.name === 'roomInfo') {
+      if (newVal && this.$route.name === 'roomAdminInfo') {
+        await this.fetchRoomInfo(newVal)
+        await this.fetchRoomResident(newVal)
+        await this.fetchRoomFees(newVal)
+      } else if (newVal && this.$route.name === 'roomInfo') {
         await this.fetchRoomInfo(newVal)
         await this.fetchRoomResident(newVal)
         await this.fetchRoomFees(newVal)
@@ -110,10 +113,12 @@ export default {
     let role = this.$store.getters.role
     if (role === 'resident') {
       // TODO 寻找该用户的住房
-      this.$router.push({
-        name: 'roomInfo',
-        query: { roomId: this.$store.getters.room }
-      })
+      setTimeout(() => {
+        this.$router.push({
+          name: 'roomInfo',
+          query: { roomId: this.$store.getters.room }
+        })
+      }, 1000)
     }
   },
   methods: {
@@ -145,8 +150,9 @@ export default {
         return
       }
       this.roomInfo = roomInfo
+
       this.$router.push({
-        name: 'roomInfo',
+        path: '/roomInfo/index',
         query: { roomId: this.roomInfo.id }
       })
     },
