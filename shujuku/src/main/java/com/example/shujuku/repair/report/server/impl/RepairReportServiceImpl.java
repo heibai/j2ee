@@ -40,8 +40,8 @@ public class RepairReportServiceImpl extends ServiceImpl<RepairReportMapper, Rep
     }
 
     @Override
-    public CommonResult getRepairReportByReportId(String reportId){
-        RepairReport repairReport = repairReportMapper.GetRepairReportByReportId(reportId);
+    public CommonResult getRepairReportById(String id){
+        RepairReport repairReport = repairReportMapper.selectById(id);
         if(repairReport != null){
             return CommonResult.success(repairReport);
         }else return CommonResult.fail("查询repairReport表失败");
@@ -53,22 +53,21 @@ public class RepairReportServiceImpl extends ServiceImpl<RepairReportMapper, Rep
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
         List<HashMap<String,Object>> resultList = new ArrayList<HashMap<String,Object>>();
+        //分页查询报修信息
         List<RepairReport> repairReportList = repairReportMapper.getRepairReportList(req);
         ListIterator<RepairReport> repairReportListIterator = repairReportList.listIterator();
         while(repairReportListIterator.hasNext()){
             HashMap<String,Object> resultMap = new HashMap<String,Object>();
             RepairReport repairReport = repairReportListIterator.next();
+            //对每一个报修信息，查询其报修者和维修者的信息
             Users reporter = usersMapper.GetUsersByUserId(repairReport.getReporterId());
             Users repairer = usersMapper.GetUsersByUserId(repairReport.getRepairerId());
+            //把消息装入同一个map，再把map装入list返回
             resultMap.put("repairReport",repairReport);
             resultMap.put("reporter",reporter);
             resultMap.put("repairer",repairer);
             resultList.add(resultMap);
         }
-//        List<Student> list = studentMapper.getStudentList(req);
-//        List<Student> studentList = (List<Student>) list.get(0);
-//        Integer total = ((List<Integer>) list.get(1)).get(0);
-//        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
         Page<HashMap<String,Object>> page = new Page<>(pageNo, pageSize);
         page.setRecords(resultList);
         page.setTotal(resultList.size());
@@ -80,12 +79,8 @@ public class RepairReportServiceImpl extends ServiceImpl<RepairReportMapper, Rep
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
-        System.out.println(req);
+        //分页查询维修信息
         List<RepairReport> repairReportList = repairReportMapper.getRepairReportList(req);
-//        List<Student> list = studentMapper.getStudentList(req);
-//        List<Student> studentList = (List<Student>) list.get(0);
-//        Integer total = ((List<Integer>) list.get(1)).get(0);
-//        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
         Page<RepairReport> page = new Page<>(pageNo, pageSize);
         page.setRecords(repairReportList);
         page.setTotal(repairReportList.size());
@@ -94,7 +89,7 @@ public class RepairReportServiceImpl extends ServiceImpl<RepairReportMapper, Rep
 
     @Override
     public CommonResult updateRepairReport(RepairReport repairReport){
-        RepairReport oldRepairReport = repairReportMapper.GetRepairReportByReportId(repairReport.getReportId());
+        RepairReport oldRepairReport = repairReportMapper.selectById(repairReport.getId());
         Assert.notNull(oldRepairReport, "修改repairReport表失败，表中查询不到对应repairReportId的教师");
         if(SqlHelper.retBool(baseMapper.updateById(repairReport))){
             return CommonResult.success(repairReport);
@@ -102,10 +97,10 @@ public class RepairReportServiceImpl extends ServiceImpl<RepairReportMapper, Rep
     }
 
     @Override
-    public CommonResult deleteRepairReport(String reportId){
-        RepairReport repairReport = repairReportMapper.GetRepairReportByReportId(reportId);
+    public CommonResult deleteRepairReport(String id){
+        RepairReport repairReport = repairReportMapper.selectById(id);
         Assert.notNull(repairReport, "删除repairReport表数据失败，表中查询不到对应repairReportId的申请");
-        if(SqlHelper.retBool(baseMapper.deleteById(reportId))){
+        if(SqlHelper.retBool(baseMapper.deleteById(id))){
             return CommonResult.success(repairReport);
         }else return CommonResult.fail("删除repairReport表数据失败");
     }

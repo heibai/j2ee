@@ -1,12 +1,9 @@
 package com.example.shujuku.property.server.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.shujuku.common.CommonResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.shujuku.common.Tool;
 import com.example.shujuku.req.PropertyPageReq;
 import com.example.shujuku.property.bean.Property;
 import com.example.shujuku.mapper.PropertyMapper;
@@ -49,11 +46,8 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
         System.out.println(req);
+        //分页查询公共财产记录
         List<Property> propertyList = propertyMapper.getPropertyList(req);
-//        List<Student> list = studentMapper.getStudentList(req);
-//        List<Student> studentList = (List<Student>) list.get(0);
-//        Integer total = ((List<Integer>) list.get(1)).get(0);
-//        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
         Page<Property> page = new Page<>(pageNo, pageSize);
         page.setRecords(propertyList);
         page.setTotal(propertyList.size());

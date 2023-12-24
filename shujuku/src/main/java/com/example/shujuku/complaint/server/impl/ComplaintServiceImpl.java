@@ -1,12 +1,9 @@
 package com.example.shujuku.complaint.server.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.shujuku.common.CommonResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.shujuku.common.Tool;
 import com.example.shujuku.req.ComplaintPageReq;
 import com.example.shujuku.complaint.bean.Complaint;
 import com.example.shujuku.mapper.ComplaintMapper;
@@ -44,29 +41,12 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
     }
 
     @Override
-    public CommonResult getComplaintPage(ComplaintPageReq complaint) {
-        Page<Complaint> page = new Page<>(complaint.getPageNo(), complaint.getPageSize());
-        LambdaQueryWrapper<Complaint> queryWrapper = new LambdaQueryWrapper<Complaint>();
-        //多条件匹配查询
-        queryWrapper.eq(Tool.isPresent(complaint.getComplaintId()), Complaint::getComplaintId, complaint.getComplaintId());
-//        queryWrapper.like(Tool.isPresent(complaint.getName()), Complaint::getName, complaint.getName());
-        queryWrapper.eq(Tool.isPresent(complaint.getStatus()), Complaint::getStatus, complaint.getStatus());
-//
-        //        //查询
-        IPage<Complaint> ipage = this.baseMapper.selectPage(page, queryWrapper);
-        return CommonResult.success(ipage);
-    }
-
     public CommonResult getComplaintList(ComplaintPageReq req){
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
         System.out.println(req);
         List<Complaint> complaintList = complaintMapper.getComplaintList(req);
-//        List<Student> list = studentMapper.getStudentList(req);
-//        List<Student> studentList = (List<Student>) list.get(0);
-//        Integer total = ((List<Integer>) list.get(1)).get(0);
-//        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
         Page<Complaint> page = new Page<>(pageNo, pageSize);
         page.setRecords(complaintList);
         page.setTotal(complaintList.size());
