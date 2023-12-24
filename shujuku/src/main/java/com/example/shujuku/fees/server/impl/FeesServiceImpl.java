@@ -112,7 +112,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
     @Override
     public CommonResult updateFees(Fees fees){
         Fees oldFees = feesMapper.selectById(fees.getId());
-        Assert.notNull(oldFees, "修改fees表失败，表中查询不到对应feesId的教师");
+        Assert.notNull(oldFees, "修改fees表失败，表中查询不到对应Id的费用信息");
         if(SqlHelper.retBool(baseMapper.updateById(fees))){
             return CommonResult.success(fees);
         }else return CommonResult.fail("更新fees表失败");
@@ -121,7 +121,7 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
     @Override
     public CommonResult deleteFees(String id){
         Fees fees = feesMapper.selectById(id);
-        Assert.notNull(fees, "删除fees表数据失败，表中查询不到对应feesId的申请");
+        Assert.notNull(fees, "删除fees表数据失败，表中查询不到对应Id的费用信息");
         if(SqlHelper.retBool(baseMapper.deleteById(id))){
             return CommonResult.success(fees);
         }else return CommonResult.fail("删除fees表数据失败");

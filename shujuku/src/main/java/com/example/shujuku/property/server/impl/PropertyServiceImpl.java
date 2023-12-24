@@ -57,7 +57,7 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
     @Override
     public CommonResult updateProperty(Property property){
         Property oldProperty = propertyMapper.selectById(property.getId());
-        Assert.notNull(oldProperty, "修改property表失败，表中查询不到对应propertyId的教师");
+        Assert.notNull(oldProperty, "修改property表失败，表中查询不到对应Id的公共财产信息");
         if(SqlHelper.retBool(baseMapper.updateById(property))){
             return CommonResult.success(property);
         }else return CommonResult.fail("更新property表失败");
@@ -66,7 +66,7 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
     @Override
     public CommonResult deleteProperty(String id){
         Property property = propertyMapper.selectById(id);
-        Assert.notNull(property, "删除property表数据失败，表中查询不到对应propertyId的申请");
+        Assert.notNull(property, "删除property表数据失败，表中查询不到对应Id的公共财产信息");
         if(SqlHelper.retBool(baseMapper.deleteById(id))){
             return CommonResult.success(property);
         }else return CommonResult.fail("删除property表数据失败");

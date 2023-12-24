@@ -90,7 +90,7 @@ public class RepairReportServiceImpl extends ServiceImpl<RepairReportMapper, Rep
     @Override
     public CommonResult updateRepairReport(RepairReport repairReport){
         RepairReport oldRepairReport = repairReportMapper.selectById(repairReport.getId());
-        Assert.notNull(oldRepairReport, "修改repairReport表失败，表中查询不到对应repairReportId的教师");
+        Assert.notNull(oldRepairReport, "修改repairReport表失败，表中查询不到对应Id的报修信息");
         if(SqlHelper.retBool(baseMapper.updateById(repairReport))){
             return CommonResult.success(repairReport);
         }else return CommonResult.fail("更新repairReport表失败");
@@ -99,7 +99,7 @@ public class RepairReportServiceImpl extends ServiceImpl<RepairReportMapper, Rep
     @Override
     public CommonResult deleteRepairReport(String id){
         RepairReport repairReport = repairReportMapper.selectById(id);
-        Assert.notNull(repairReport, "删除repairReport表数据失败，表中查询不到对应repairReportId的申请");
+        Assert.notNull(repairReport, "删除repairReport表数据失败，表中查询不到对应Id的报修信息");
         if(SqlHelper.retBool(baseMapper.deleteById(id))){
             return CommonResult.success(repairReport);
         }else return CommonResult.fail("删除repairReport表数据失败");

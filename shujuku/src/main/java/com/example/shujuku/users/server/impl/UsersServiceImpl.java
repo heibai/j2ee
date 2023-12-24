@@ -65,7 +65,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     @Override
     public CommonResult updateUsers(Users users){
         Users oldUsers = usersMapper.selectById(users.getUserId());
-        Assert.notNull(oldUsers, "修改users表失败，表中查询不到对应usersId的教师");
+        Assert.notNull(oldUsers, "修改users表失败，表中查询不到对应Id的用户信息");
         if(SqlHelper.retBool(baseMapper.updateById(users))){
             return CommonResult.success(users);
         }else return CommonResult.fail("更新users表失败");
@@ -74,7 +74,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     @Override
     public CommonResult deleteUsers(String id){
         Users users = usersMapper.selectById(id);
-        Assert.notNull(users, "删除users表数据失败，表中查询不到对应usersId的申请");
+        Assert.notNull(users, "删除users表数据失败，表中查询不到对应Id的用户信息");
         if(SqlHelper.retBool(baseMapper.deleteById(id))){
             return CommonResult.success(users);
         }else return CommonResult.fail("删除users表数据失败");

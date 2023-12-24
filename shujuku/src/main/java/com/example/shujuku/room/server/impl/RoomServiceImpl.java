@@ -153,7 +153,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     @Override
     public CommonResult deleteRoom(String Id){
         Room room = roomMapper.selectById(Id);
-        Assert.notNull(room, "删除room表数据失败，表中查询不到对应Id的申请");
+        Assert.notNull(room, "删除room表数据失败，表中查询不到对应Id的房间");
         if(SqlHelper.retBool(baseMapper.deleteById(Id))){
             return CommonResult.success(room);
         }else return CommonResult.fail("删除room表数据失败");
