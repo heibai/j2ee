@@ -54,12 +54,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
-        System.out.println(req);
+        //分页查询用户信息
         List<Users> usersList = usersMapper.getUsersList(req);
-//        List<Student> list = studentMapper.getStudentList(req);
-//        List<Student> studentList = (List<Student>) list.get(0);
-//        Integer total = ((List<Integer>) list.get(1)).get(0);
-//        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
         Page<Users> page = new Page<>(pageNo, pageSize);
         page.setRecords(usersList);
         page.setTotal(usersList.size());

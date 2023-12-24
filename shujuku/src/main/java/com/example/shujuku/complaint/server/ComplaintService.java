@@ -11,8 +11,6 @@ public interface ComplaintService extends IService<Complaint> {
 
     public CommonResult getComplaintById(String id);
 
-    public CommonResult getComplaintPage(ComplaintPageReq complaintPageReq);
-
     public CommonResult getComplaintList(ComplaintPageReq req);
 
     public CommonResult updateComplaint(Complaint complaint);

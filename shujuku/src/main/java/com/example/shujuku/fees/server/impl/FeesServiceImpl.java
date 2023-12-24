@@ -1,13 +1,10 @@
 package com.example.shujuku.fees.server.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.shujuku.common.CommonResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.shujuku.common.SnowflakeIdGenerator;
-import com.example.shujuku.common.Tool;
 import com.example.shujuku.mapper.RoomMapper;
 import com.example.shujuku.req.FeesPageReq;
 import com.example.shujuku.fees.bean.Fees;
@@ -92,21 +89,20 @@ public class FeesServiceImpl extends ServiceImpl<FeesMapper, Fees> implements Fe
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
         List<List<Object>> resultList = new ArrayList<List<Object>>();
+        //查询所有已有人入住的房间
         List<Room> roomList = roomMapper.getResidentedRooms();
         ListIterator<Room> roomListIterator = roomList.listIterator();
         while(roomListIterator.hasNext()){
             List<Object> result = new ArrayList<Object>();
             Room room = roomListIterator.next();
             req.setRoomId(room.getRoomId());
+            //对每个上一步查出来的房间，查询它的费用信息
             List<Fees> feesList = feesMapper.getFeesList(req);
+            //把2者装在同一个list中，再把这个list装进resultList中
             result.add(room);
             result.add(feesList);
             resultList.add(result);
         }
-//        List<Student> list = studentMapper.getStudentList(req);
-//        List<Student> studentList = (List<Student>) list.get(0);
-//        Integer total = ((List<Integer>) list.get(1)).get(0);
-//        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
         Page<List<Object>> page = new Page<>(pageNo, pageSize);
         page.setRecords(resultList);
         page.setTotal(resultList.size());

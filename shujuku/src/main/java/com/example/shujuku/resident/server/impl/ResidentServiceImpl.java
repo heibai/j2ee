@@ -1,12 +1,9 @@
 package com.example.shujuku.resident.server.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.shujuku.common.CommonResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.shujuku.common.Tool;
 import com.example.shujuku.mapper.RoomMapper;
 import com.example.shujuku.mapper.UsersMapper;
 import com.example.shujuku.req.ResidentPageReq;
@@ -37,8 +34,10 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
 
     @Override
     public CommonResult createResident(Resident resident){
+        //检查房间是否已住满，返回不为null说明该房间还有空位
         Room room = roomMapper.CheckRoom(resident.getRoomId());
         if(room != null){
+            //让房间已住人数+1
             int hadNum = Integer.parseInt(room.getHadNum())+1;
             int limitNum = Integer.parseInt(room.getLimitNum());
             if(hadNum == limitNum){
@@ -71,11 +70,8 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
         Integer pageNo = req.getPageNo();
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
+        //分页查询住宿信息
         List<Resident> residentList = residentMapper.getResidentList(req);
-//        List<Student> list = studentMapper.getStudentList(req);
-//        List<Student> studentList = (List<Student>) list.get(0);
-//        Integer total = ((List<Integer>) list.get(1)).get(0);
-//        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
         Page<Resident> page = new Page<>(pageNo, pageSize);
         page.setRecords(residentList);
         page.setTotal(residentList.size());
@@ -88,20 +84,19 @@ public class ResidentServiceImpl extends ServiceImpl<ResidentMapper, Resident> i
         Integer pageSize = req.getPageSize();
         req.setPageNo((pageNo - 1)*pageSize);
         List<List<Object>> resultList = new ArrayList<List<Object>>();
+        //获取所有住宿信息
         List<Resident> residentList = residentMapper.getResidentList(req);
         ListIterator<Resident> residentListIterator = residentList.listIterator();
         while(residentListIterator.hasNext()){
             List<Object> result = new ArrayList<Object>();
             Resident resident = residentListIterator.next();
+            //根据住宿信息查询住户的个人信息
             Users users = usersMapper.GetUsersByUserId(resident.getUserId());
+            //把2个对象装在list里然后把这个list装在resultList里
             result.add(resident);
             result.add(users);
             resultList.add(result);
         }
-//        List<Student> list = studentMapper.getStudentList(req);
-//        List<Student> studentList = (List<Student>) list.get(0);
-//        Integer total = ((List<Integer>) list.get(1)).get(0);
-//        Integer pages = (total == 0) ? 1 : ((total % pageSize == 0) ? total / pageSize : total / pageSize + 1);
         Page<List<Object>> page = new Page<>(pageNo, pageSize);
         page.setRecords(resultList);
         page.setTotal(residentList.size());

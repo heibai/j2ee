@@ -41,5 +41,4 @@ public class Resident implements Serializable {
     @TableField("status")
     private String status;
 
-
 }
